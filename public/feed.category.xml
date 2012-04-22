@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title> - Miscellaneous</title>
+    <description>Posts categorized as &#8216;miscellaneous&#8217;</description>
+    <link>http://flanders.co.nz</link>
+    <atom:link rel="hub" href="http://pubsubhubbub.appspot.com"/>
+    
+  </channel>
+</rss>

@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A good url regular expression? (repost) - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="I&#8217;m moving this post from http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx I started out blogging on geeks with blogs but I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">A Good Url Regular Expression? (Repost)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-08T12:02:37+01:00" pubdate data-updated="true">Nov 8<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;m moving this post from <a href="http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx">http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx</a></p>
+
+<p>I started out blogging on geeks with blogs but I can&#8217;t allow comments there anymore or I get too much spam, so I&#8217;m moving the post from there to this place.  Various people have contributed through the comments in the other blog post. So here I have better control over the spam and can open the comments again.</p>
+
+<p>I have been looking for a good first layer of validating an url to see if it is valid.</p>
+
+<p>For checking the format of the url it seems to me to be the most logical approach to use regular expressions. Up until now I always discarded them as being to “geeky”, meaning i don&#8217;t consider it my life&#8217;s biggest goal to be typing (/?[]\w) all day long (so why did i become a programmer, aaaah yes to make life easier for other people)</p>
+
+<p>Anyway.. to find a good regular expression to that validates urls not url domains. One that doesn&#8217;t allow spaces in the domainname and where the domain can be suffixed with the port number.  Also I need support for the ~/ paths</p>
+
+<p>This is what I came up with.. if somebody as a better idea&#8230; or finds a mistake please let me know.. Always happy to learn something new.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^(((</span><span class="n">ht</span><span class="p">|</span><span class="n">f</span><span class="p">)</span><span class="n">tps</span><span class="p">?</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/)|~/|/)?([</span><span class="n">a</span><span class="p">-</span><span class="n">zA</span><span class="p">-</span><span class="n">Z</span><span class="p">]{</span><span class="m">1</span><span class="p">}([</span><span class="err">\</span><span class="n">w</span><span class="err">\</span><span class="p">-]+</span><span class="err">\</span><span class="p">.)+([</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">2</span><span class="p">,</span><span class="m">5</span><span class="p">})(:[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?)/?(</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">\</span><span class="p">.[</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">})?((</span><span class="err">\</span><span class="p">?</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)?(&amp;</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)*)?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I was a bit quickly in using this regex. Simeon pilgrim indicated that the ftp urls won&#8217;t validate when you add a username and a password.</p>
+
+<p>I don&#8217;t really need to validate ftp so I should have removed the ftp protocol from the list of choices.  I need this just to validate urls for weblinks and the link element in an rss feed.  When I need them for ftp I will post the ftp version.. but for now I don&#8217;t have time to spend on elaborating the regex.</p>
+
+<p>Anyway here is the right one :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^(</span><span class="n">http</span><span class="p">(</span><span class="n">s</span><span class="p">?)</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/|~/|/)?([</span><span class="n">a</span><span class="p">-</span><span class="n">zA</span><span class="p">-</span><span class="n">Z</span><span class="p">]{</span><span class="m">1</span><span class="p">}([</span><span class="err">\</span><span class="n">w</span><span class="err">\</span><span class="p">-]+</span><span class="err">\</span><span class="p">.)+([</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">2</span><span class="p">,</span><span class="m">5</span><span class="p">}))(:[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?/?(</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">\</span><span class="p">.[</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">})?((</span><span class="err">\</span><span class="p">?</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)?(&amp;</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)*)?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A full url validation would include resolving names through dns or making a webrequest to the provided url to see if we get a 200 response. The only way to be sure is to test if it is there in my opinion.</p>
+
+<p>Thanks Simeon.</p>
+
+<p>And for those who really want the ftp validation :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^((</span><span class="n">ht</span><span class="p">|</span><span class="n">f</span><span class="p">)</span><span class="n">tp</span><span class="p">(</span><span class="n">s</span><span class="p">?)</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/|~/|/)?([</span><span class="err">\</span><span class="n">w</span><span class="p">]+:</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">@</span><span class="p">)?([</span><span class="n">a</span><span class="p">-</span><span class="n">zA</span><span class="p">-</span><span class="n">Z</span><span class="p">]{</span><span class="m">1</span><span class="p">}([</span><span class="err">\</span><span class="n">w</span><span class="err">\</span><span class="p">-]+</span><span class="err">\</span><span class="p">.)+([</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">2</span><span class="p">,</span><span class="m">5</span><span class="p">}))(:[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?/?(</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">\</span><span class="p">.[</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">})?((</span><span class="err">\</span><span class="p">?</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)?(&amp;</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)*)?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I am not sure about numbers in the username but I believe you can have a username of numbers alone.</p>
+
+<p>Comments don&#8217;t seem to work on this blog engine.. so just send me a mail through the contact form. thanks</p>
+
+<p>Two days later &#8230;</p>
+
+<p>I discovered there is still a problem with my regular expressions&#8230; folders don&#8217;t get parsed.</p>
+
+<p>I&#8217;ve solved the path issue, so now it should be finding all url&#8217;s</p>
+
+<p>Expression:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^((</span><span class="n">ht</span><span class="p">|</span><span class="n">f</span><span class="p">)</span><span class="n">tp</span><span class="p">(</span><span class="n">s</span><span class="p">?)</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/|~/|/)?([</span><span class="err">\</span><span class="n">w</span><span class="p">]+:</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">@</span><span class="p">)?([</span><span class="n">a</span><span class="p">-</span><span class="n">zA</span><span class="p">-</span><span class="n">Z</span><span class="p">]{</span><span class="m">1</span><span class="p">}([</span><span class="err">\</span><span class="n">w</span><span class="err">\</span><span class="p">-]+</span><span class="err">\</span><span class="p">.)+([</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">2</span><span class="p">,</span><span class="m">5</span><span class="p">}))(:[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?((/?</span><span class="err">\</span><span class="n">w</span><span class="p">+/)+|/?)(</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">\</span><span class="p">.[</span><span class="err">\</span><span class="n">w</span><span class="p">]{</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">})?((</span><span class="err">\</span><span class="p">?</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)?(&amp;</span><span class="err">\</span><span class="n">w</span><span class="p">+=</span><span class="err">\</span><span class="n">w</span><span class="p">+)*)?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Should parse the url below</p>
+
+<p><a href="http://hh-1hallo.msn.blabla.com:80800/test/test/test.aspx?dd=dd&amp;id=dki">http://hh-1hallo.msn.blabla.com:80800/test/test/test.aspx?dd=dd&amp;id=dki</a></p>
+
+<p>But not :</p>
+
+<p><a href="http://hh-1hallo">http://hh-1hallo</a>. msn.blablabla.com:80800/test/test.aspx?dd=dd&amp;id=dki</p>
+
+<p>Update 29/11/2008:</p>
+
+<p>Joe posted what seems to be a great regular expression in the comments</p>
+
+<p>he tested it with the following urls:</p>
+
+<p>http://www.google.com/search?q=good+url+regex&amp;rls=com.microsoft:*&amp;ie=UTF-8&amp;oe=UTF-8&amp;startIndex=&amp;startPage=1</p>
+
+<p>ftp://joe:password@ftp.filetransferprotocal.com</p>
+
+<p>google.ru</p>
+
+<p>https://some-url.com?query=&amp;name=joe?filter=<em>.</em>#some_anchor</p>
+
+<p>Expression:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^(?</span><span class="err">#</span><span class="n">Protocol</span><span class="p">)(?:(?:</span><span class="n">ht</span><span class="p">|</span><span class="n">f</span><span class="p">)</span><span class="n">tp</span><span class="p">(?:</span><span class="n">s</span><span class="p">?)</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/|~/|/)?(?</span><span class="err">#</span><span class="n">Username</span><span class="p">:</span><span class="n">Password</span><span class="p">)(?:</span><span class="err">\</span><span class="n">w</span><span class="p">+:</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">@</span><span class="p">)?(?</span><span class="err">#</span><span class="n">Subdomains</span><span class="p">)(?:(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">]+</span><span class="err">\</span><span class="p">.)+(?</span><span class="err">#</span><span class="n">TopLevel</span> <span class="n">Domains</span><span class="p">)(?:</span><span class="n">com</span><span class="p">|</span><span class="n">org</span><span class="p">|</span><span class="n">net</span><span class="p">|</span><span class="n">gov</span><span class="p">|</span><span class="n">mil</span><span class="p">|</span><span class="n">biz</span><span class="p">|</span><span class="n">info</span><span class="p">|</span><span class="n">mobi</span><span class="p">|</span><span class="n">name</span><span class="p">|</span><span class="n">aero</span><span class="p">|</span><span class="n">jobs</span><span class="p">|</span><span class="n">museum</span><span class="p">|</span><span class="n">travel</span><span class="p">|[</span><span class="n">a</span><span class="p">-</span><span class="n">z</span><span class="p">]{</span><span class="m">2</span><span class="p">}))(?</span><span class="err">#</span><span class="n">Port</span><span class="p">)(?::[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?(?</span><span class="err">#</span><span class="n">Directories</span><span class="p">)(?:(?:(?:/(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})+)+|/)+|</span><span class="err">\</span><span class="p">?|</span><span class="err">#</span><span class="p">)?(?</span><span class="err">#</span><span class="n">Query</span><span class="p">)(?:(?:</span><span class="err">\</span><span class="p">?(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">{</span><span class="m">2</span><span class="p">}])+=(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)(?:&amp;(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">{</span><span class="m">2</span><span class="p">}])+=(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)*)*(?</span><span class="err">#</span><span class="n">Anchor</span><span class="p">)(?:</span><span class="err">#</span><span class="p">(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)?</span><span class="err">$</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Update 8/11/2009:</p>
+
+<p>Expression:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">^(?</span><span class="err">#</span><span class="n">Protocol</span><span class="p">)(?:(?:</span><span class="n">ht</span><span class="p">|</span><span class="n">f</span><span class="p">)</span><span class="n">tp</span><span class="p">(?:</span><span class="n">s</span><span class="p">?)</span><span class="err">\</span><span class="p">:</span><span class="err">\</span><span class="p">/</span><span class="err">\</span><span class="p">/|~</span><span class="err">\</span><span class="p">/|</span><span class="err">\</span><span class="p">/)?(?</span><span class="err">#</span><span class="n">Username</span><span class="p">:</span><span class="n">Password</span><span class="p">)(?:</span><span class="err">\</span><span class="n">w</span><span class="p">+:</span><span class="err">\</span><span class="n">w</span><span class="p">+</span><span class="err">@</span><span class="p">)?(?</span><span class="err">#</span><span class="n">Subdomains</span><span class="p">)(?:(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">]+</span><span class="err">\</span><span class="p">.)+(?</span><span class="err">#</span><span class="n">TopLevel</span> <span class="n">Domains</span><span class="p">)(?:</span><span class="n">com</span><span class="p">|</span><span class="n">org</span><span class="p">|</span><span class="n">net</span><span class="p">|</span><span class="n">gov</span><span class="p">|</span><span class="n">mil</span><span class="p">|</span><span class="n">biz</span><span class="p">|</span><span class="n">info</span><span class="p">|</span><span class="n">mobi</span><span class="p">|</span><span class="n">name</span><span class="p">|</span><span class="n">aero</span><span class="p">|</span><span class="n">jobs</span><span class="p">|</span><span class="n">museum</span><span class="p">|</span><span class="n">travel</span><span class="p">|[</span><span class="n">a</span><span class="p">-</span><span class="n">z</span><span class="p">]{</span><span class="m">2</span><span class="p">}))(?</span><span class="err">#</span><span class="n">Port</span><span class="p">)(?::[</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">})?(?</span><span class="err">#</span><span class="n">Directories</span><span class="p">)(?:(?:(?:</span><span class="err">\</span><span class="p">/(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})+)+|</span><span class="err">\</span><span class="p">/)+|</span><span class="err">\</span><span class="p">?|</span><span class="err">#</span><span class="p">)?(?</span><span class="err">#</span><span class="n">Query</span><span class="p">)(?:(?:</span><span class="err">\</span><span class="p">?(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">{</span><span class="m">2</span><span class="p">}])+=?(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)(?:&amp;(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">{</span><span class="m">2</span><span class="p">}])+=?(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)*)*(?</span><span class="err">#</span><span class="n">Anchor</span><span class="p">)(?:</span><span class="err">#</span><span class="p">(?:[-</span><span class="err">\</span><span class="n">w</span><span class="p">~!</span><span class="err">$</span><span class="p">+|.,*:=]|%[</span><span class="n">a</span><span class="p">-</span><span class="n">f</span><span class="err">\</span><span class="n">d</span><span class="p">]{</span><span class="m">2</span><span class="p">})*)?</span><span class="err">$</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is a wave for this regex:</p>
+
+<p><a href="https://wave.google.com/wave/?pli=1#restored:wave:googlewave.com!w%252BsFbGJUukA">https://wave.google.com/wave/?pli=1#restored:wave:googlewave.com!w%252BsFbGJUukA</a></p>
+
+<p>Update 29/09/2010</p>
+
+<p>So people if you don&#8217;t like it don&#8217;t use it.
+Now this regex is troubled it has a bunch of issues but it works most of the time.  If you want a more liberal regular expression to just capture urls from text, there is a really good one on the blog of John Gruber.
+<a href="http://daringfireball.net/2010/07/improved_regex_for_matching_urls">Improved regex for matching urls @ daring fireball</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-08T12:02:37+01:00" pubdate data-updated="true">Nov 8<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/general/'>General</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost/" data-via="casualjim" data-counturl="http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/10/26/creating-launcher-scripts-for-ironruby/" title="Previous Post: Creating launcher scripts for IronRuby">&laquo; Creating launcher scripts for IronRuby</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/12/01/adding-a-console-to-your-ironruby-application/" title="Next Post: Adding a console to your IronRuby application">Adding a console to your IronRuby application &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost/';
+        var disqus_url = 'http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

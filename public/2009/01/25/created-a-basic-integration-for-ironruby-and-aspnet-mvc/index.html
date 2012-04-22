@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Created a basic integration for IronRuby and Asp.NET MVC - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="As I can see the end of the chapter on Rails and I&#8217;m looking ahead to see what will be next. I decided to start working on the chapter that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2009/01/25/created-a-basic-integration-for-ironruby-and-aspnet-mvc">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Created a Basic Integration for IronRuby and Asp.NET MVC</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-25T14:42:13+01:00" pubdate data-updated="true">Jan 25<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>As I can see the end of the chapter on Rails and I&#8217;m looking ahead to see what will be next. I decided to start working on the chapter that talks about using IronRuby with Asp.NET MVC next.  <a href="http://blog.jimmy.schementi.com/">Jimmy Schementi</a> and <a href="http://haacked.com/">Phil Haack</a> created a proof of concept implementation a couple of months ago that actually did work.
+The past weekend I&#8217;ve been looking to build on the excellent work they did and to build a more complete integration. In this post I&#8217;ll try to explain what I did to make it work.  The integration work is far from complete, so if you&#8217;ve got some free time on your hands and you happen to be looking for an Open Source project to help with then this could be a candidate for you :).</p>
+
+<h3>Finding a place to start</h3>
+
+<p>Let me start off by saying that I&#8217;m pretty happy with the internals of the asp.net mvc framework. The code was easy to read given that you start in the correct file and work your way through much in the same way a request would be executed. In my case I started at the MVC handler and immediately you see one of the classes that we&#8217;ll definitely need to customize. The <em>RubyControllerFactory</em> is the class in question and it needs to be customized because we&#8217;re going to use a <em>RubyController</em>.
+ASP.NET MVC internally uses reflection to do its magic. In the futures project they have a couple of other implementations like async with reflection and so on. I decided to use the classes prefixed as Reflected as my guide for creating my own integration they were probably the simplest implementation of the class.
+I kept the view engine Jimmy and Phil created and focussed on the controllers. Working with the DLR API&#8217;s requires a bunch of classes and</p>
+
+<h3>Sweet now what does this mean in terms of IronRuby integration?</h3>
+
+<p>To limit some of the work I needed to be doing I decided that Ruby controller actions don&#8217;t take any parameters we can bind to instead you will have to rely on the data that&#8217;s available in the params hash to get to the input delivered by the request. Actually I made a decision to keep that from the POC implementation before.<br/>
+In ASP.NET MVC there is a <em>ReflectedControllerDescriptor</em> and a <em>ReflectedActionDescriptor</em>. They are used to cache the information we need so it only has to perform the costly operations once, which is a good strategy IMHO.
+For IronRuby that means we&#8217;ll need to create a <em>RubyControllerDescriptor</em> and <em>RubyActionDescriptor</em>. The last class we&#8217;ll going to need to customize in this exercise is the <em>ControllerActionInvoker</em> which as the name hints at: invokes actions on your controller :)
+For people that have been doing rails applications, you&#8217;re not limited to Rails now. You could use Ruby but leverage the ASP.NET MVC infrastructure for implementing a mvc web app. When somebody would create the adapters for activerecord to leverage ADO.NET to talk to data sources you should be able to just use active record that comes with the rails framework in your app as models. The view engine in ironrubymvc is also erb based so I&#8217;d imagine you would be able to just copy your view code in and making sure that you have replacement helpers if you&#8217;ve used helpers.
+Working on this code also opens up the question if it isn&#8217;t possible to actually run rails via a similar mechanism&#8230; mmm must investigate</p>
+
+<h3>Where can I find it?</h3>
+
+<p>I forked the git repository from <a href="http://github.com/jschementi/ironrubymvc">Jimmy Schementi</a>. And I do send him pull requests when I&#8217;ve pushed some changes. So you could potentially pick that repository to work out of. The disadvantage is that you won&#8217;t pick up changes I make immediately. The good thing is that Jimmy&#8217;s repo is probably a good place to follow because he can also take work that Phil did and add it to the repo. I will then have to sync my version with his.
+Or you could use <a href="http://github.com/casualjim/ironrubymvc">my repo</a> and pick up the changes I make immediately but you&#8217;ll have to wait to merge it with the changes that have been applied into Jimmy&#8217;s repo until I get around to merging that into mine.
+I&#8217;d say that over time it would probably be a better idea to get the repo from Jimmy while mine will be very active but just for a short period of time, when I&#8217;m happy with it I&#8217;ll move on.</p>
+
+<h3>What&#8217;s left to do?</h3>
+
+<ul>
+<li><p>Implement action filters (before/after)</p></li>
+<li><p>Implement authorization filters</p></li>
+<li><p>Implement an HttpApplicationBase class that will create the script runtime</p></li>
+<li><p>Implement a HttpModule that will take care of creating a RubyEngine object</p></li>
+<li><p>&#8230;</p></li>
+</ul>
+
+
+<p>For today I&#8217;d say <strong><em>go_to(&#8220;http://github.com/casualjim/ironrubymvc&#8221;).play.create.have_fun</em></strong></p>
+
+<p>When my work stabilizes a little bit more I&#8217;ll write a blog post explaining how I went about using the DLR hosting API&#8217;s to host IronRuby in an ASP.NET application and how the implemenation of IronRubyMvc was put together.</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2009%2f01%2f25%2fcreated-a-basic-integration-for-ironruby-and-aspnet-mvc%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2009%2f01%2f25%2fcreated-a-basic-integration-for-ironruby-and-aspnet-mvc%2f" alt="kick it on DotNetKicks.com" /></a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-25T14:42:13+01:00" pubdate data-updated="true">Jan 25<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/-net-3-5/'>.NET 3.5</a>, <a class='category' href='/categories/ironruby/'>IronRuby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2009/01/25/created-a-basic-integration-for-ironruby-and-aspnet-mvc/" data-via="casualjim" data-counturl="http://flanders.co.nz/2009/01/25/created-a-basic-integration-for-ironruby-and-aspnet-mvc/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/01/25/participating-in-the-italian-altnet-user-group/" title="Previous Post: Participating in the Italian Alt.NET user group">&laquo; Participating in the Italian Alt.NET user group</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/02/05/ruby/" title="Next Post: Ruby ">Ruby  &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2009/01/25/created-a-basic-integration-for-ironruby-and-aspnet-mvc/';
+        var disqus_url = 'http://flanders.co.nz/2009/01/25/created-a-basic-integration-for-ironruby-and-aspnet-mvc/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

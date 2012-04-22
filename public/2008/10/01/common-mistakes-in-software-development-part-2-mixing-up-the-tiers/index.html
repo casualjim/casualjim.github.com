@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Common mistakes in software development (part 2): Mixing up the layers - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="In my previous post I explained some very quick wins to make your code a little bit cleaner. As I&#8217;ve been appointed an asp.net project at work &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Common Mistakes in Software Development (Part 2): Mixing Up the Layers</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-01T05:10:54+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In my <a href="http://flanders.co.nz/2008/09/24/common-mistakes-in-software-development/">previous post</a> I explained some very quick wins to make your code a little bit cleaner. As I&#8217;ve been appointed an <a href="http://www.asp.net">asp.net</a> project at work at the moment I have the chance to get more ammunition for blogging :).
+This time I&#8217;d like to talk about properly separating your tiers so that the next person doesn&#8217;t have to go through the complete application and make changes everywhere just to make a minor change to the application.</p>
+
+<p>One  of the problems; one of the most time consuming that is; I&#8217;ve seen is that people are confused on what they have to put in the data logic layer and what is business logic. In my case this is fairly extreme because there isn&#8217;t an ORM tool but rather every entity gets populated by calling a stored procedure and then in the code the graph objects get set. Whether this is a good approach for fetching your data or not is not within the scope of this blog post, but I&#8217;m guessing there are more people who are facing this type of situation.</p>
+
+<p>Anyway let&#8217;s start with the beginning and explain the typical <a href="http://en.wikipedia.org/wiki/N-tier">n-tier architecture</a> people seem to follow. This is not a particular pattern like <a href="http://en.wikipedia.org/wiki/Model-view-controller">MVC</a> or <a href="http://en.wikipedia.org/wiki/Model-view-presenter">MVP</a> that people are talking about so much lately. This goes back to the guidance that can be found on the <a href="http://msdn.microsoft.com">msdn website</a>.  This type of architecture is often used in combination with data sets but not in my example for this post. This architecture is generally divided in 3 parts that can, but don&#8217;t have to, run on different machines if needs be.  When talking about this type of architecture people mostly talk about an n-tier application.</p>
+
+<h2>The first part is the data layer.</h2>
+
+<p>The golden rule for this one: this is the gateway between the rest of your application and the database. <strong>NONE</strong> of the other layers should be talking directly to the database but instead should be doing their talking through this layer.  That means if you have stored procedures you provide wrappers for them in this layer. You populate your entities in this layer too.
+Other functions you can perform in this layer is setting the graph members (populating relationships). IMHO if you&#8217;re talking to the database (open/close connection) you&#8217;re doing stuff that belongs in the data layer which includes populating relationships.</p>
+
+<p>Encapsulating this logic in it&#8217;s own layer, which could potentially be walled off through only exposing it with remoting or WCF, allows you to reuse the code in different places of your applications or sharing this data access assembly with multiple applications.</p>
+
+<h2>The second part is the business logic layer.</h2>
+
+<p>This layer encapsulates all the operations you do on entities to express the business rules. That means you would probably do most of your work in this layer. Basically <strong>all</strong> of the programming you will be doing for the business rules should be done here. Business logic doesn&#8217;t live in stored procedures, it doesn&#8217;t live in the UI or the data layer. Nope this layer is where it lives and nowhere else.  This statement may raise some eyebrows but only and only when you find that a certain routine is a bottleneck and it is really data intensive you can put it in a stored procedure but more on that subject in another blog post.
+If you find yourself transforming data so you can display it in your GUI then you&#8217;re probably expressing business rules that aren&#8217;t explicitly stated as a business rule.
+When you find yourself to be concatenating strings or writing logic to translate your pages in your GUI layer then you&#8217;re probably expressing business logic (business logic doesn&#8217;t have to come from business ;) in case that wasn&#8217;t clear).
+Another common find in business logic is validation for example because this generally expresses some kind of strict rule that comes from the business domain your application deals with. Validation is a tricky one but the rule is you should do <strong>all</strong> validation in your business logic. To provide a better user experience you can maybe reuse that validation on the client side. In the case of web development you probably will have to duplicate that validation in javascript if you really need it.</p>
+
+<p>Separating these rules into their own layer allows you to reuse the methods and classes you create in the business logic layer, in different parts of your UI or even reuse it in different applications.
+By separating this logic it should be easier for you to do some automated testing like unit testing and/or integration testing of that code.</p>
+
+<h2>The third and last layer</h2>
+
+<p>This is typically the UI layer but you could easily use web/WCF services as an interface to your logic. The UI doesn&#8217;t have to be a GUI it can also be a CLI (Command-Line Interface) or something. But that is how you interact with the user or external application. The idea is that in this layer you have virtually no logic except for what&#8217;s on the screen <strong>everything</strong> else should be handled by your business logic. To clarify this statement: you can show/hide UI elements or add/remove elements to the UI and respond to events triggered by user actions but the data of that response and the processing really belongs in the business logic layer.</p>
+
+<p>The UI layer can talk to both the business logic and data logic layers. If for example you&#8217;re getting a category list with just an id and name from the database chances are you won&#8217;t need to transform that data so your UI can bind directly to the entities returned by your data layer. But more complex items like an invoice for example will probably need some processing and then it should probably pass through the business logic layer.</p>
+
+<p>This is typically a somewhat harder part of your application to provide tests for although there are some libraries out there that make it easier but still there are easier parts to test in your application.</p>
+
+<p>So that was a quick refresher on what the classic n-tier architecture is about an how it should be structured. I hope you will agree with me into stating that its not that hard and pretty straight-forward to implement, but what I find in the &#8220;enterprise&#8221; is far from the points mentioned above.
+It is a bloody mix of everything everywhere, leaving me thinking -come on guys it&#8217;s not that hard-:
+<em>talking to the database => datalayer</em>
+<em>showing windows/adding UI elements,&#8230; => UI layer</em>
+<em>everything else => business logic</em></p>
+
+<p>Failing to abide by the previous simple rules will result in hell freezing over, entire plagues will be released upon the world; to cut a long story short: the world as you know it will seize to exist and turn into complete chaos.
+Following the rules should result in less code duplication, an instantaneously easier to maintain codebase and probably more happy successors for when you move on to the next project.  It should also give you a higher degree of code reuse.
+If there is one thing you should take away from this article then it should be:
+<strong>Don&#8217;t mix your tiers</strong></p>
+
+<p>Of course there are a couple of situations when you can diverge from the ideas presented in this post but you should always be able to justify why you break the rule. So you need a good reason to break the proposed architecture and that would probably also warrant a comment so the next guy also knows what&#8217;s going on.
+The most important part is to separate all non-UI logic out from the UI layer and put it in one of the lower layers.</p>
+
+<p>Thanks for reading
+Ivan - writing for more maintainable software -</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-01T05:10:54+02:00" pubdate data-updated="true">Oct 1<span>st</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/-net-2-0/'>.NET 2.0</a>, <a class='category' href='/categories/-net-3-0/'>.NET 3.0</a>, <a class='category' href='/categories/-net-3-5/'>.NET 3.5</a>, <a class='category' href='/categories/c-/'>C#</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/" data-via="casualjim" data-counturl="http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/09/24/common-mistakes-in-software-development/" title="Previous Post: Common mistakes in software development">&laquo; Common mistakes in software development</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/" title="Next Post: If you ever wanted to play fur elise in the console">If you ever wanted to play fur elise in the console &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/';
+        var disqus_url = 'http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

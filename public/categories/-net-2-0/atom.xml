@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: .NET 2.0 | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/-net-2-0/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <link rel="hub" href="http://pubsubhubbub.appspot.com"/>
+  <updated>2012-04-22T21:10:37+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Beating a dead horse: Stored Procedures]]></title>
+    <link href="http://flanders.co.nz/2008/10/23/beating-a-dead-horse-stored-procedures/"/>
+    <updated>2008-10-23T20:37:23+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/23/beating-a-dead-horse-stored-procedures</id>
+    <content type="html"><![CDATA[<p>I seem to be having the same conversations with the dev teams whenever I switch clients. The topic of this post is one that many people have written about before. I'm just going to put my opinion on my blog so I can refer people to it in the future instead of having to repeat myself every time.
+What prompted this post is that since I've moved to Belgium I've had to take a step back from living on the bleeding edge and using open source projects. Most of the work is concentrated in Brussels and is at big corporates or banks not exactly what you'd see as the progressive thinkers (with reason).
+I guess it would be safe to say that I've been immersed in "enterprise" development. In short I still haven't seen anything that is more complicated than a web app like <a href="http://www.xero.com">Xero</a>. But perhaps more about that in another post. This one is about stored procedures and their valid uses.</p>
+
+<p>My current client is pretty interested in the newer technologies (anything that is out of beta) and how to put them into production.  As such they use LINQ as their data layer. They follow the classic MS guidance of data logic, business logic and - the trigger for this post - stored procedures to encapsulate all the data access.
+People that have worked with me in the past will be able to vouch for the fact that I feel strongly against stored procedures. But before we get to why I don't want to use them, let's look at some of the reasons people have given me in the past why they were using them.</p>
+
+<ul>
+<li>Performance. Because stored procedures are (pre)compiled</li>
+<li>Security. They can lock down tables from being accessed by users directly but they can get to the database through the stored procedures layer</li>
+<li>Maintenance. You can change a stored procedure more easily than deploying a new build of your application because no compilation is needed.</li>
+<li>Less data to send over the wire because stored procedures can execute more sql statements at once.</li>
+</ul>
+
+
+<p>All of that stuff sounds pretty great right? As I've said before my current client has developed their data layer in their framework using Linq2Sql. I think Linq2Sql is not too bad, at least it gets the corporates into an ORM mindset because it comes from MS which makes it a vastly easier technology to sell than NHibernate for example.
+But when you're going to use Linq in conjunction with stored procedures for basic CRUD operations I think you're kind of missing the whole point of Linq2Sql or ORM's altogether for that matter. So there you have it, this is why I cannot resist posting about this subject although many people have said pretty much the same as I'm going to say in this post.</p>
+
+<h3>Credit where credit is due</h3>
+
+<p>The list of people below have helped me in forming my opinion on this subject. I've had the pleasure of having lengthy discussion on this topic with the first 3 people on the list. I consider the people on this list to be authorities in .NET development and 4 of them have written their own ORM in the past. Alex James and Andrew Peters now both work on the Entity Framework team.
+* <a href="http://blogs.msdn.com/alexj">Alex James</a>
+* <a href="http://andrewpeters.net">Andrew Peters</a>
+* <a href="http://turtle.net.nz">Jeremy Boyd</a>
+* <a href="http://weblogs.asp.net/fbouma">Frans Bouma</a>
+* <a href="http://ayende.com/Blog">Ayende (Oren Eini)</a>
+* <a href="http://codebetter.com/jmiller">Jeremy D. Miller</a>
+* <a href="http://codinghorror.com">Jeff Atwood</a></p>
+
+<p>Let's look at the reasons mentioned above and work our way through them seeing how they pan out in the end and you can draw your own conclusions on the matter.</p>
+
+<h3>Performance</h3>
+
+<h4>Stored procedures are precompiled</h4>
+
+<p>The fact that stored procedures are precompiled and dynamic queries aren't is a complete myth. Ever since Sql Server 7.0 the query plans are cached for both of them. If you change a parameter in a stored procedure it has to be recompiled too.You can check the Sql documentation to verify that.
+IMHO this also falls in the category premature optimizations. It could be that you have a query that is so complex or that is a real bottleneck for your application then it might be worth it to invest the time and write a stored procedure for it that queries the database differently and as such get rid of the bottle neck but take on a higher maintenance cost.</p>
+
+<h4>Batching of queries and returning multiple result sets</h4>
+
+<p>Another argument people often bring to the table is that in a stored procedure I can issue many sql statements on the same database connection. I hate to break the news to you but you get the same benefits when you're using dynamic sql (preferably the parameterized kind). You could issue one command that returns multiple result sets just like the body of your stored procedure. Or you could issue more than one command on the same connection and still get a very similar result.</p>
+
+<h3>Security</h3>
+
+<h4>Sql Injection attacks</h4>
+
+<p>Another argument I keep hearing is the fact that when you build dynamic sql statements you open yourself up for sql injection attacks which isn't that case for stored procedures.
+There is some truth in that but it definitely isn't the whole truth. What they mean by that is that if you're going to build your dynamic query by concatenating strings then you could indeed open yourself up to a sql injection attack but I've seen this happen in stored procedures too it's just a little bit harder to do it there.
+However if you build your sql statement by using a parameterized query you get the same security benefits as a stored procedure would give you.</p>
+
+<h4>Different permissions on tables and stored procedures</h4>
+
+<p>This isn't such a big problem. I've mostly seen people use one dedicated user to access the database. Lots of times there is a SOA like architecture that allows the client application to not even know what type of database it's connecting too.  I haven't seen many places yet where they actually implement security that is that strict.
+So the reasoning goes if you secure your application properly then this shouldn't be a big problem.
+Ayende has a more elaborate post on the subject: <a href="http://ayende.com/Blog/archive/2006/04/05/StoredProceduresForSecurity.aspx">Stored Procedures for Security</a></p>
+
+<h3>Maintenance</h3>
+
+<p>This is probably a very ambiguous problem. From a development point of view this might probably be the worst argument in favor for stored procedures. However if you look at it from the POV of the enterprise it might actually hold some value.
+At my current client all the applications have to be distributed by a separate team, and that makes the deployment a costly scenario.
+That is because once your application goes into production and something small needs to change the deployment team has to go around and deploy that application again on every workstation in the company. I know about click-once but nobody has any rights to install anything on their pc which makes that pretty hard to do.
+Now from my POV this is the most invalid argument of all of them because of the maintenance overhead it adds.
+When you give stored procs to a developer they see shiny quick shortcuts to quickly get some data out and perhaps already transform some of that data in their query. That is all good the first time you have to deploy the application. But the next person needs to add a column to a table and suddenly he will have to go through all the stored procedures (at least 3 of them for the C,R and D of CRUD) to add the column. Then he has to go in the data layer of your n-tiered application and modify the entity and perhaps the methods that map to the stored procedures.  Then comes time to deploy and you forgot to modify your update script with that one column you added to a stored proc. Of course this stored proc is the one that saves one of the core entities of your application and suddenly the new release is throwing errors all over the place.
+I skipped the part of transforming some data. As <a href="http://flanders.co.nz">my previous post</a> suggests: that stuff is business logic and doesn't belong in a stored procedure.</p>
+
+<h3>Some more reading on the subject</h3>
+
+<ul>
+<li>Jeff Atwood claiming that T-SQL is the assembly language of contemporary development.</li>
+</ul>
+
+
+<p><a href="http://www.codinghorror.com/blog/archives/000117.html">Who Needs Stored Procedures, Anyways?</a>
+* Frans Bouma explaining his point of view:</p>
+
+<p><a href="http://weblogs.asp.net/fbouma/archive/2003/11/18/38178.aspx">Stored procedures are bad, m'kay?</a>
+* Jeremy Miller swearing this is really going to be his last post on stored procedures:</p>
+
+<p><a href="http://codebetter.com/blogs/jeremy.miller/archive/2006/05/25/145450.aspx">Why I do not use Stored Procedures</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[If you ever wanted to play fur elise in the console]]></title>
+    <link href="http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/"/>
+    <updated>2008-10-22T14:08:53+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console</id>
+    <content type="html"><![CDATA[<p>At work today we were playing around with the console.. here's one of our experiments whilst creating a stoplight workflow (WF).</p>
+
+<p>```csharp <br/>
+private static void FurElise()
+{</p>
+
+<pre><code>    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(315, 200);
+    Console.Beep(370, 200);
+    Console.Beep(335, 200);
+    Console.Beep(282, 600);
+    Console.Beep(180, 200);
+    Console.Beep(215, 200);
+    Console.Beep(282, 200);
+    Console.Beep(315, 600);
+    Console.Beep(213, 200);
+    Console.Beep(262, 200);
+    Console.Beep(315, 200);
+    Console.Beep(335, 600);
+    Console.Beep(213, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(315, 200);
+    Console.Beep(370, 200);
+    Console.Beep(335, 200);
+    Console.Beep(282, 600);
+    Console.Beep(180, 200);
+    Console.Beep(215, 200);
+    Console.Beep(282, 200);
+    Console.Beep(315, 600);
+    Console.Beep(213, 200);
+    Console.Beep(330, 200);
+    Console.Beep(315, 200);
+    Console.Beep(282, 600);
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Common mistakes in software development (part 2): Mixing up the layers]]></title>
+    <link href="http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/"/>
+    <updated>2008-10-01T05:10:54+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers</id>
+    <content type="html"><![CDATA[<p>In my <a href="http://flanders.co.nz/2008/09/24/common-mistakes-in-software-development/">previous post</a> I explained some very quick wins to make your code a little bit cleaner. As I've been appointed an <a href="http://www.asp.net">asp.net</a> project at work at the moment I have the chance to get more ammunition for blogging :).
+This time I'd like to talk about properly separating your tiers so that the next person doesn't have to go through the complete application and make changes everywhere just to make a minor change to the application.</p>
+
+<p>One  of the problems; one of the most time consuming that is; I've seen is that people are confused on what they have to put in the data logic layer and what is business logic. In my case this is fairly extreme because there isn't an ORM tool but rather every entity gets populated by calling a stored procedure and then in the code the graph objects get set. Whether this is a good approach for fetching your data or not is not within the scope of this blog post, but I'm guessing there are more people who are facing this type of situation.</p>
+
+<p>Anyway let's start with the beginning and explain the typical <a href="http://en.wikipedia.org/wiki/N-tier">n-tier architecture</a> people seem to follow. This is not a particular pattern like <a href="http://en.wikipedia.org/wiki/Model-view-controller">MVC</a> or <a href="http://en.wikipedia.org/wiki/Model-view-presenter">MVP</a> that people are talking about so much lately. This goes back to the guidance that can be found on the <a href="http://msdn.microsoft.com">msdn website</a>.  This type of architecture is often used in combination with data sets but not in my example for this post. This architecture is generally divided in 3 parts that can, but don't have to, run on different machines if needs be.  When talking about this type of architecture people mostly talk about an n-tier application.</p>
+
+<h2>The first part is the data layer.</h2>
+
+<p>The golden rule for this one: this is the gateway between the rest of your application and the database. <strong>NONE</strong> of the other layers should be talking directly to the database but instead should be doing their talking through this layer.  That means if you have stored procedures you provide wrappers for them in this layer. You populate your entities in this layer too.
+Other functions you can perform in this layer is setting the graph members (populating relationships). IMHO if you're talking to the database (open/close connection) you're doing stuff that belongs in the data layer which includes populating relationships.</p>
+
+<p>Encapsulating this logic in it's own layer, which could potentially be walled off through only exposing it with remoting or WCF, allows you to reuse the code in different places of your applications or sharing this data access assembly with multiple applications.</p>
+
+<h2>The second part is the business logic layer.</h2>
+
+<p>This layer encapsulates all the operations you do on entities to express the business rules. That means you would probably do most of your work in this layer. Basically <strong>all</strong> of the programming you will be doing for the business rules should be done here. Business logic doesn't live in stored procedures, it doesn't live in the UI or the data layer. Nope this layer is where it lives and nowhere else.  This statement may raise some eyebrows but only and only when you find that a certain routine is a bottleneck and it is really data intensive you can put it in a stored procedure but more on that subject in another blog post.
+If you find yourself transforming data so you can display it in your GUI then you're probably expressing business rules that aren't explicitly stated as a business rule.
+When you find yourself to be concatenating strings or writing logic to translate your pages in your GUI layer then you're probably expressing business logic (business logic doesn't have to come from business ;) in case that wasn't clear).
+Another common find in business logic is validation for example because this generally expresses some kind of strict rule that comes from the business domain your application deals with. Validation is a tricky one but the rule is you should do <strong>all</strong> validation in your business logic. To provide a better user experience you can maybe reuse that validation on the client side. In the case of web development you probably will have to duplicate that validation in javascript if you really need it.</p>
+
+<p>Separating these rules into their own layer allows you to reuse the methods and classes you create in the business logic layer, in different parts of your UI or even reuse it in different applications.
+By separating this logic it should be easier for you to do some automated testing like unit testing and/or integration testing of that code.</p>
+
+<h2>The third and last layer</h2>
+
+<p>This is typically the UI layer but you could easily use web/WCF services as an interface to your logic. The UI doesn't have to be a GUI it can also be a CLI (Command-Line Interface) or something. But that is how you interact with the user or external application. The idea is that in this layer you have virtually no logic except for what's on the screen <strong>everything</strong> else should be handled by your business logic. To clarify this statement: you can show/hide UI elements or add/remove elements to the UI and respond to events triggered by user actions but the data of that response and the processing really belongs in the business logic layer.</p>
+
+<p>The UI layer can talk to both the business logic and data logic layers. If for example you're getting a category list with just an id and name from the database chances are you won't need to transform that data so your UI can bind directly to the entities returned by your data layer. But more complex items like an invoice for example will probably need some processing and then it should probably pass through the business logic layer.</p>
+
+<p>This is typically a somewhat harder part of your application to provide tests for although there are some libraries out there that make it easier but still there are easier parts to test in your application.</p>
+
+<p>So that was a quick refresher on what the classic n-tier architecture is about an how it should be structured. I hope you will agree with me into stating that its not that hard and pretty straight-forward to implement, but what I find in the "enterprise" is far from the points mentioned above.
+It is a bloody mix of everything everywhere, leaving me thinking -come on guys it's not that hard-:
+<em>talking to the database => datalayer</em>
+<em>showing windows/adding UI elements,... => UI layer</em>
+<em>everything else => business logic</em></p>
+
+<p>Failing to abide by the previous simple rules will result in hell freezing over, entire plagues will be released upon the world; to cut a long story short: the world as you know it will seize to exist and turn into complete chaos.
+Following the rules should result in less code duplication, an instantaneously easier to maintain codebase and probably more happy successors for when you move on to the next project.  It should also give you a higher degree of code reuse.
+If there is one thing you should take away from this article then it should be:
+<strong>Don't mix your tiers</strong></p>
+
+<p>Of course there are a couple of situations when you can diverge from the ideas presented in this post but you should always be able to justify why you break the rule. So you need a good reason to break the proposed architecture and that would probably also warrant a comment so the next guy also knows what's going on.
+The most important part is to separate all non-UI logic out from the UI layer and put it in one of the lower layers.</p>
+
+<p>Thanks for reading
+Ivan - writing for more maintainable software -</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Common mistakes in software development]]></title>
+    <link href="http://flanders.co.nz/2008/09/24/common-mistakes-in-software-development/"/>
+    <updated>2008-09-24T11:31:44+02:00</updated>
+    <id>http://flanders.co.nz/2008/09/24/common-mistakes-in-software-development</id>
+    <content type="html"><![CDATA[<p><strong><strong><em> Rant Alert </em></strong></strong></p>
+
+<p><rant></p>
+
+<p>At my current client I've got to do mainly maintenance on existing applications. This gives me the chance to look into codebases that have been created by other people and that don't really reflect how I would write things. That is all good though it gives me a chance to learn new ways of doing things and when I think their way is better I'll surely adopt.</p>
+
+<p>Anyway when I'm browsing these codebases I do find a lot of things that could have been done better or more correctly and that's what I'll be writing about a little today.</p>
+
+<p>The first one is returning bools:</p>
+
+<p>I've found this in just about every project I've been in:</p>
+
+<p>```csharp  <br/>
+public bool IsNull(){
+  if(obj == null)</p>
+
+<pre><code>return true;
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>return false;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>The snippet above is a very long winded way of writing. IMHO this hurts readability and you're saying the same thing twice. obj == null already returns a bool it makes no sense writing it again.</p>
+
+<p><code>csharp    
+public bool IsNull() { return obj == null; }
+</code></p>
+
+<p>Another thing I keep seeing is very liberal use of try..catch blocks that catch all exceptions. Admittedly try..catch is cool but it should be used at times you are actually interested in the exception that is thrown. But it shouldn't be used as a safeguard to swallow exceptions you don't want to fix at this moment.  I keep seeing this code in projects:</p>
+
+<p>``` csharp  <br/>
+try{</p>
+
+<pre><code>myBLObject.FindSomething(someId).SomeMethod();
+</code></pre>
+
+<p>}
+catch(Exception){</p>
+
+<pre><code>// Nothing to be done but error stops
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now that can be easily written so that it won't throw an exeption and then the try catch isn't necessary anymore at all. Try..catch blocks most certainly have their use but throwing and catching exceptions definitely hurts performance because the system has to generate a complete stack trace etc. for every exception that is being thrown.</p>
+
+<p><code>csharp    
+var result = myBLObject.FindSomething(someId);
+if(result != null) result.SomeMethod();
+</code></p>
+
+<p>The code becomes a lot more readable, not to mention faster. I've seen this being used in OnRowDataBound events etc on grids with 500+ rows, removing the try catch blocks more than doubles the speed of that page.</p>
+
+<p>The next one on the list is using if,else and switch statements. They are sometimes a cause of code bloat. To put it in the words of <a href="http://www.hanselman.com/blog/BackToBasicsLifeAfterIfForAndSwitchLikeADataStructuresReminder.aspx">Scott Hanselman</a>:</p>
+
+<blockquote><p>I think that using only <em>if</em>, <em>for </em>and <em>switch </em>is the Computer Programmer equivalent of using "like" in every sentence.</p></blockquote>
+
+<p>Scott does a great job explaining why they can be pretty evil so I'll just leave you with a <a href="http://www.hanselman.com/blog/BackToBasicsLifeAfterIfForAndSwitchLikeADataStructuresReminder.aspx">link</a> to his post</p>
+
+<p>I have another couple of posts in the making on this subject but I had to get this out of my system. These are also very quick wins the other things I'm going to talk about are application architecture and stored procs....
+</rant></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Congratulations to Mindscape]]></title>
+    <link href="http://flanders.co.nz/2007/11/05/congratulations-to-mindscape/"/>
+    <updated>2007-11-05T22:34:13+01:00</updated>
+    <id>http://flanders.co.nz/2007/11/05/congratulations-to-mindscape</id>
+    <content type="html"><![CDATA[<p>A couple of friends of mine own the company <a href="http://mindscape.co.nz">Mindscape</a></p>
+
+<p>They were interviewed by <a href="http://blogs.msdn.com/rjacobs/">Ron Jacobs</a> at the latest NZ tech ed in August. And that has now just been put up on channel 9 as part of the ARCast series.</p>
+
+<p>The interview is about their product <a href="http://www.mindscape.co.nz/products/LightSpeed/">LightSpeed</a> which IMHO is one of the nicest ORM's out there. I've used it in a couple of things now and I am absolutely surprised by the fact that lightspeed is a good name for it because it is really fast. If you haven't taken it for a test drive you should do so immediately.</p>
+
+<p>Now everybody rush over there <a href="http://channel9.msdn.com/ShowPost.aspx?PostID=353738">to see their interview</a>.</p>
+
+<p> </p>
+
+<p>Well done JB, JD and Andrew.</p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/Lightspeed">Lightspeed</a>, <a href="http://del.icio.us/popular/mindscape">mindscape</a>, <a href="http://del.icio.us/popular/ARCast">ARCast</a>, <a href="http://del.icio.us/popular/ORM">ORM</a></p>
+]]></content>
+  </entry>
+  
+</feed>

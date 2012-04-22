@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Boo, Ironpython, Scriptaculous, MS Ajax and me - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="Over the weekend I got the idea of learning ironpython by moving the codebase that I have for nblogr to ironpython script and compiling it. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2006/11/07/boo-ironpython-scriptaculous-ms-ajax-and-me">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Boo, Ironpython, Scriptaculous, MS Ajax and Me</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-11-07T07:16:53+01:00" pubdate data-updated="true">Nov 7<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Over the weekend I got the idea of learning ironpython by moving the codebase that I have for nblogr to <a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">ironpython</a> script and compiling it.</p>
+
+<p>Everything went fine until I had to decorate a method to make it cache/participate in a transaction/set a layout on a controller because ironpython in all its beauty doesn&#8217;t support attributes on methods or classes.</p>
+
+<p>I&#8217;m also missing a reference for <a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">ironpython</a>. Something that shows the available functions and the syntax for inheritance etc.  which slowed me down of course.</p>
+
+<p>Why do I want a dynamic language ?</p>
+
+<p>The 2 main reasons are : <a href="http://en.wikipedia.org/wiki/Duck_typing">Duck typing</a> and readable <a href="http://en.wikipedia.org/wiki/Anonymous_closure">anonymous functions</a>.  In c# there is the concept of anonymous delegates but that code really looks like it has been hit by a train, ugly.</p>
+
+<p>I&#8217;ve been writing in <a href="http://boo.codehaus.org/">boo</a> for a while now just as a templating language and yes I like <a href="http://boo.codehaus.org/">boo</a> a lot.  It combines the nice features of python with the c# language in a wrist friendly way. (I never got the point of wrist friendly thing until I got <a href="http://www.ninds.nih.gov/disorders/carpal_tunnel/detail_carpal_tunnel.htm#69013049">carpal tunnel syndrome</a>, now it suddenly is a major issue)</p>
+
+<p>I sure wish there would be a language service for visual studio to do boo development but I&#8217;ve been using sharp develop 2.1 to check it out.</p>
+
+<p><a href="http://www.sharpdevelop.com/">SharpDevelop 2.1</a> is a nice piece of work definitely for an open source IDE&#8217;, it beats eclipse in my book</p>
+
+<p>In boo everything is an object also your functions and expressions (read it has anonymous functions).  Boo is strong typed but mimics duck typing in some form.</p>
+
+<p>To conclude this little intermezzo : my next project will be written in boo :)</p>
+
+<p>On the ajax library front I would have to report that I haven &#8216;t looked at atlas/ms ajax since the beginning of september . I had decided to use it again when they finally release the framework.  So I&#8217;ve been checking out these other libraries that are out there.  I checked out <a href="http://jquery.com">jquery</a> which is a cool library but it is also slower in execution than the other ones.</p>
+
+<p>The next one on the list was <a href="http://script.aculo.us">scriptaculous</a> and that is the one I&#8217;ve been using in my projects now.  Scriptaculous does exactly what is expected and uses the javascript prototype model which happens to be one i like :)</p>
+
+<p>The move from the guys at MS to make their ajax extensions based on prototype was surprising but very positive in my book :) So when they release it i&#8217;ll look at creating an javascript provider for nblogr so that you would be able to switch between your favourite library (we have plans to support the major libraries out of the  box.) </p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/Boo">Boo</a>, <a href="http://del.icio.us/popular/IronPython">IronPython</a>, <a href="http://del.icio.us/popular/Programming">Programming</a>, <a href="http://del.icio.us/popular/General">General</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-11-07T07:16:53+01:00" pubdate data-updated="true">Nov 7<span>th</span>, 2006</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/-net-2-0/'>.NET 2.0</a>, <a class='category' href='/categories/-net-3-0/'>.NET 3.0</a>, <a class='category' href='/categories/atlas/'>Atlas</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2006/11/07/boo-ironpython-scriptaculous-ms-ajax-and-me/" data-via="casualjim" data-counturl="http://flanders.co.nz/2006/11/07/boo-ironpython-scriptaculous-ms-ajax-and-me/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2006/11/06/moving-to-wellington/" title="Previous Post: Moving to Wellington">&laquo; Moving to Wellington</a>
+      
+      
+        <a class="basic-alignment right" href="/2006/11/09/photosynth-cool-stuff/" title="Next Post: Photosynth. Cool stuff">Photosynth. Cool stuff &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Subversion vs Team Foundation - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="I work at Xero and we were using Sourcesafe, which we always knew had to be replaced sometime. [http://www.codinghorror.com/blog/archives/000660.html &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2007/04/29/subversion-vs-team-foundation">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Subversion vs Team Foundation</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-29T13:12:50+02:00" pubdate data-updated="true">Apr 29<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I work at Xero and we were using Sourcesafe, which we always knew had to be replaced sometime.</p>
+
+<pre><code>            [http://www.codinghorror.com/blog/archives/000660.html](http://www.codinghorror.com/blog/archives/000660.html)
+</code></pre>
+
+<p>I have some experience with most of the source control systems out there. We decided to go with Team Foundation Server the reasons for it being :</p>
+
+<ul>
+<li><p>High level of integration with visual studio 2005</p></li>
+<li><p>Easily extensible with C#</p></li>
+<li><p>It is currently v1, which translates to me as 2 more versions and it will be the most awesome tool out there</p></li>
+<li><p>Based on Sql Server</p></li>
+</ul>
+
+
+<p>Why didn&#8217;t we choose for Subversion, you may ask ?</p>
+
+<ul>
+<li><p>It&#8217;s a microsoft shop we don&#8217;t need cross-platform tools</p></li>
+<li><p>Not based on Sql Server</p></li>
+<li><p>No webservices api ready to be consumed</p></li>
+</ul>
+
+
+<p>I personally like the way subversion stays out of the way and you don&#8217;t have to explicitly check stuff out. But I don&#8217;t like the decentralised way of managing it.</p>
+
+<p>The tools that come with Team Foundation Server, even though it&#8217;s only v1, look more slick and handle a lot better than the tools that come with Subversion.</p>
+
+<p>Since everybody in our team was already familiar with source safe which made the learning curve virtually non existent.</p>
+
+<p>All in all taking all the variables into account we decided that Team Foundation Server was a much better solution for our needs than subversion.</p>
+
+<p> </p>
+
+<p>If you want to read some other peoples thoughts on the subject, Ayende and Roy Osherove  have been having a discussion about it through their blogs.</p>
+
+<pre><code>            [http://ayende.com/Blog/archive/2007/04/29/CodePlex-TFS-and-Subversion.aspx](http://ayende.com/Blog/archive/2007/04/29/CodePlex-TFS-and-Subversion.aspx)
+
+
+            [http://weblogs.asp.net/rosherove/archive/2007/04/29/tfs-or-not-being-a-perfectionist-is-a-realistic-world.aspx](http://weblogs.asp.net/rosherove/archive/2007/04/29/tfs-or-not-being-a-perfectionist-is-a-realistic-world.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/TFS-Zero-Friction-and-living-in-an-imperfect-world.aspx](http://ayende.com/Blog/archive/2007/04/29/TFS-Zero-Friction-and-living-in-an-imperfect-world.aspx)
+
+
+            [http://weblogs.asp.net/rosherove/archive/2007/04/29/what-source-control-tool-do-you-use-and-more-on-tfs-vs-open-source-tools.aspx](http://weblogs.asp.net/rosherove/archive/2007/04/29/what-source-control-tool-do-you-use-and-more-on-tfs-vs-open-source-tools.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/TFS-Vs.-Open-Source-tools.aspx](http://ayende.com/Blog/archive/2007/04/29/TFS-Vs.-Open-Source-tools.aspx)
+
+
+            [http://weblogs.asp.net/bsimser/archive/2007/04/29/tfs-vs-open-source-the-battle-rages-on.aspx](http://weblogs.asp.net/bsimser/archive/2007/04/29/tfs-vs-open-source-the-battle-rages-on.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/Exensability-Ask-and-you-shall-recieve.aspx](http://ayende.com/Blog/archive/2007/04/29/Exensability-Ask-and-you-shall-recieve.aspx)
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-29T13:12:50+02:00" pubdate data-updated="true">Apr 29<span>th</span>, 2007</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/general/'>General</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2007/04/29/subversion-vs-team-foundation/" data-via="casualjim" data-counturl="http://flanders.co.nz/2007/04/29/subversion-vs-team-foundation/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2007/04/19/want-to-start-using-monorail-but-dont-quite-know-how/" title="Previous Post: Want to start using monorail but don't quite know how ?">&laquo; Want to start using monorail but don't quite know how ?</a>
+      
+      
+        <a class="basic-alignment right" href="/2007/04/29/dockpanels-instead-of-the-taskbar/" title="Next Post: Dockpanels instead of the taskbar">Dockpanels instead of the taskbar &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

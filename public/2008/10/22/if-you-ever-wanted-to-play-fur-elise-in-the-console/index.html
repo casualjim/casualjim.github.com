@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>If you ever wanted to play fur elise in the console - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="At work today we were playing around with the console.. here&#8217;s one of our experiments whilst creating a stoplight workflow (WF). 1
+2
+3
+4
+5
+6
+7 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">If You Ever Wanted to Play Fur Elise in the Console</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-22T14:08:53+02:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>At work today we were playing around with the console.. here&#8217;s one of our experiments whilst creating a stoplight workflow (WF).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">FurElise</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">400</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">400</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">370</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">335</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">282</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">180</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">215</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">282</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">213</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">262</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">335</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">213</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">400</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">400</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">420</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">370</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">335</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">282</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">180</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">215</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">282</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">213</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">330</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">315</span><span class="p">,</span> <span class="m">200</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">Beep</span><span class="p">(</span><span class="m">282</span><span class="p">,</span> <span class="m">600</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-22T14:08:53+02:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/-net-2-0/'>.NET 2.0</a>, <a class='category' href='/categories/c-/'>C#</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/" data-via="casualjim" data-counturl="http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/" title="Previous Post: Common mistakes in software development (part 2): Mixing up the layers">&laquo; Common mistakes in software development (part 2): Mixing up the layers</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/10/23/beating-a-dead-horse-stored-procedures/" title="Next Post: Beating a dead horse: Stored Procedures">Beating a dead horse: Stored Procedures &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/';
+        var disqus_url = 'http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

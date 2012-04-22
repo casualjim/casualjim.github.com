@@ -1,0 +1,1268 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="I work at Xero and we were using Sourcesafe, which we always knew had to be replaced sometime. [http://www.codinghorror.com/blog/archives/000660.html &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/page/13">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/29/subversion-vs-team-foundation/">Subversion vs Team Foundation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-29T13:12:50+02:00" pubdate data-updated="true">Apr 29<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I work at Xero and we were using Sourcesafe, which we always knew had to be replaced sometime.</p>
+
+<pre><code>            [http://www.codinghorror.com/blog/archives/000660.html](http://www.codinghorror.com/blog/archives/000660.html)
+</code></pre>
+
+<p>I have some experience with most of the source control systems out there. We decided to go with Team Foundation Server the reasons for it being :</p>
+
+<ul>
+<li><p>High level of integration with visual studio 2005</p></li>
+<li><p>Easily extensible with C#</p></li>
+<li><p>It is currently v1, which translates to me as 2 more versions and it will be the most awesome tool out there</p></li>
+<li><p>Based on Sql Server</p></li>
+</ul>
+
+
+<p>Why didn&#8217;t we choose for Subversion, you may ask ?</p>
+
+<ul>
+<li><p>It&#8217;s a microsoft shop we don&#8217;t need cross-platform tools</p></li>
+<li><p>Not based on Sql Server</p></li>
+<li><p>No webservices api ready to be consumed</p></li>
+</ul>
+
+
+<p>I personally like the way subversion stays out of the way and you don&#8217;t have to explicitly check stuff out. But I don&#8217;t like the decentralised way of managing it.</p>
+
+<p>The tools that come with Team Foundation Server, even though it&#8217;s only v1, look more slick and handle a lot better than the tools that come with Subversion.</p>
+
+<p>Since everybody in our team was already familiar with source safe which made the learning curve virtually non existent.</p>
+
+<p>All in all taking all the variables into account we decided that Team Foundation Server was a much better solution for our needs than subversion.</p>
+
+<p> </p>
+
+<p>If you want to read some other peoples thoughts on the subject, Ayende and Roy Osherove  have been having a discussion about it through their blogs.</p>
+
+<pre><code>            [http://ayende.com/Blog/archive/2007/04/29/CodePlex-TFS-and-Subversion.aspx](http://ayende.com/Blog/archive/2007/04/29/CodePlex-TFS-and-Subversion.aspx)
+
+
+            [http://weblogs.asp.net/rosherove/archive/2007/04/29/tfs-or-not-being-a-perfectionist-is-a-realistic-world.aspx](http://weblogs.asp.net/rosherove/archive/2007/04/29/tfs-or-not-being-a-perfectionist-is-a-realistic-world.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/TFS-Zero-Friction-and-living-in-an-imperfect-world.aspx](http://ayende.com/Blog/archive/2007/04/29/TFS-Zero-Friction-and-living-in-an-imperfect-world.aspx)
+
+
+            [http://weblogs.asp.net/rosherove/archive/2007/04/29/what-source-control-tool-do-you-use-and-more-on-tfs-vs-open-source-tools.aspx](http://weblogs.asp.net/rosherove/archive/2007/04/29/what-source-control-tool-do-you-use-and-more-on-tfs-vs-open-source-tools.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/TFS-Vs.-Open-Source-tools.aspx](http://ayende.com/Blog/archive/2007/04/29/TFS-Vs.-Open-Source-tools.aspx)
+
+
+            [http://weblogs.asp.net/bsimser/archive/2007/04/29/tfs-vs-open-source-the-battle-rages-on.aspx](http://weblogs.asp.net/bsimser/archive/2007/04/29/tfs-vs-open-source-the-battle-rages-on.aspx)
+
+
+            [http://ayende.com/Blog/archive/2007/04/29/Exensability-Ask-and-you-shall-recieve.aspx](http://ayende.com/Blog/archive/2007/04/29/Exensability-Ask-and-you-shall-recieve.aspx)
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/19/want-to-start-using-monorail-but-dont-quite-know-how/">Want to Start Using Monorail but Don&#8217;t Quite Know How ?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-19T08:16:38+02:00" pubdate data-updated="true">Apr 19<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There are a couple of excellent resources available online.</p>
+
+<p>Screencasts :<br/>
+<a href="http://colinramsay.co.uk/2007/04/17/getting-started-with-monorail-screencast-one/">http://colinramsay.co.uk/2007/04/17/getting-started-with-monorail-screencast-one/ </a><br/>
+<a href="http://colinramsay.co.uk/2007/04/18/using-monorail-screencast-two/">http://colinramsay.co.uk/2007/04/18/using-monorail-screencast-two/</a><br/>
+<a href="http://colinramsay.co.uk/2007/04/19/databinding-and-activerecord-screencast-three/">http://colinramsay.co.uk/2007/04/19/databinding-and-activerecord-screencast-three/</a></p>
+
+<p> </p>
+
+<p>Tutorials:<br/>
+<a href="http://blog.bittercoder.com/PermaLink,guid,b298cbe4-6eff-4783-a2a1-c95e344a9de5.aspx">http://blog.bittercoder.com/PermaLink,guid,b298cbe4-6eff-4783-a2a1-c95e344a9de5.aspx </a><br/>
+<a href="http://blog.bittercoder.com/PermaLink,guid,195c3d13-faf8-4f5e-8faf-861d02b0fc2e.aspx">http://blog.bittercoder.com/PermaLink,guid,195c3d13-faf8-4f5e-8faf-861d02b0fc2e.aspx</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/17/what-i-would-like-to-see-changed-in-vista/">What I Would Like to See Changed in Vista</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-17T10:02:12+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I do see the benefit of UAC in vista but I would like it to have some type of timeout or program context so that when I open visual studio for example I don&#8217;t have to click allow for every instance I open (I often have 3 instances open)</p>
+
+<p>I would definitely like to get more control over the UI.</p>
+
+<p>The taskbar had out lived it&#8217;s usefullnes back in windows 98 I would love to see some panels like they have in gnome or some taskbar like mac has or a similar higly customizable option. so that i am not plagued by all those windows.</p>
+
+<p>That would also solve the <a href="http://www.joelonsoftware.com/items/2006/11/21.html">debacle of the shutdown menu</a> options because a user can ultimately change what is there.  I&#8217;d like to see power more power for the people.</p>
+
+<p>Tagging for any type of file would also be great and a search that works a bit faster.</p>
+
+<p>I&#8217;m sure the people at Microsoft are really smart people that would be able to decouple the interface from the underlying functionality.</p>
+
+<p>These customizable options are really nice and would in turn build a whole new type of community.</p>
+
+<p>There will probably be more coming.. but this concludes this post for today.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/17/great-tutorials-on-castle/">Great Tutorials on Castle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-17T09:53:16+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Alex Henderson has been very busy writing a tutorial series on how to properly use and understand castle&#8217;s windsor container.</p>
+
+<p>You can find them here <a href="http://blog.bittercoder.com/PermaLink,guid,b298cbe4-6eff-4783-a2a1-c95e344a9de5.aspx">Container tutorials</a></p>
+
+<p>Check them out :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/11/humanizing-timespans-in-net/">Humanizing Timespans in .NET</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-11T21:56:36+02:00" pubdate data-updated="true">Apr 11<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After a couple of months getting into ruby on rails I got back to .NET development, as well as back to NBlogr and back to blogging.</p>
+
+<p>Now for replies I saw on some blogs the format &lt; replied <strong>1 month, 5 days, 2 hours and 13 minutes ago.</strong>  I wanted to find out how they did that and my first reaction was.. yay easy hello timespan.</p>
+
+<p>Turns out that timespan only goes up to days, no months or anything.  A bit deeper hidden for a c# programmer there is the function datediff in vb.net  But that function doesn&#8217;t handle years properly for example the difference between today 01/01/2007 15:15 and 31/12/2007 18:00 gives a difference of 1 year instead of 1 day. So I decided to write my own class for it, turns out that the solution is quite simple.</p>
+
+<p>To use the class below one would do :<br/>
+<em>NBlogr.Common.TimeSpan ts = new NBlogr.Common.TimeSpan(someStartDate, someEndDate);<br/>
+string humantime = ts.ToString() + &#8221; ago&#8221;;</em></p>
+
+<p> The class :</p>
+
+<p>/*</p>
+
+<p> * Created by: Ivan Porto Carrero</p>
+
+<p> * Created: Thursday, 12 April 2007</p>
+
+<p> */</p>
+
+<p> </p>
+
+<p>using System;</p>
+
+<p>using System.IO;</p>
+
+<p>using System.Text;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Common</p>
+
+<p>{</p>
+
+<p>    public class TimeSpan</p>
+
+<p>    {</p>
+
+<p>        private DateTime startDate;</p>
+
+<p>        private DateTime endDate;</p>
+
+<p>        private int startDay;</p>
+
+<p>        private int endDay;</p>
+
+<p>        private int startMonth;</p>
+
+<p>        private int endMonth;</p>
+
+<p>        private int startYear;</p>
+
+<p>        private int endYear;</p>
+
+<p>        private int startHour;</p>
+
+<p>        private int endHour;</p>
+
+<p>        private int startMinute;</p>
+
+<p>        private int endMinute;</p>
+
+<p>        private int startSecond;</p>
+
+<p>        private int endSecond;</p>
+
+<p>        private int diffMonth;</p>
+
+<p>        private int diffDays;</p>
+
+<p>        private int diffHours;</p>
+
+<p>        private int diffMinutes;</p>
+
+<p>        private int diffYear;</p>
+
+<p>        private int diffSeconds;</p>
+
+<p>        private bool hasCalculated;</p>
+
+<p> </p>
+
+<p>        public TimeSpan()</p>
+
+<p>        {</p>
+
+<p>            hasCalculated = false;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public TimeSpan(DateTime startDate, DateTime endDate)</p>
+
+<p>        {</p>
+
+<p>            StartDate = startDate;</p>
+
+<p>            EndDate = endDate;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void initialize()</p>
+
+<p>        {</p>
+
+<p>            startDay = StartDate.Day;</p>
+
+<p>            endDay = EndDate.Day;</p>
+
+<p>            startMonth = StartDate.Month;</p>
+
+<p>            endMonth = EndDate.Month;</p>
+
+<p>            startYear = StartDate.Year;</p>
+
+<p>            endYear = EndDate.Year;</p>
+
+<p>            startHour = StartDate.Hour;</p>
+
+<p>            endHour = EndDate.Hour;</p>
+
+<p>            startMinute = StartDate.Minute;</p>
+
+<p>            endMinute = EndDate.Minute;</p>
+
+<p>            startSecond = StartDate.Second;</p>
+
+<p>            endSecond = EndDate.Second;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public override string ToString()</p>
+
+<p>        {</p>
+
+<p>            StringBuilder sb = new StringBuilder();</p>
+
+<p> </p>
+
+<p>            if (Years > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;year&#8221;, Years));</p>
+
+<p>            if (Months > 0 &amp;&amp; Years > 0)</p>
+
+<p>                sb.Append(&#8220;, &#8220;);</p>
+
+<p>            if (Months > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;month&#8221;, Months));</p>
+
+<p>            if ((Months > 0 || Years > 0) &amp;&amp; Days > 0)</p>
+
+<p>                sb.Append(&#8220;, &#8220;);</p>
+
+<p>            if (Days > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;day&#8221;, Days));</p>
+
+<p>            if ((Months > 0 || Years > 0 || Days > 0) &amp;&amp; Hours > 0)</p>
+
+<p>                sb.Append(&#8220;, &#8220;);</p>
+
+<p>            if (Hours > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;hour&#8221;, Hours));</p>
+
+<p>            if ((Months > 0 || Years > 0 || Days > 0 || Hours > 0) &amp;&amp; Minutes > 0)</p>
+
+<p>                sb.Append(&#8220;, &#8220;);</p>
+
+<p>            if (Minutes > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;minute&#8221;, Minutes));</p>
+
+<p>            if ((Months > 0 || Years > 0 || Days > 0 || Hours > 0 || Minutes > 0) &amp;&amp; Seconds > 0)</p>
+
+<p>                sb.Append(&#8220;, &#8220;);</p>
+
+<p>            if (Seconds > 0)</p>
+
+<p>                sb.Append(pluralise(&#8220;second&#8221;, Seconds));</p>
+
+<p> </p>
+
+<p>            return sb.ToString();</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculate()</p>
+
+<p>        {</p>
+
+<p>            initialize();</p>
+
+<p> </p>
+
+<p>            diffYear = endYear - startYear;</p>
+
+<p>            calculateMonths();</p>
+
+<p>            calculateDays();</p>
+
+<p>            calculateHours();</p>
+
+<p>            calculateMinutes();</p>
+
+<p>            calculateSeconds();</p>
+
+<p> </p>
+
+<p>            hasCalculated = true;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private static string pluralise(string singular, int quantity)</p>
+
+<p>        {</p>
+
+<p> </p>
+
+<p>            return quantity != 1 ? string.Format(&#8220;{0} {1}&#8221;, quantity, singular + &#8220;s&#8221;) : string.Format(&#8220;{0} {1}&#8221;, quantity, singular);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculateMonths()</p>
+
+<p>        {</p>
+
+<p>            if (endMonth >= startMonth)</p>
+
+<p>                diffMonth = endMonth - startMonth;</p>
+
+<p>            else</p>
+
+<p>            {</p>
+
+<p>                diffYear&#8211;;</p>
+
+<p>                diffMonth = (12 - startMonth) + endMonth;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculateDays()</p>
+
+<p>        {</p>
+
+<p>            if (endDay >= startDay)</p>
+
+<p>                diffDays = endDay - startDay;</p>
+
+<p>            else</p>
+
+<p>            {</p>
+
+<p>                diffMonth&#8211;;</p>
+
+<p>                diffDays = (DateTime.DaysInMonth(startYear, startMonth) - startDay) + endDay;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculateHours()</p>
+
+<p>        {</p>
+
+<p>            if (endHour >= startHour)</p>
+
+<p>                diffHours = endHour - startHour;</p>
+
+<p>            else</p>
+
+<p>            {</p>
+
+<p>                diffDays&#8211;;</p>
+
+<p>                diffHours = (24 - startHour) + endHour;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculateMinutes()</p>
+
+<p>        {</p>
+
+<p>            if (endMinute >= startMinute)</p>
+
+<p>                diffMinutes = endMinute - startMinute;</p>
+
+<p>            else</p>
+
+<p>            {</p>
+
+<p>                diffHours&#8211;;</p>
+
+<p>                diffMinutes = 60 - startMinute + endMinute;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void calculateSeconds()</p>
+
+<p>        {</p>
+
+<p>            if (endSecond >= startSecond)</p>
+
+<p>                diffSeconds = endSecond - startSecond;</p>
+
+<p>            else</p>
+
+<p>            {</p>
+
+<p>                diffMinutes&#8211;;</p>
+
+<p>                diffSeconds = 60 - startSecond + endSecond;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Months</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (!hasCalculated)</p>
+
+<p>                    calculate();</p>
+
+<p>                return diffMonth;</p>
+
+<p>            }</p>
+
+<p>            set { diffMonth = value; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Days</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (!hasCalculated)</p>
+
+<p>                    calculate();</p>
+
+<p>                return diffDays;</p>
+
+<p>            }</p>
+
+<p>            set { diffDays = value; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Hours</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (!hasCalculated)</p>
+
+<p>                    calculate();</p>
+
+<p>                return diffHours;</p>
+
+<p>            }</p>
+
+<p>            set { diffHours = value; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Minutes</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (!hasCalculated)</p>
+
+<p>                    calculate();</p>
+
+<p>                return diffMinutes;</p>
+
+<p>            }</p>
+
+<p>            set { diffMinutes = value; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Years</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if(!hasCalculated)</p>
+
+<p>                    calculate();</p>
+
+<p>                return diffYear;</p>
+
+<p>            }</p>
+
+<p>            set { diffYear = value; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public DateTime StartDate</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (startDate == null)</p>
+
+<p>                    throw new InvalidDataException(&#8220;You need to specify a start date&#8221;);</p>
+
+<p>                return startDate;</p>
+
+<p>            }</p>
+
+<p>            set</p>
+
+<p>            {</p>
+
+<p>                hasCalculated = false;</p>
+
+<p>                startDate = value;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public DateTime EndDate</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                if (endDate == null)</p>
+
+<p>                    throw new InvalidDataException(&#8220;You need to specify a end date&#8221;);</p>
+
+<p>                return endDate;</p>
+
+<p>            }</p>
+
+<p>            set</p>
+
+<p>            {</p>
+
+<p>                hasCalculated = false;</p>
+
+<p>                endDate = value;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public int Seconds</p>
+
+<p>        {</p>
+
+<p>            get { return diffSeconds; }</p>
+
+<p>            set { diffSeconds = value; }</p>
+
+<p>        }</p>
+
+<p>    }</p>
+
+<p>}</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/10/got-a-pair-of-super-headphones/">Got a Pair of Super Headphones</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-10T17:10:01+02:00" pubdate data-updated="true">Apr 10<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>My ipod headphones died on me.. so it was time to get some new stuff and preferrably better than what I had.</p>
+
+<p>Because I&#8217;m a cheap skate and I find it a bit of a ridiculous sight to have these huge headphones on my head when walking down the street.</p>
+
+<p>I went for the <a href="http://www.bose.co.nz/site/index.aspx?path=products&amp;CTRL=PG&amp;pfid=10&amp;pgid=109">Bose in-ear headphones</a>. <br/>
+<img src="http://www.bose.co.nz/site/images/store/products/QCZIE_m.jpg" alt="" /></p>
+
+<p>And man they are well worth the money.. I can finally get proper bass and the noises from the office/street are drastically pushed to the background.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/09/powershell-in-the-vista-sidebar/">PowerShell in the Vista Sidebar!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-09T15:56:24+02:00" pubdate data-updated="true">Apr 9<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.mindscape.co.nz/">JD and JB</a> are at it again.. This time they give us a powershell gadget for the vista sidebar. It&#8217;s a really cool toy.. and a valuable resource for those wanting to create a sidebar gadget.</p>
+
+<p>Feel free to digg them.</p>
+
+<p><a href="http://digg.com/microsoft/PowerShell_in_the_Vista_Sidebar">Link to Digg - PowerShell in the Vista Sidebar!</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/04/03/preview-handler-pack-updated/">Preview Handler Pack Updated</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-03T16:11:27+02:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;m happy to let you know that <a href="http://blog.tatham.oddie.com.au">Tatham Oddie</a> and I have updated the preview handler pack he wrote a while ago. This pack now supports ruby, erb and rjs.</p>
+
+<p>Tatham added javascript support to the pack. And I took care of the ruby side.</p>
+
+<p>Thanks again to Tatham for creating the extension.</p>
+
+<p>Support for ruby :</p>
+
+<p><a href="http://www.flanders.co.nz/Blog/content/binary/WindowsLiveWriter/PreviewHandlerPackupdated_E4D2/windowslivewriterrubyandjscriptsupportaddedtopreviewhandl-c592image010%5B6%5D.png"><img src="http://www.flanders.co.nz/Blog/content/binary/WindowsLiveWriter/PreviewHandlerPackupdated_E4D2/windowslivewriterrubyandjscriptsupportaddedtopreviewhandl-c592image010_thumb%5B4%5D.png" alt="" /></a></p>
+
+<p>Support for javascript:</p>
+
+<p><a href="http://www.flanders.co.nz/Blog/content/binary/WindowsLiveWriter/PreviewHandlerPackupdated_E4D2/windowslivewriterrubyandjscriptsupportaddedtopreviewhandl-c592image06%5B3%5D.png"><img src="http://www.flanders.co.nz/Blog/content/binary/WindowsLiveWriter/PreviewHandlerPackupdated_E4D2/windowslivewriterrubyandjscriptsupportaddedtopreviewhandl-c592image06_thumb%5B1%5D.png" alt="" /></a></p>
+
+<p>You can read all about it here :</p>
+
+<p>First release of the handler pack:</p>
+
+<p><a href="http://blog.tatham.oddie.com.au/2006/12/20/vista-and-office-2007-preview-handler-pack-released/">http://blog.tatham.oddie.com.au/2006/12/20/vista-and-office-2007-preview-handler-pack-released/</a></p>
+
+<p> </p>
+
+<p>Update</p>
+
+<p><a href="http://blog.tatham.oddie.com.au/2007/04/04/ruby-and-jscript-support-added-to-preview-handler-pack/">http://blog.tatham.oddie.com.au/2007/04/04/ruby-and-jscript-support-added-to-preview-handler-pack/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/03/06/i-just-got-a-new-job-xero/">I Just Got a New Job @ Xero</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-03-06T11:28:11+01:00" pubdate data-updated="true">Mar 6<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>From april onwards I&#8217;ll be working with <a href="http://www.xero.com">www.xero.com</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2007/03/05/quantum-computers-commercially-available/">Quantum Computers Commercially Available</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-03-05T23:14:17+01:00" pubdate data-updated="true">Mar 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I personally think this is really big.</p>
+
+<p>D-Wave Systems is the world&#8217;s first and only source of quantum
+computing for commercial application. We believe quantum technology in
+concert with classical, digital processors, can and will represent
+broad and significant advancements in the application of computer
+science.</p>
+
+<p>In February 2007, D-Wave unveiled and
+demonstrated this technology publicly for the first time. The company
+plans to deliver field-deployable systems in 2008.</p>
+
+<p><a href="http://www.dwavesys.com">http://www.dwavesys.com</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/14/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page/12/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

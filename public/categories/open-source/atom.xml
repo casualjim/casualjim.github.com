@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Open Source | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <link rel="hub" href="http://pubsubhubbub.appspot.com"/>
+  <updated>2012-04-22T21:10:37+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[New view engines in the MvcContrib project for asp.net mvc]]></title>
+    <link href="http://flanders.co.nz/2007/12/26/new-view-engines-in-the-mvccontrib-project-for-aspnet-mvc/"/>
+    <updated>2007-12-26T05:47:25+01:00</updated>
+    <id>http://flanders.co.nz/2007/12/26/new-view-engines-in-the-mvccontrib-project-for-aspnet-mvc</id>
+    <content type="html"><![CDATA[<p>When I got back from visiting my parents over the christmas holiday I checked the <a href="http://www.codeplex.com/MVCContrib">MvcContrib</a> project to find out that both Andrew Peter's <a href="http://andrewpeters.net/2007/12/19/introducing-nhaml-an-aspnet-mvc-view-engine/">NHAML view engine</a> and my <a href="http://flanders.co.nz/blog/archive/2007/12/15/xsltviewengine-patch-submitted.aspx">XSLT view engine</a> have been accepted in the trunk of those projects.</p>
+
+<p>What's left to do for me is provide a sample site that shows usage of the view engine.  This has been a very rewarding experience so far :). I found out about IViewSourceLoader to get the path to the current view file for example.</p>
+
+<p>I also learnt a new trick to increase my test coverage and be able to test the content of the rendered view.</p>
+
+<p>To get the mvc contrib project you can either download it from the <a href="http://www.codeplex.com/MVCContrib/Release/ProjectReleases.aspx">releases section</a> on the codeplex site.</p>
+
+<p>Or you can check out the source code and build it yourself from the <a href="http://mvccontrib.googlecode.com/svn/trunk">subversion repository</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[I like what I'm seeing from Microsoft lately]]></title>
+    <link href="http://flanders.co.nz/2007/10/26/i-like-what-im-seeing-from-microsoft-lately/"/>
+    <updated>2007-10-26T22:22:35+02:00</updated>
+    <id>http://flanders.co.nz/2007/10/26/i-like-what-im-seeing-from-microsoft-lately</id>
+    <content type="html"><![CDATA[<p>Microsoft has just hired <a href="http://blog.wekeroad.com/2007/10/26/microsoft-subsonic-and-me/">Rob Connery</a> from SubSonic, and his job is going to be to work on his own open source project.</p>
+
+<p>I am very pleasantly surprised by that news, and this is the change of direction so many people have been waiting for I think.</p>
+
+<p>I for one like this whole new direction of embracing open source. It seems like lately the party can't stop, they also hired: Scott Hanselman, Phil Haack and Alex James. I should maybe start thinking about getting one aggregated feed from msdn :)</p>
+
+<p>It's good to see that open source projects are now being endorsed. I can't wait to see what's next. </p>
+]]></content>
+  </entry>
+  
+</feed>

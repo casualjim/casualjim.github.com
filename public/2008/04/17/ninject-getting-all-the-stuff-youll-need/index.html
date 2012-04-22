@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ninject: Getting all the stuff you'll need - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="I have a new project I started and I could reevaluate my toolset :) I decided to take a closer look at Ninject, Moq and NSpecify. Moq has been talked &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ninject: Getting All the Stuff You'll Need</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-17T11:13:48+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have a new project I started and I could reevaluate my toolset :) I decided to take a closer look at <a href="http://ninject.org">Ninject</a>, <a href="http://code.google.com/p/moq/">Moq</a> and <a href="http://https//nspecify.svn.sourceforge.net/svnroot/nspecify">NSpecify</a>. <a href="http://code.google.com/p/moq/">Moq</a> has been talked about enough I think, a really nice way of mocking and I will definitely be using more of it. My original plan was to write one big blog post.. but it is going to be far too long, so I&#8217;m breaking it up in smaller bite size pieces.</p>
+
+<p>What I did was download the code, have it rest on my pc for about a week, updated again when I really got round to using it. I read the <a href="http://dojo.ninject.org/wiki/display/NINJECT/Ninject+Manual">wiki</a> which gives a short introduction on what&#8217;s what in Ninject and everybodies jobs. Decided that the wiki was cool for some more theoretical knowledge but I really needed to see more code.</p>
+
+<p>I opened the project and something rare happened: I was actually very happy with the code I found, not always the case I can tell you ;). Anyway the gold is in the unit tests, it&#8217;s got great test coverage and it shows lots of the possibilities of Ninject. It&#8217;s like a great big manual for you to get really advanced with it really quickly. I was slightly disappointed to see that there was no <a href="http://nlog-project.com">NLog</a> support for Ninject, that disappointment quickly turned in to joy when I figured out it only took me 20 minutes to plug NLog in. And it was added to the trunk the same day.</p>
+
+<p>Now I don&#8217;t want to make this post about which DI framework is better Windsor, Spring, Structuremap or Ninject. I just know that Ninject and I will become good friends over the next couple of months I like it. Ninject outsources its proxy generation to either Castle&#8217;s DynamicProxy2 or to LinFu DynamicProxy. LinFu seemed like an interesting choice after reading <a href="http://www.codeproject.com/KB/cs/LinFuPart1.aspx">this codeproject article</a>. It&#8217;s supposedly faster than castle&#8217;s dynamic proxy. Luckily Ayende is there to put this in <a href="http://www.ayende.com/Blog/archive/2007/10/16/Trusting-the-benchmark.aspx">perspective</a>. And I can confirm that the error messages etc castle&#8217;s dynamic proxy generates are a lot more useful than LinFu.</p>
+
+<p><img src="http://www.codeproject.com/KB/cs/LinFuPart1/LinFuGraph.png" alt="Screenshot - LinFuGraph.png" /></p>
+
+<p>Anyway I&#8217;m using LinFu at the moment as the proxy generator for Ninject. I will walk you through a sample application I built that will deal with the following subjects of Ninject, Lightspeed and NLog. For Ninject we will use the dependency injection and it&#8217;s interceptor possibilities to implement AOP style logging. For Lightspeed we will create our own logger to plug into the context so that we can log what Lightspeed does too. And we want NLog to log through Lightspeed to our database so we&#8217;ll be creating a custom target for NLog as well.</p>
+
+<p>But let&#8217;s start at the beginning doing DI with Ninject :).</p>
+
+<p>The most important thing to remember: <strong>MAKE YOUR METHODS VIRTUAL</strong>. Once again <strong>make your methods virtual </strong>otherwise Ninject has a hard time generating proxies for your classes.</p>
+
+<p>Ninject is different from most other DI Containers in that it doesn&#8217;t have XML-configuration, its configuration is done through code (wouldn&#8217;t be hard to add an XML configuration for it tho but what&#8217;s the point). No XML ?? Suits me fine, everybody that ever worked with me will agree : Ivan no like XML editing. Ninject takes a modular approach by using modules that you pass to a kernel. This is pretty nice that means that an assembly can have a couple of different sets of Modules and all the caller of that assembly needs to do is add the module with the appropriate configuration to their kernel.</p>
+
+<p>Ninject supports DI on constructors, properties, methods and fields: <a href="http://dojo.ninject.org/wiki/display/NINJECT/Injection+Patterns">http://dojo.ninject.org/wiki/display/NINJECT/Injection+Patterns</a>.    <br/>
+It basically boils down to decorating the item you want to inject with the attribute <em>[Inject]</em></p>
+
+<p>Ninject allows you to do a lot of configuration through the use of attributes. But I think I&#8217;ll leave it at that for today and continue this tomorrow.   <br/>
+Let&#8217;s look at a concrete class from what we&#8217;ve seen so far. The class below is the Logger implementation to plug into the LightSpeedContext. We will finish this later on but for now this will be enough to summarize today&#8217;s post.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">using</span> <span class="nn">Ninject.Core</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">Ninject.Core.Logging</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="nn">ILightSpeedLogger</span> <span class="p">=</span> <span class="n">Mindscape</span><span class="p">.</span><span class="n">LightSpeed</span><span class="p">.</span><span class="n">Logging</span><span class="p">.</span><span class="n">ILogger</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">INinjectLogger</span> <span class="p">=</span> <span class="n">Ninject</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">Logging</span><span class="p">.</span><span class="n">ILogger</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nn">LoggingDemo.UI.Integration</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="c1">/// This class intercepts logging messages from the LightSpeed context and</span>
+</span><span class='line'>    <span class="c1">/// sends them to our NLog logger.</span>
+</span><span class='line'>    <span class="c1">///</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">class</span> <span class="nc">LightSpeedLogger</span> <span class="p">:</span> <span class="n">ILightSpeedLogger</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">private</span> <span class="k">readonly</span> <span class="n">INinjectLogger</span> <span class="n">logger</span> <span class="p">=</span> <span class="n">NullLogger</span><span class="p">.</span><span class="n">Instance</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="nf">LightSpeedLogger</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'><span class="na">        </span>
+</span><span class='line'><span class="na">        [Inject]</span>
+</span><span class='line'>        <span class="k">public</span> <span class="nf">LightSpeedLogger</span><span class="p">(</span><span class="n">INinjectLogger</span> <span class="n">logger</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">this</span><span class="p">.</span><span class="n">logger</span> <span class="p">=</span> <span class="n">logger</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cp">#region ILogger Members</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">LogSql</span><span class="p">(</span><span class="kt">object</span> <span class="n">sql</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">logger</span><span class="p">.</span><span class="n">Info</span><span class="p">(</span><span class="n">sql</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">LogDebug</span><span class="p">(</span><span class="kt">object</span> <span class="n">text</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">logger</span><span class="p">.</span><span class="n">Debug</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cp">#endregion</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let me know what you think :)</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f17%2fninject-getting-all-the-stuff-youll-need%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f17%2fninject-getting-all-the-stuff-youll-need%2f" alt="kick it on DotNetKicks.com" /></a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-17T11:13:48+02:00" pubdate data-updated="true">Apr 17<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/-net-3-5/'>.NET 3.5</a>, <a class='category' href='/categories/dependency-injection/'>Dependency Injection</a>, <a class='category' href='/categories/lightspeed/'>Lightspeed</a>, <a class='category' href='/categories/ninject/'>Ninject</a>, <a class='category' href='/categories/nlog/'>Nlog</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need/" data-via="casualjim" data-counturl="http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/04/15/minimal-ironrubysilverlight-examples-online/" title="Previous Post: Minimal IronRuby/silverlight examples online">&laquo; Minimal IronRuby/silverlight examples online</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/04/18/ninject-part-2-customizing-your-infrastructure-for-logging/" title="Next Post: Ninject (Part 2): Customizing your infrastructure for logging">Ninject (Part 2): Customizing your infrastructure for logging &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need/';
+        var disqus_url = 'http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

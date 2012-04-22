@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Wtf ?? Ajax and the hidden cost of use - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="In it world Sean McGrath has been talking about Ajax and the hidden cost of use. I got to this post through Jon Udell, who has a post about ajax and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2006/12/12/wtf-ajax-and-the-hidden-cost-of-use">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Wtf ?? Ajax and the Hidden Cost of Use</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-12-12T06:00:40+01:00" pubdate data-updated="true">Dec 12<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In it world Sean McGrath has been talking about <a href="http://www.itworld.com/AppDev/nlsebizajax061212/index.html">Ajax and the hidden cost of use</a>.</p>
+
+<p>I got to this post through Jon Udell, who has a post about <a href="http://weblog.infoworld.com/udell/2006/12/12.html#a1577">ajax and automation</a>.</p>
+
+<p>Anyway the sort of arguments that Sean is using make me think he has yet to complete a good ajax application.</p>
+
+<blockquote><p><em>A common buzzword in the industry is the concept of a &#8220;front end&#8221;. In an ideal world, the front end just handles all the graphical user interface stuff while the back end does all the real work. In this ideal world, you can just bypass the front end and work with the back end directly when you want to integrate applications. Sadly, we do not live in this ideal world</em>.</p></blockquote>
+
+<p>I&#8217;m going of a rant here because I thought that the whole discussion AJAX is it good vs bad? was closed about a year ago.</p>
+
+<p>He obviously hasn&#8217;t seen any of the Castle or ruby implementations who do just that. For example I can unit test my complete controllers base with out running a browser.</p>
+
+<p>Unless i&#8217;m really sure that an application will be used in one type of browser or it&#8217;s successor and this browser is ajax capable.. then and only then the user interface will rely on javascript for the interaction.</p>
+
+<p>People then go why don&#8217;t you cache values and have javascript work it out for you the next time this gives a perceived performance benefit. There are 2 main reasons for it :</p>
+
+<p>1 separation of concerns the only decision an UI can make is should I show this red or green based on a value of the object etc. But nothing else.</p>
+
+<p>2 you want live data not data that is almost live (i&#8217;m taling about a system where minutes matter in the workflow) :)</p>
+
+<blockquote><p><em>Think now of web-based applications you most like to use. How are their front ends and back ends? Well, historically, they have been quite cleanly separated. After all, a web browser only has limited capabilities. Behind the scenes it is really only capable of sending two commands GET and POST to things called URLs. Everything else (slight simplification!) happens at the back end. <br/>
+Ah, but that was then and this is now. Now we have AJAX and JSON and Flash and the Google Web Toolkit and Windows Presentation Foundation and&#8230; <br/>
+All these things help us to make web applications easier to use. In so doing, the clean separation between front end and back end gets more and more blurred. <strong>With every blurring of the separation, application integration becomes more complex. </strong></em></p></blockquote>
+
+<p>I guess somebody is really missing the point here a UI is just a shell over lots of services that can do the job with or without the UI on it.  All the real work is to be done in the service layer or deeper down in you app.</p>
+
+<p>I think Windows Presentation Foundation says it all in its name already <em>Presenation</em> <strong>only </strong>whatever is not related to the presenation of your data in the UI shouldn&#8217;t be there.</p>
+
+<p>What I think is going on here is that he&#8217;s affraid to take the plunge because the arguments he uses are arguments I had against building a full ajax site about 2 years ago.  I&#8217;ve set them aside.. and just do it now.</p>
+
+<p>I must say that using <a href="http://www.castleproject.org/">castle</a> has been a tremendous help for me into getting things done in the same timeframe as i would have with the classic model.</p>
+
+<p>For instance I&#8217;m about to finish a project that  in a clasic model would have consisted out of 70+ very dataintensive forms. The result of using ajax a.o. technologies now has the application down to 5 forms</p>
+
+<p>I still had to write the 70+ views and but not nearly as many search functions etc.  I do ajax on the AHA  principle (which means I send html snippets) because JSON and building dom nodes breaks backwards compatibility and would have slowed down development a lot.</p>
+
+<p>To get to the automation bit .. I think ajax makes it much more easy to interact with the backend then the classic model would have done. There are many more options to choose from (which is kind of a dissease of our time.. too many options) and you have a much finer grained control over what passes through the pipeline in terms of bits and bytes. just pull up any http request listener and you&#8217;ll have all the things you need to replay your actions vs. parse forms and go through the html to figure out the fields etc.</p>
+
+<p>Ok that&#8217;s it for my morning rant.  I just thought somebody needed to put his views into context. I have to give him that technology certainly didn&#8217;t come to a standstill over the last year so it&#8217;s getting increasingly difficult to keep up.</p>
+
+<p>I&#8217;ve known a couple of really good people to give up the game this year because it&#8217;s all moving too fast in some respects or not how they want it to move. In my opinion things are indeed moving very fast at the moment.. but that&#8217;s what makes it so exciting :D</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-12-12T06:00:40+01:00" pubdate data-updated="true">Dec 12<span>th</span>, 2006</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/castle/'>Castle</a>, <a class='category' href='/categories/general/'>General</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2006/12/12/wtf-ajax-and-the-hidden-cost-of-use/" data-via="casualjim" data-counturl="http://flanders.co.nz/2006/12/12/wtf-ajax-and-the-hidden-cost-of-use/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2006/12/11/devexpress-is-giving-away-their-controls/" title="Previous Post: DevExpress is giving away their controls">&laquo; DevExpress is giving away their controls</a>
+      
+      
+        <a class="basic-alignment right" href="/2006/12/12/finally-back-to-nblogr/" title="Next Post: Finally back to nblogr">Finally back to nblogr &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

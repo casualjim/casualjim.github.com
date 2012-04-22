@@ -1,0 +1,673 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Ruby to Generate LightSpeed models - Part 2 - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="This is the second post in the series on generating LightSpeed entities with the help from ruby. In the previous post we connected successfully to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2008/02/05/using-ruby-to-generate-lightspeed-models">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Using Ruby to Generate LightSpeed Models - Part 2</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-02-05T09:16:52+01:00" pubdate data-updated="true">Feb 5<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This is the <a href="http://flanders.co.nz/blog/archive/2008/02/05/using-ruby-to-generate-lightspeed-models---part-1.aspx"></a>second post in the series on generating <a href="http://www.mindscape.co.nz/Products/lightspeed/default.aspx">LightSpeed</a> entities with the help from ruby.</p>
+
+<p>In the <a href="http://flanders.co.nz/blog/archive/2008/02/05/using-ruby-to-generate-lightspeed-models---part-1.aspx">previous post</a> we connected successfully to the database and were able to execute some sql.</p>
+
+<p>At the end of the series I&#8217;ll make the code downloadable.</p>
+
+<p>Today I&#8217;d like to talk about the metadata we&#8217;ll be needing from the database. We&#8217;re going to need a list of tables, we&#8217;re going to need to know about the columns of each table. Furthermore we want to exclude the primary keys in the case of LightSpeed. And we also want to know about relationships whether they are has many, belongs to or has many and belongs to many.</p>
+
+<p>I put all this in a separate module because I&#8217;ll probably need that meta data for another thing later :). The above requirements translate in the following spec:</p>
+
+<pre><code>LightSpeedRepository DB::MetaData  
+
+- should have meta data  
+
+- should resolve the table name from a string  
+
+- should resolve the table name from a hash  
+
+- should identify a given column as not being a foreign key  
+
+- should identify a foreign key given a valid column info  
+
+- should not identify a given column as being a primary key  
+
+- should identify a given column as being a primary key  
+
+- should not identify a table as a join table under the correct conditions  
+
+- should identify a table as a join table under the correct conditions  
+
+- should return an empty array of has many relations when there are none  
+
+- should return the has many relations given a table  
+
+- should return the end point tables for a given through association  
+
+- should return the through associations  
+</code></pre>
+
+<p>The first thing we&#8217;re going to need are the sql statements. At this point I only need the statements for sql 2005 so and these are the ones I used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">sql_statements</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="ss">:tables</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT table_name as name FROM information_schema.Tables Where table_type=&#39;Base Table&#39; ORDER BY table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:column_info</span> <span class="o">=&gt;</span> <span class="s2">&quot;select object_name(c.object_id) as table_name, c.column_id, c.name, type_name(system_type_id) as sql_type, max_length, is_nullable, precision, scale, </span>
+</span><span class='line'><span class="s2">          convert(bit,(Select COUNT(*) from sys.indexes as i </span>
+</span><span class='line'><span class="s2">            inner join sys.index_columns as ic</span>
+</span><span class='line'><span class="s2">              on ic.index_id = i.index_id and ic.object_id = i.object_id </span>
+</span><span class='line'><span class="s2">            inner join sys.columns as c2 on ic.column_id = c2.column_id and i.object_id = c2.object_id</span>
+</span><span class='line'><span class="s2">          WHERE i.is_primary_key = 0 </span>
+</span><span class='line'><span class="s2">            and i.is_unique_constraint = 0 and ic.column_id = c.column_id and i.object_id=c.object_id)) as is_index,</span>
+</span><span class='line'><span class="s2">          is_identity, </span>
+</span><span class='line'><span class="s2">          is_computed, </span>
+</span><span class='line'><span class="s2">          convert(bit,(Select Count(*) from sys.indexes as i inner join sys.index_columns as ic</span>
+</span><span class='line'><span class="s2">              on ic.index_id = i.index_id and ic.object_id = i.object_id </span>
+</span><span class='line'><span class="s2">            inner join sys.columns as c2 on ic.column_id = c2.column_id and i.object_id = c2.object_id</span>
+</span><span class='line'><span class="s2">          WHERE (i.is_unique_constraint = 1) and ic.column_id = c.column_id and i.object_id=c.object_id)) as is_unique</span>
+</span><span class='line'><span class="s2">          from sys.columns as c</span>
+</span><span class='line'><span class="s2">          WHERE object_name(c.object_id)  in (select table_name  FROM information_schema.Tables WHERE table_type = &#39;Base Table&#39;) </span>
+</span><span class='line'><span class="s2">          order by table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:primary_keys</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT i.name AS index_name,ic.index_column_id,key_ordinal,c.name AS column_name,TYPE_NAME(c.user_type_id)AS column_type </span>
+</span><span class='line'><span class="s2">                ,is_identity,OBJECT_NAME(i.object_id) as table_name FROM sys.indexes AS i INNER JOIN sys.index_columns AS ic ON </span>
+</span><span class='line'><span class="s2">                i.object_id = ic.object_id AND i.index_id = ic.index_id INNER JOIN sys.columns AS c ON ic.object_id = c.object_id</span>
+</span><span class='line'><span class="s2">                AND c.column_id = ic.column_id WHERE i.is_primary_key = 1 order by table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:foreign_keys</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT f.name AS foreign_key_name, object_name(f.parent_object_id) AS table_name , col_name(fc.parent_object_id, fc.parent_column_id) AS child_id</span>
+</span><span class='line'><span class="s2">                ,object_name (f.referenced_object_id) AS parent_table ,col_name(fc.referenced_object_id, fc.referenced_column_id) AS parent_id FROM sys.foreign_keys AS f</span>
+</span><span class='line'><span class="s2">                INNER JOIN sys.foreign_key_columns AS fc ON f.object_id = fc.constraint_object_id where OBJECT_NAME(f.parent_object_id) not in (&#39;sysdiagrams&#39;)  order by table_name&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Those statements contain all the data we need an probably a little bit more too, if we add a little metaprogramming we can have ruby generate that metadata data for us :)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">populate</span>
+</span><span class='line'>  <span class="no">DB</span><span class="o">::</span><span class="no">MetaData</span><span class="o">.</span><span class="n">sql_statements</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="o">+</span><span class="n">key</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span> <span class="vi">@db</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>              
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">sql_statements</span><span class="o">.</span><span class="n">each_key</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">_for&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">table</span><span class="o">|</span>
+</span><span class='line'>     <span class="nb">send</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>   <span class="k">end</span> <span class="k">unless</span> <span class="n">key</span> <span class="o">==</span> <span class="ss">:tables</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>So now we&#8217;ve satisfied our first spec the module now contains all the meta data we need. The rest of the specs require far less code than what we wrote here. Below you&#8217;ll find the code needed to satisfy all of the specs. It are just a couple of methods that check some conditions and a couple of predicates we&#8217;re going to need later on. The get_endpoint_tables method is the only one that doesn&#8217;t explain itself easily. That method returns the table names from tables that are the second level in a has many and belongs to many scenario.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">DB</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">MetaData</span>
+</span><span class='line'>    <span class="kp">attr_accessor</span> <span class="ss">:tables</span><span class="p">,</span> <span class="ss">:primary_keys</span><span class="p">,</span> <span class="ss">:foreign_keys</span><span class="p">,</span> <span class="ss">:column_info</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>      <span class="vi">@db</span> <span class="o">=</span> <span class="no">DB</span><span class="o">::</span><span class="no">DbiSqlServer</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">populate</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">populate</span>
+</span><span class='line'>      <span class="no">DB</span><span class="o">::</span><span class="no">MetaData</span><span class="o">.</span><span class="n">sql_statements</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="o">+</span><span class="n">key</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span> <span class="vi">@db</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>              
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">collect_has_many_relations</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:parent_table</span><span class="o">]</span> <span class="o">==</span>  <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">fks</span><span class="o">.</span><span class="n">collect</span>  <span class="k">do</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span>
+</span><span class='line'>        <span class="k">unless</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">].</span><span class="n">nil?</span>
+</span><span class='line'>          <span class="p">{</span> <span class="ss">:table_name</span> <span class="o">=&gt;</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">].</span><span class="n">underscore</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">].</span><span class="n">singularize</span><span class="o">.</span><span class="n">underscore</span><span class="o">.</span><span class="n">camelize</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>       <span class="k">end</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">collect_through_associations</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:parent_table</span><span class="o">]</span> <span class="o">==</span>  <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">fks</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span>
+</span><span class='line'>          <span class="p">{</span> <span class="ss">:through_table</span> <span class="o">=&gt;</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">].</span><span class="n">underscore</span><span class="p">,</span> <span class="ss">:end_tables</span> <span class="o">=&gt;</span> <span class="n">get_endpoint_tables</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span><span class="p">)</span> <span class="p">}</span> <span class="k">if</span> <span class="n">join_table?</span><span class="p">(</span><span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">get_endpoint_tables</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">through_table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">table_name</span><span class="p">(</span><span class="n">through_table</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:parent_table</span><span class="o">]</span> <span class="o">!=</span> <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="p">}</span>
+</span><span class='line'>      <span class="n">fks</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:parent_table</span><span class="o">].</span><span class="n">underscore</span> <span class="k">unless</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:parent_table</span><span class="o">].</span><span class="n">nil?</span>  <span class="p">}</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">get_belongs_to_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span>  <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:child_id</span><span class="o">]</span> <span class="o">=</span> <span class="n">column_name</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">fks</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="ss">:parent_table</span><span class="o">]</span> <span class="k">if</span> <span class="n">fks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">join_table?</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys_for</span> <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">primary_key?</span><span class="p">(</span><span class="n">column_info</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">pks</span> <span class="o">=</span> <span class="n">primary_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">pk</span><span class="o">|</span> <span class="n">pk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">column_info</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="ow">and</span> <span class="n">pk</span><span class="o">[</span><span class="ss">:column_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">column_info</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>   <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">pks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">foreign_key?</span><span class="p">(</span><span class="n">column_info</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">fks</span> <span class="o">=</span> <span class="n">foreign_keys</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">fk</span><span class="o">|</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">column_info</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="ow">and</span> <span class="n">fk</span><span class="o">[</span><span class="ss">:child_id</span><span class="o">]</span> <span class="o">==</span> <span class="n">column_info</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>  <span class="p">}</span>
+</span><span class='line'>      <span class="n">fks</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">table</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Hash</span><span class="p">)</span> <span class="p">?</span> <span class="n">table</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span> <span class="p">:</span> <span class="n">table</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">sql_statements</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="ss">:tables</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT table_name as name FROM information_schema.Tables Where table_type=&#39;Base Table&#39; ORDER BY table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:column_info</span> <span class="o">=&gt;</span> <span class="s2">&quot;select object_name(c.object_id) as table_name, c.column_id, c.name, type_name(system_type_id) as sql_type, max_length, is_nullable, precision, scale, </span>
+</span><span class='line'><span class="s2">              convert(bit,(Select COUNT(*) from sys.indexes as i </span>
+</span><span class='line'><span class="s2">                inner join sys.index_columns as ic</span>
+</span><span class='line'><span class="s2">                  on ic.index_id = i.index_id and ic.object_id = i.object_id </span>
+</span><span class='line'><span class="s2">                inner join sys.columns as c2 on ic.column_id = c2.column_id and i.object_id = c2.object_id</span>
+</span><span class='line'><span class="s2">              WHERE i.is_primary_key = 0 </span>
+</span><span class='line'><span class="s2">                and i.is_unique_constraint = 0 and ic.column_id = c.column_id and i.object_id=c.object_id)) as is_index,</span>
+</span><span class='line'><span class="s2">              is_identity, </span>
+</span><span class='line'><span class="s2">              is_computed, </span>
+</span><span class='line'><span class="s2">              convert(bit,(Select Count(*) from sys.indexes as i inner join sys.index_columns as ic</span>
+</span><span class='line'><span class="s2">                  on ic.index_id = i.index_id and ic.object_id = i.object_id </span>
+</span><span class='line'><span class="s2">                inner join sys.columns as c2 on ic.column_id = c2.column_id and i.object_id = c2.object_id</span>
+</span><span class='line'><span class="s2">              WHERE (i.is_unique_constraint = 1) and ic.column_id = c.column_id and i.object_id=c.object_id)) as is_unique</span>
+</span><span class='line'><span class="s2">              from sys.columns as c</span>
+</span><span class='line'><span class="s2">              WHERE object_name(c.object_id)  in (select table_name  FROM information_schema.Tables WHERE table_type = &#39;Base Table&#39;) </span>
+</span><span class='line'><span class="s2">              order by table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:primary_keys</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT i.name AS index_name,ic.index_column_id,key_ordinal,c.name AS column_name,TYPE_NAME(c.user_type_id)AS column_type </span>
+</span><span class='line'><span class="s2">                    ,is_identity,OBJECT_NAME(i.object_id) as table_name FROM sys.indexes AS i INNER JOIN sys.index_columns AS ic ON </span>
+</span><span class='line'><span class="s2">                    i.object_id = ic.object_id AND i.index_id = ic.index_id INNER JOIN sys.columns AS c ON ic.object_id = c.object_id</span>
+</span><span class='line'><span class="s2">                    AND c.column_id = ic.column_id WHERE i.is_primary_key = 1 order by table_name&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:foreign_keys</span> <span class="o">=&gt;</span> <span class="s2">&quot;SELECT f.name AS foreign_key_name, object_name(f.parent_object_id) AS table_name , col_name(fc.parent_object_id, fc.parent_column_id) AS child_id</span>
+</span><span class='line'><span class="s2">                    ,object_name (f.referenced_object_id) AS parent_table ,col_name(fc.referenced_object_id, fc.referenced_column_id) AS parent_id FROM sys.foreign_keys AS f</span>
+</span><span class='line'><span class="s2">                    INNER JOIN sys.foreign_key_columns AS fc ON f.object_id = fc.constraint_object_id where OBJECT_NAME(f.parent_object_id) not in (&#39;sysdiagrams&#39;)  order by table_name&quot;</span>
+</span><span class='line'>       <span class="p">}</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="n">sql_statements</span><span class="o">.</span><span class="n">each_key</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span>
+</span><span class='line'>       <span class="n">define_method</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">_for&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">table</span><span class="o">|</span>
+</span><span class='line'>         <span class="nb">send</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span><span class="o">[</span><span class="ss">:table_name</span><span class="o">]</span> <span class="o">==</span> <span class="n">table_name</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>       <span class="k">end</span> <span class="k">unless</span> <span class="n">key</span> <span class="o">==</span> <span class="ss">:tables</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-02-05T09:16:52+01:00" pubdate data-updated="true">Feb 5<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/ironruby/'>IronRuby</a>, <a class='category' href='/categories/lightspeed/'>Lightspeed</a>, <a class='category' href='/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2008/02/05/using-ruby-to-generate-lightspeed-models/" data-via="casualjim" data-counturl="http://flanders.co.nz/2008/02/05/using-ruby-to-generate-lightspeed-models/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/02/05/compiling-mono-and-ironruby-on-osx-leopard/" title="Previous Post: Compiling Mono and IronRuby on OSX Leopard">&laquo; Compiling Mono and IronRuby on OSX Leopard</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/02/05/using-ruby-to-generate-lightspeed-models-part-3/" title="Next Post: Using Ruby to Generate LightSpeed Models - Part 3">Using Ruby to Generate LightSpeed Models - Part 3 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2008/02/05/using-ruby-to-generate-lightspeed-models/';
+        var disqus_url = 'http://flanders.co.nz/2008/02/05/using-ruby-to-generate-lightspeed-models/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1083 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="Rant Alert At my current client I&#8217;ve got to do mainly maintenance on existing applications. This gives me the chance to look into codebases &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/page/4">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/09/24/common-mistakes-in-software-development/">Common Mistakes in Software Development</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-24T11:31:44+02:00" pubdate data-updated="true">Sep 24<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong><strong><em> Rant Alert </em></strong></strong></p>
+
+<p><rant></p>
+
+<p>At my current client I&#8217;ve got to do mainly maintenance on existing applications. This gives me the chance to look into codebases that have been created by other people and that don&#8217;t really reflect how I would write things. That is all good though it gives me a chance to learn new ways of doing things and when I think their way is better I&#8217;ll surely adopt.</p>
+
+<p>Anyway when I&#8217;m browsing these codebases I do find a lot of things that could have been done better or more correctly and that&#8217;s what I&#8217;ll be writing about a little today.</p>
+
+<p>The first one is returning bools:</p>
+
+<p>I&#8217;ve found this in just about every project I&#8217;ve been in:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="kt">bool</span> <span class="nf">IsNull</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">obj</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The snippet above is a very long winded way of writing. IMHO this hurts readability and you&#8217;re saying the same thing twice. obj == null already returns a bool it makes no sense writing it again.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="kt">bool</span> <span class="nf">IsNull</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">obj</span> <span class="p">==</span> <span class="k">null</span><span class="p">;</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another thing I keep seeing is very liberal use of try..catch blocks that catch all exceptions. Admittedly try..catch is cool but it should be used at times you are actually interested in the exception that is thrown. But it shouldn&#8217;t be used as a safeguard to swallow exceptions you don&#8217;t want to fix at this moment.  I keep seeing this code in projects:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">try</span><span class="p">{</span>
+</span><span class='line'>    <span class="n">myBLObject</span><span class="p">.</span><span class="n">FindSomething</span><span class="p">(</span><span class="n">someId</span><span class="p">).</span><span class="n">SomeMethod</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span><span class="p">){</span>
+</span><span class='line'>    <span class="c1">// Nothing to be done but error stops</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that can be easily written so that it won&#8217;t throw an exeption and then the try catch isn&#8217;t necessary anymore at all. Try..catch blocks most certainly have their use but throwing and catching exceptions definitely hurts performance because the system has to generate a complete stack trace etc. for every exception that is being thrown.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">myBLObject</span><span class="p">.</span><span class="n">FindSomething</span><span class="p">(</span><span class="n">someId</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="n">result</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">result</span><span class="p">.</span><span class="n">SomeMethod</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code becomes a lot more readable, not to mention faster. I&#8217;ve seen this being used in OnRowDataBound events etc on grids with 500+ rows, removing the try catch blocks more than doubles the speed of that page.</p>
+
+<p>The next one on the list is using if,else and switch statements. They are sometimes a cause of code bloat. To put it in the words of <a href="http://www.hanselman.com/blog/BackToBasicsLifeAfterIfForAndSwitchLikeADataStructuresReminder.aspx">Scott Hanselman</a>:</p>
+
+<blockquote><p>I think that using only <em>if</em>, <em>for </em>and <em>switch </em>is the Computer Programmer equivalent of using &#8220;like&#8221; in every sentence.</p></blockquote>
+
+<p>Scott does a great job explaining why they can be pretty evil so I&#8217;ll just leave you with a <a href="http://www.hanselman.com/blog/BackToBasicsLifeAfterIfForAndSwitchLikeADataStructuresReminder.aspx">link</a> to his post</p>
+
+<p>I have another couple of posts in the making on this subject but I had to get this out of my system. These are also very quick wins the other things I&#8217;m going to talk about are application architecture and stored procs&#8230;.
+</rant></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/26/white-paper-on-ironruby-published/">White Paper on IronRuby Published</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-26T06:14:15+02:00" pubdate data-updated="true">Aug 26<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Manning published my white paper &#8211; or green paper as they call it &#8211; on IronRuby.</p>
+
+<p>You can find it here: <a href="http://manning.com/free/green_carrero.html">http://manning.com/free/green_carrero.html</a></p>
+
+<p>This paper tries to give you an introduction on what the ruby language is and how it could work for you. If you want to know more than what&#8217;s on those pages there is always the book: <a href="http://manning.com/carrero">http://manning.com/carrero</a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/IronRuby">IronRuby</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/19/ironnails-some-progress/">IronNails: Some Progress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-19T07:50:14+02:00" pubdate data-updated="true">Aug 19<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I thought it might be a good idea to update you guys on how IronNails is progressing. I think I&#8217;ve got it so that you aren&#8217;t exposed to writing many of the boring boilerplate code that comes with taking this approach (M - V - VM- C). Also to execute an action on a controller asynchronously you can by just adding :mode => :asynchronous to your view_action declaration.</p>
+
+<p>A lot is still left to do but this proves that it is possible to use IronRuby today to do some pretty cool stuff. From the top of my head here are some things that still need to be done:</p>
+
+<ul>
+<li><p>The ability to load xaml from an assembly like the one that is generated when you use Blend for your design.</p></li>
+<li><p>More predefined behaviors</p></li>
+<li><p>Templated generators</p></li>
+<li><p>Silverlight support</p></li>
+</ul>
+
+
+<p>But the core of the framework is working. Now it&#8217;s a matter of extending the functionality. Some of the features the framework does support</p>
+
+<ul>
+<li><p>Binding to controller actions through commands</p></li>
+<li><p>Binding to controller actions through event handlers on the view proxy</p></li>
+<li><p>Asynchronous execution of actions</p></li>
+<li><p>Timed execution of actions</p></li>
+<li><p>Binding to models</p></li>
+</ul>
+
+
+<p>I will be developing my sample for my chapter against this framework and will add the pieces I&#8217;m missing as I get on.</p>
+
+<p>Some of the things I foresee that might need to be added are:</p>
+
+<ul>
+<li><p>support for controlling the application from an IronRuby console so that you can interact with the interface as it is running.</p></li>
+<li><p>support for a console to interact with the code of the application.</p></li>
+<li><p>support for plugins</p></li>
+</ul>
+
+
+<p>So after all these lists how would an application look like when you are developing it?</p>
+
+<p>The controller:</p>
+
+<figure class='code'><figcaption><span>demo_controller.rb    </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">DemoController</span> <span class="o">&lt;</span> <span class="no">IronNails</span><span class="o">::</span><span class="no">Controller</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">view_object</span> <span class="ss">:status_bar_message</span><span class="p">,</span> <span class="s2">&quot;The status bar message&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">view_action</span> <span class="ss">:change_message</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change_message</span>
+</span><span class='line'>    <span class="vi">@status_bar_message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#@status_bar_message</span><span class="s2"> appended&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The ViewModel:</p>
+
+<figure class='code'><figcaption><span>DemoViewModel.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">DemoViewModel</span> <span class="p">:</span> <span class="n">IronNails</span><span class="p">.</span><span class="n">View</span><span class="p">.</span><span class="n">ViewModel</span> <span class="p">{</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The View:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Window</span>
+</span><span class='line'>    <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+</span><span class='line'>    <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>
+</span><span class='line'>    <span class="na">xmlns:behaviors=</span><span class="s">&quot;clr-namespace:IronNails.Library.Behaviors;assembly=IronNails.Library&quot;</span>
+</span><span class='line'>    <span class="na">Title=</span><span class="s">&quot;Window1&quot;</span> <span class="na">Height=</span><span class="s">&quot;300&quot;</span> <span class="na">Width=</span><span class="s">&quot;300&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;StackPanel&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;{Binding Objects[StatusBarMessage].Value}&quot;</span> <span class="nt">&gt;&lt;/TextBlock&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Button</span> <span class="na">Content=</span><span class="s">&quot;Click me&quot;</span> <span class="na">behaviors:ClickBehavior.LeftClick=</span><span class="s">&quot;{Binding Commands[ChangeMessage]}&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/StackPanel&gt;</span>
+</span><span class='line'><span class="nt">&lt;/Window&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are currently 2 dictionaries available to the view. One that contains the models (Objects) and one that contains the commands (Commands). The value of an entry in the Objects needs to be observable by implementing INotifyPropertyChanged and that is what&#8217;s responsible for the binding syntax Objects[ModelName].Value</p>
+
+<p>At this moment there are only a couple of behaviors implemented: LeftClick, RightClick, DoubleClick and Hover.</p>
+
+<p>The framework expects that you follow the basic naming conventions of the technology you&#8217;re programming in. So in ruby you underscore names but in C# and xaml you camelcase them.</p>
+
+<p>By defining an object with view_object :object_name, default value you define it with a default value that you can change afterwards in the controller actions. By defining an action with view_action :action_name, :mode => :asynchronous you tell that framework that you want to link a method or a block as a controller action and execute it asynchronously.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/11/finally-found-the-insert-key-on-my-macbook-pro-keyboard/">Finally Found the Insert Key on My Macbook Pro Keyboard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-11T11:38:19+02:00" pubdate data-updated="true">Aug 11<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I finally managed to figure out what the insert key is on my macbook pro. I missed it a lot because in Resharper the standard command to generate code is Alt+Ins. This key combination seems to be engraved in my brain because it was really hard for me to use it with a different key combination. Anyway the winning combinations are:</p>
+
+<p><em>Insert: <strong>fn+return</strong></em></p>
+
+<p><em>Alt+Insert: <strong>fn + alt/option + return</strong></em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/08/07/ironnails-introduction/">IronNails : Rails Like Development for IronRuby With WPF/Silverlight</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-07T15:23:43+02:00" pubdate data-updated="true">Aug 7<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>For my book IronRuby I&#8217;m working on chapter 4. That chapter is about doing WPF development with IronRuby. I started out with a straight port of <a href="http://code.google.com/p/wittytwitter">Witty</a> to IronRuby. As I was doing that the cogs started turning and I came up with a way to bring the rails style of development to WPF. I decided to investigate that route a little bit further and now I have a small framework that enables you to write WPF applications with the MVC paradigm. I decided to open that code up as open source and host it on github.</p>
+
+<p>At first I used the name Sails for my framework but it turns out there is java clone of rails that is called opensails. So to avoid confusion David M. Peterson proposed the name IronNails.</p>
+
+<blockquote><p>On Sat, 02 Aug 2008 08:00:44 -0600, Charles Oliver Nutter wrote:</p>
+
+<p>FYI, there&#8217;s already a framework named &#8220;Sails&#8221; for Java:      <br/>
+<a href="http://www.opensails.org/">http://www.opensails.org/</a></p>
+
+<p>For the sake of sticking to the &#8220;Iron&#8221; theme, why not replace the &#8216;S&#8217; with an &#8216;N&#8217; and go with IronNails. ;-) Maybed it&#8217;s just me, but if given the choice, I&#8217;d much rather nail it than sail it any day of the week. :D</p>
+
+<p>&#8211;      <br/>
+/M:D</p>
+
+<p>M. David Peterson</p></blockquote>
+
+<p>You can find the project here: <a href="http://github.com/casualjim/ironnails">http://github.com/casualjim/ironnails</a></p>
+
+<p>At this moment it&#8217;s definitely not finished at all, but it does work. The remainder of the week I&#8217;ll move my previous demo code onto this framework, update the code samples in my chapter and finish the content. I hope I will have all of this done by the end of next week.</p>
+
+<p>Back to the IronNails project:</p>
+
+<p>Because DLR objects cannot be used to bind to in WPF you have to define a skeleton of the ViewModel in C#, but this will change in the future. When that changes I&#8217;ll look at extending the framework to make use of some other WPF patterns like defining a DependencyObject and Behaviors. Once those are defined you get a very clean separation between design and behavior.</p>
+
+<p>This is abstracted away from you but in the background the framework works with the View - ViewModel - Model - Controller pattern although I&#8217;ve tried to keep your exposure to the view model to a minimum. The framework follows naming conventions per language. So in C# and XAML you camel case stuff and in IronRuby you underscore stuff.</p>
+
+<p>The very core of the framework is defined in C# but most of the code is IronRuby, depending on how hard it will be after the DLR RTM&#8217;s I may look at adding support for all the DLR languages.</p>
+
+<blockquote><h1>IronNails        </h1>
+
+<p>IronNails is a framework inspired by the Rails and rucola frameworks. It offers a rails-like way of developing      <br/>
+applications with IronRuby and Windows Presentation Foundation (WPF).       <br/>
+This framework uses the pattern Model - ViewModel - View - Controller (M-VM-V-C). It should be able to run on both WPF       <br/>
+and Silverlight.       <br/>
+The idea is that the views can be created using a design tool like Blend for example and just save that xaml as is. The       <br/>
+designer should not need to use anything else than drag and drop to create a GUI design. The behaviors are then added to       <br/>
+the view by using predefined behaviors in the framework or by defining your own behavior.       <br/>
+The framework then generates a proxy for the view which will be used to transparently wire up the commands in the       <br/>
+behaviors to controller actions.</p></blockquote>
+
+<p>You are now able to write the following code for a controller:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyController</span> <span class="o">&lt;</span> <span class="no">IronNails</span><span class="o">::</span><span class="no">Controller</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">view_action</span> <span class="ss">:show_message</span><span class="p">,</span> <span class="ss">:triggers</span> <span class="o">=&gt;</span> <span class="ss">:my_button</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">MessageBox</span><span class="o">.</span><span class="n">show</span> <span class="s2">&quot;This is the great message from a block&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">view_action</span> <span class="ss">:change_color</span><span class="p">,</span> <span class="ss">:triggers</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:element</span> <span class="o">=&gt;</span> <span class="ss">:my_text_block</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:mouse_enter</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">view_action</span> <span class="ss">:reset_color</span><span class="p">,</span> <span class="ss">:triggers</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:element</span> <span class="o">=&gt;</span> <span class="ss">:my_text_block</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:mouse_leave</span> <span class="p">}</span> <span class="k">do</span> <span class="o">|</span><span class="n">view</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">view</span><span class="o">.</span><span class="n">my_text_block</span><span class="o">.</span><span class="n">foreground</span> <span class="o">=</span> <span class="ss">:black</span><span class="o">.</span><span class="n">to_brush</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">view_object</span> <span class="ss">:people</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">find_all</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change_color</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">view</span><span class="o">.</span><span class="n">my_text_block</span><span class="o">.</span><span class="n">foreground</span> <span class="o">=</span> <span class="ss">:red</span><span class="o">.</span><span class="n">to_brush</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this moment the project has 0 unit tests, it has below minimal documentation and it still needs a work like defining the behaviors. I have to move on with my book but intend to continue developing this framework after my book is finished and IronRuby RTM&#8217;s. There are some more workarounds in the project that will all disappear as IronRuby progresses.</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f08%2f07%2fironnails-introduction%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f08%2f07%2fironnails-introduction%2f" alt="kick it on DotNetKicks.com" /></a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/IronRuby">IronRuby</a>,<a href="http://technorati.com/tags/IronRubyInAction">IronRubyInAction</a>,<a href="http://technorati.com/tags/IronNails">IronNails</a>,<a href="http://technorati.com/tags/WPF">WPF</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/13/moving-back-to-belgium/">Moving Back to Belgium</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-13T00:41:58+02:00" pubdate data-updated="true">Jul 13<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Tonight is my last night in New Zealand. Tomorrow I will fly back to Belgium to see what has changed in the 3 years that I&#8217;ve been away. I already know that my home city Antwerp has changed a lot because they were completely redoing the place when I left. I think it might still too soon for a reflective post on my experiences in New Zealand. What I can say is that I had a great time here and I made some great friendships with some extraordinary people. Depending on who you ask this is a good or bad thing but I&#8217;ll surely be back in a couple of years :)</p>
+
+<p>The first one on my list of great Kiwi personalities is <a href="http://blogs.msdn.com/alexj/">Alex James</a>. We had a whole bunch of architectural discussions and many of his ideas are still sitting in the back of my mind every day I write code. I met him at a point in my programming career when I was looking for something new. I didn&#8217;t want to use datasets any more, was looking for a replacement for webforms and he had quite a clever project Base4. This project is what got me started on Open Source and at this point I wouldn&#8217;t mind making a living working on open source projects I just don&#8217;t know quite yet how to start that :)</p>
+
+<p>The second one is <a href="http://blog.bittercoder.com/">Alex Henderson</a>, he knew and probably knows a lot more about Castle&#8217;s windsor than I do and through some kind of blog conversation about using Base4 with Castle I finally got what Alex James meant when he said my code was quite monolithic at times. Alex Henderson showed me how to write readable code for other people than me. Very sometimes I know still catch myself writing big chuncks of code in one go but thanks to resharper I can quickly fix that now.</p>
+
+<p>Furthermore there is the wonderful bunch of people at <a href="http://www.xero.com">Xero</a>. I had a great time working with them and figuring out what my strengths are as a developer. Although we didn&#8217;t always saw eye to eye <a href="http://pageofwords.com">Kirk</a> taught me that security goes way further than just the data. Security has to flow through from the whole company and all the way into the lowest level of your application. He was probably the voice of reason I often need and when I was programming other projects after I left Xero. I still thought to myself: would I be able to get away with uploading this and seeing what happens or should I really test this on a different non-dev machine. Then I see that look he gets and will dilligently grumble and test the thing, which, as it turns out, is almost always a good idea.<br/>
+Everybody at Xero were really great collegues and there are times that I regretted going away there even if it was just for the cool bunch of people that work there. Craig for letting me see that &#8220;the Hutt&#8221; is the closest thing Wellington has to &#8220;the hood&#8221; and that the word box has more than one meaning.</p>
+
+<p>Of course there are the guys from <a href="http://www.mindscape.co.nz">Mindscape</a>, all brilliant programmers. I don&#8217;t think you&#8217;ll find another company in New Zealand that has that big of a brains/person ratio. I&#8217;d say if they can&#8217;t solve it for you nobody can. I&#8217;m sure we will stay in touch. The discussions I had with <a href="http://andrewpeters.net/">Andrew Peters</a>, <a href="http://hestia.typepad.com/">Ivan Towlson</a>, <a href="http://turtle.net.nz/blog/">JB</a> and <a href="http://blog.bluecog.co.nz/">JD</a> really upped my game as a programmer. I think it&#8217;s always great to have discussions with people that have a different point of view, although I can get quite passionate about things, but I think it&#8217;s even more great if you can do it with brilliant people. That&#8217;s what my lunches with geeks were about :).
+Not to forget the poker nights, they were always good fun. I think I still lost some money but I now understand the game of Poker :) It&#8217;s much like real life and in my case the best advice there is don&#8217;t get too ballsy and enthusiastic too early in the game it can prove to be disastrous. Another memory from poker is &#8220;the blue stuff&#8221;, an alcoholic beverage easily mistaken for anti-freeze but it works really well ;). The hangover the day after wasn&#8217;t always that great but that&#8217;s the price you pay :)</p>
+
+<p>Then there are some people that aren&#8217;t necessarily kiwi but I met them here in New Zealand. <a href="http://bgeek.net/">Owen Evans</a> for showing me the light on mocking :) <a href="http://codeclimber.net.nz">Simone Chiaretta</a>, a very smart Italian programmer, his contributions to the community are quite invaluable.</p>
+
+<p>I realise I left out a whole bunch of people like Keith Archibald, <a href="http://www.jwegesin.com/">Jeff Wegesin</a>, Vicky Rawsthorne and Ross McWhannel a.o. but I wanted to constrain myself to the programming experiences. I apologise too all the people I left out like the Kiwis that went to Europe before I got back: <a href="http://www.flog.co.nz/">Adam Burmister</a> and <a href="http://www.fastchicken.co.nz/">Nic Wise</a> I guess we&#8217;ll catch up soonish :)</p>
+
+<p>Furthermore if you haven&#8217;t been to New Zealand yet. I think it&#8217;s about high time you order that ticket and get yourself over here. It&#8217;s absolutely drop dead gorgeous, the natives are friendly and it&#8217;s probably one of the safest places in the world. The atmosphere here is great it&#8217;s a huge mix of people coming from all over the world, which leads to some very interesting friendships and discussions.  I think the rest of the world can learn a lot from the kiwi&#8217;s on the matter of tolerance and not taking yourself too serious, as well as their acceptance and openness to different cultures and new experiences. So get over here and get yourself some kiwi outlook on life.</p>
+
+<p>I&#8217;ll finish off this post with: It&#8217;s been absolutely magic mate ;)</p>
+
+<p>Hei konaa raa</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/07/12/how-i-got-started-in-software-development/">How I Got Started in Software Development</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-07-12T07:52:15+02:00" pubdate data-updated="true">Jul 12<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://www.michaeleatonconsulting.com/blog/Default.aspx">Michael Eaton</a> started a meme with the question: <a href="http://www.michaeleatonconsulting.com/blog/archive/2008/06/04/how-did-you-get-started-in-software-development.aspx">How did you get started in software development?</a></p>
+
+<p>Yesterday <a href="http://codeclimber.net.nz/">Simone Chiaretta</a> <a href="http://codeclimber.net.nz/archive/2008/07/10/How-I-Got-Started-in-Software-Development.aspx">tagged me in his post</a>, so it’s now my turn to answer the questions and tag other bloggers:</p>
+
+<h2>How old were you when you started programming?</h2>
+
+<p>Like many other programmers I started at an early age. I learnt to read and write when I was 6 years old. By the time I was 8 a friend of my mother showed how to use the DOS command line and how to create batch scripts. This got me started to create the menu system so that my mother could also use the computer, I&#8217;ve been supporting my parents on their pcs ever since.  All the books I could find in those days were in English and I&#8217;m a Dutch speaker which made reading them at 8 years old quite hard.</p>
+
+<h2>How did you get started in programming?</h2>
+
+<p>That same friend also showed me windows 1.0 and paint which was nice but more cool to me was the gwbasic command he gave me. That thing opened up a wonderful world of line numbers and goto statements which made the computer do stuff. Hmmmmm do stuff. Suddenly I could understand the books because they had code in them and I understood code.</p>
+
+<p>As a kid I was more interested in soccer and playing than programming but I came back to it from time to time.<br/>
+A couple of years later I got interested in girls which was disastrous for my programming time, not much later I could drink alcohol so I abandonned programming as a hobby for a couple of years. In school however I got taught Turbo Pascal which revived my interest around the age of 15. I wrote blackjack in it that year and that was my big achievement for that year.</p>
+
+<p>The next couple of years I had to make do with a very old computer that wouldn&#8217;t do much. In school I got 2 hours a week of programming dBase IV (joy joy) and MS Access in my graduation year. After my graduation I started working in the hospitality sector and started partying hard, no programming for the next couple of years :).</p>
+
+<h2>What was your first language?</h2>
+
+<p>I guess it was batch scripting, the fancy menus back in those days with drop shadow boxes etc.</p>
+
+<p>But I wrote snake and such around the same time in GW-BASIC which I really consider to be my first language.</p>
+
+<h2>What was the first real program you wrote?</h2>
+
+<p>I won&#8217;t count the little batch scripts etc. I guess the first program I wrote completely from scratch and without the help of a manual of some sort must be BlackJack at the age of 15 in Turbo Pascal.</p>
+
+<h2>What languages have you used since you started programming?</h2>
+
+<p>Batch scripting, GW-BASIC, qBasic, Borland Turbo Pascal, VB6, VB.NET, C#, Javascript, HTML, CSS, XML, XSL, Bash</p>
+
+<h2>What was your first professional programming gig?</h2>
+
+<p>I guess that would mean the first time I got paid. I wrote a couple of scripts and a little bit of Access for a company my father worked for when I was 16.  After that it took me until I was 22 to get started as a web developper after my day job.</p>
+
+<h2>If you knew then what you know now, would you have started programming?</h2>
+
+<p>Hell yeah :) I loooooove programming :-D. While I took prolonged break during the early years of my programming life it has always been there silently calling my name. I don&#8217;t know if there is anything else in the world I love doing more as a profression.</p>
+
+<h2>If there is one thing you learned along the way that you would tell new developers, what would it be?</h2>
+
+<p>RTFM and consequently go forth and explore. And never stop communicating with the team and users.</p>
+
+<h2>What&#8217;s the most fun you&#8217;ve ever had&#8230; programming?</h2>
+
+<p>While there are many things in programming I love like learning new stuff and such. I guess for me programming is about getting into the zone. You code away and a couple of hours later you wrote something great. I also love the constant little victories :)</p>
+
+<h2>Now on to others</h2>
+
+<p>This is the time where I get to pick a couple of people. Uhmm, I pick:</p>
+
+<ul>
+<li><a href="http://andrewpeters.net">Andrew Peters</a></li>
+<li><a href="http://blog.bittercoder.com">Alex Henderson</a></li>
+<li><a href="http://hestia.typepad.com">Ivan Towlson</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/06/12/dynamic-script-control/">Dynamic Script Control</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-12T18:13:42+02:00" pubdate data-updated="true">Jun 12<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Both Silverlight and WPF use XAML markup to describe their user interface. As I&#8217;m currently writing my chapter on WPF for my book IronRuby In Action and I want to use some xaml that has been generated before for a different project but with an IronRuby class to load the xaml I&#8217;m in trouble. This is because you can declare assembly references in the xml namespace declarations so you can use the types in that assembly from xaml.</p>
+
+<p>The DLR based languages don&#8217;t compile into static assemblies and this means that you can&#8217;t use those xml namespace definitons to reference your assemblies. I wrote a fairly trivial control that acts like a hook for DLR based controls in the XAML tree.</p>
+
+<p>You can check it out at codeplex.    <br/>
+<a href="http://codeplex.com/dynamicscriptcontrol">http://codeplex.com/dynamicscriptcontrol</a></p>
+
+<p>The idea behind this control is that you can &#8220;hook&#8221; your DLR based control into the visual tree by setting some properties. You can set properties on the DLR based control by setting the Attributes property on the DynamicScriptControl</p>
+
+<p>Let&#8217;s look at a quick example:</p>
+
+<ol>
+<li>The ruby file defining a custom TextBox. But you can do whatever you want in that ruby file of course.</li>
+</ol>
+
+
+<p><a href="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-rubyscript.png"><img src="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-rubyscript-thumb.png" alt="dynamic_script_control_rubyscript" /></a></p>
+
+<p>All this textbox does is preset it&#8217;s text property to &#8220;I&#8217;m prefilled&#8221;</p>
+
+<ol>
+<li>The xaml for the window</li>
+</ol>
+
+
+<p><a href="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-window-xaml.png"><img src="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-window-xaml-thumb.png" alt="dynamic_script_control_window_xaml" /></a></p>
+
+<p>You first declare a namespace for the assembly that has the DynamicScriptControl. Next I have a StackPanel that contains 2 DynamicScriptControls. The first just contains the 2 mandatory properties. We need to know which class you want to instantiate in the file you provide by setting the ScriptFile property. This script file property is a path to your ruby file in my case prefilled_text_box.rb.    <br/>
+The second DynamicScriptControl is one where I want to initialize the control with my own text property. To declare those properties you have to add them to the Attributes collection of the DynamicScriptControl. At this moment it&#8217;s not smart enough to know which datatype you give it so you can specify a format string which was necessary in this case because text is a string.</p>
+
+<ol>
+<li>The result</li>
+</ol>
+
+
+<p><a href="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-window.png"><img src="http://flanders.co.nz/wp-content/uploads/2008/06/dynamic-script-control-window-thumb.png" alt="dynamic_script_control_window" /></a></p>
+
+<p>Michael Foord the author of IronPython In Action will provide the python integration in this control.</p>
+
+<p>There was a release of the Dynamic Silverlight SDK earlier this week which contained the necessary source code files to compile a common DLR for both IronRuby and IronPython. That is what makes it possible to support multiple scripting languages from the start.</p>
+
+<p>I&#8217;ve hosted the source code on google and you can find that at:</p>
+
+<p><a href="http://code.google.com/p/dynamic-script-control">http://code.google.com/p/dynamic-script-control</a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/ironruby">ironruby</a>,<a href="http://technorati.com/tags/WPF">WPF</a>,<a href="http://technorati.com/tags/DLR">DLR</a>,<a href="http://technorati.com/tags/ironpython">ironpython</a>,<a href="http://technorati.com/tags/Silverlight">Silverlight</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/05/16/the-ironruby-in-action-book-went-into-eap-today-2/">The IronRuby in Action Book Went Into EAP Today</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-16T10:52:46+02:00" pubdate data-updated="true">May 16<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It&#8217;s been a bit of journey but my <a href="http://manning.com/carrero">IronRuby in Action</a> book finally went into EAP today. EAP means exactly what it means in the software world, still very much subject to change. This could be seen as a public review :)  I welcome any suggestions you may have.</p>
+
+<p>You can find the book at <a href="http://manning.com/carrero">http://manning.com/carrero</a>
+There is also a forum there where you can post suggestions and/or problems you may encounter when running the code samples. I look at it as my issue tracker :)</p>
+
+<p>I&#8217;m currently working on a chapter where I build a complete twitter client with IronRuby and WPF (not silverlight as indicated on the current TOC). It is based on Witty but uses IronRuby instead of C# to drive the xaml. Also some storyboards have been replaced by IronRuby instead of by xaml stuff. It&#8217;s also not a straight port of Witty because I haven&#8217;t really looked at their code apart from the xaml that is.</p>
+
+<p>Happy reading :)</p>
+
+<p>Update: Some people started calling it the &#8220;jugs book&#8221;</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f05%2f16%2fthe-ironruby-i%e2%80%a6to-eap-today-2"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f05%2f16%2fthe-ironruby-i%e2%80%a6to-eap-today-2" alt="kick it on DotNetKicks.com" /></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2008/05/13/using-the-mini-spec-framework-that-comes-with-ironruby/">Using the Mini Spec Framework That Comes With IronRuby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-13T19:27:27+02:00" pubdate data-updated="true">May 13<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve set out to build my first &#8220;real&#8221; application (still playground material) with IronRuby today and for me no application can be built without having the unit tests or specs to give me that warm fuzzy feeling that things should work. That being said the first thing on my list of things to do is figure out how to use the minispec framework that IronRuby currently uses to write my specs.</p>
+
+<p>Since my application will be doing a fair bit of http requests I want to be able to mock that out so I don&#8217;t have to rely on the webservers to be up and running or being online to run the specs.</p>
+
+<p>The first thing I did was copy a couple of files from the <strong>tests\IronRuby\Specs </strong>directory in the directory where you downloaded the IronRuby source code into <code>C:\tools\IronRuby</code> in my case. I copied those files in a specs subdirectory of my application directory. The files we&#8217;re going to need are:</p>
+
+<ul>
+<li><p>mini_mock.rb</p></li>
+<li><p>mini_rspec.rb</p></li>
+<li><p>mspec_helper.rb</p></li>
+<li><p>rspec_helper.rb</p></li>
+<li><p>simple_mock.rb</p></li>
+<li><p>spec_helper.rb</p></li>
+<li><p>spec_runner.rb</p></li>
+</ul>
+
+
+<p>The next thing on my to-do list is then to change some of the files so that we can run our own specs on our terms.</p>
+
+<p>The first changes I made are in spec_helper.rb. I replace require &#8216;mini_mock&#8217; on line 18 with <code>require File.dirname(__FILE__) + '/mini_mock'</code></p>
+
+<p>The next bit is in the spec_runner.rb file. I just removed the word <em>core/</em> in that file because our specs will just live in a directory structure under the specs folder.</p>
+
+<p>Now to create the first spec and mock with that spec framework:</p>
+
+<p>I created a folder models in my specs folder. In that folder I created a file <code>spec_test_spec.rb</code> with the following content</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/../spec_helper.rb&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span> <span class="s2">&quot;Specs&quot;</span> <span class="k">do</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should work&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="c1"># puts &quot;Yay!!! It works&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should mock methods&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">mock</span> <span class="o">=</span> <span class="no">Object</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">mock</span><span class="o">.</span><span class="n">should_receive</span> <span class="ss">:mocked_method</span><span class="p">,</span> <span class="ss">:returning</span> <span class="o">=&gt;</span> <span class="s2">&quot;Yay!!! I&#39;m mocking&quot;</span>
+</span><span class='line'>    <span class="n">result</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">mocked_method</span>
+</span><span class='line'>    <span class="n">result</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;Yay!!! I&#39;m mocking&quot;</span>
+</span><span class='line'>    <span class="c1"># puts result</span>
+</span><span class='line'>    <span class="no">Mock</span><span class="o">.</span><span class="n">verify</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This just has a test method to see if it will run the rspec syntax and the second is where I tested to see if I could mock methods on objects. In the future we&#8217;ll be able to use mocha and rspec for example and then we&#8217;ll have a nicer syntax for mocking stuff. But this will do for now.</p>
+
+<p>Then I opened up a command console and navigated to the folder that contains my application</p>
+
+<pre><code>+ C:\projects\lumpr\src\Sylvester.DesktopEdition\Sylvester.IronRuby\specs
+
+» **ir spec_runner.rb models - pass**
+
+Specs should work
+Specs should mock methods
+Total pass: 2 out of 2 examples
+</code></pre>
+
+<p>I may post an example later this week with some real tests but this shows you how to get going with the mini spec framework to test your .NET stuff today.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/5/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page/3/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

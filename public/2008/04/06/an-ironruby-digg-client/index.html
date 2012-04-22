@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>An IronRuby Digg Client - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="Scott Guthrie has a series of tutorials on how to consume the Digg API with Silverlight and C#. I wanted to know if I could convert that tutorial to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2008/04/06/an-ironruby-digg-client">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">An IronRuby Digg Client</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-06T16:45:49+02:00" pubdate data-updated="true">Apr 6<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Scott Guthrie has a <a href="http://weblogs.asp.net/scottgu/archive/2008/02/22/first-look-at-silverlight-2.aspx">series of tutorials</a> on how to consume the Digg API with Silverlight and C#. I wanted to know if I could convert that tutorial to IronRuby.</p>
+
+<p>What I came up has the same end result but due to the fact that IronRuby and its Silverlight implementation isn&#8217;t complete yet I can&#8217;t mimic the structure of that tutorial yet. I couldn&#8217;t yet figure out how to load external xaml files so I put all the xaml in one file.</p>
+
+<p>I have one C# file that resides in the lib folder, this file is called DigStory.cs and contains a DiggStory class which represents a story on digg. It uses XLinq to parse the xml document and return a list of stories.</p>
+
+<p><strong><a href="http://flanders.co.nz/wp-content/uploads/2008/04/digg.zip">Download the complete code</a></strong></p>
+
+<p>The code contained in that file:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="nc">DiggStory</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Title</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Description</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">int</span> <span class="n">NumDiggs</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">Uri</span> <span class="n">HrefLink</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">ThumbNail</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">UserName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">diggstory</span><span class="p">&gt;</span> <span class="n">ParseFeed</span><span class="p">(</span><span class="kt">string</span> <span class="n">feedContent</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">var</span> <span class="n">diggFeed</span> <span class="p">=</span> <span class="n">XDocument</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">feedContent</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">from</span> <span class="n">story</span> <span class="k">in</span> <span class="n">diggFeed</span><span class="p">.</span><span class="n">Descendants</span><span class="p">(</span><span class="s">&quot;story&quot;</span><span class="p">)</span>
+</span><span class='line'>                     <span class="n">where</span> <span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">)</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">).</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">.</span><span class="n">EndsWith</span><span class="p">(</span><span class="s">&quot;.gif&quot;</span><span class="p">)</span>
+</span><span class='line'>                     <span class="n">select</span> <span class="k">new</span> <span class="n">DiggStory</span>
+</span><span class='line'>                     <span class="p">{</span>
+</span><span class='line'>                         <span class="n">Id</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">),</span>
+</span><span class='line'>                         <span class="n">Title</span> <span class="p">=</span> <span class="p">((</span><span class="kt">string</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">)).</span><span class="n">Trim</span><span class="p">(),</span>
+</span><span class='line'>                         <span class="n">Description</span> <span class="p">=</span> <span class="p">((</span><span class="kt">string</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;description&quot;</span><span class="p">)).</span><span class="n">Trim</span><span class="p">(),</span>
+</span><span class='line'>                         <span class="n">ThumbNail</span> <span class="p">=</span> <span class="p">(</span><span class="kt">string</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">).</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                         <span class="n">HrefLink</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Uri</span><span class="p">((</span><span class="kt">string</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;link&quot;</span><span class="p">)),</span>
+</span><span class='line'>                         <span class="n">NumDiggs</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;diggs&quot;</span><span class="p">),</span>
+</span><span class='line'>                         <span class="n">UserName</span> <span class="p">=</span> <span class="p">(</span><span class="kt">string</span><span class="p">)</span><span class="n">story</span><span class="p">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">).</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                     <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I won&#8217;t post the xaml file because it&#8217;s a bit too long. I will however post the app.rb file and offer a little bit more explanation on that file.</p>
+
+<figure class='code'><figcaption><span>app.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;System&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;Silverlight&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;System.ServiceModel.Web&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;Contract&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="no">System</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">System</span><span class="o">::</span><span class="no">Net</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">System</span><span class="o">::</span><span class="no">Windows</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">App</span> <span class="o">&lt;</span> <span class="no">SilverlightApplication</span>
+</span><span class='line'>  <span class="n">use_xaml</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_topic_url</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+</span><span class='line'>    <span class="s2">&quot;http://services.digg.com/stories/topic/</span><span class="si">#{</span><span class="n">topic</span><span class="si">}</span><span class="s2">?count=20&amp;appkey=http%3A%2F%2Fflanders.co.nz%2Fblog&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>  
+</span><span class='line'>    <span class="n">search_button</span><span class="o">.</span><span class="n">click</span> <span class="k">do</span> <span class="o">|</span><span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">topic</span> <span class="o">=</span> <span class="n">search_textbox</span><span class="o">.</span><span class="n">text</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="n">client</span> <span class="o">=</span> <span class="no">WebClient</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">client</span><span class="o">.</span><span class="n">download_string_completed</span> <span class="k">do</span> <span class="o">|</span><span class="n">sender</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>          <span class="k">return</span> <span class="k">unless</span> <span class="n">args</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">stories</span> <span class="o">=</span> <span class="no">DiggStory</span><span class="o">.</span><span class="n">parse_feed</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">result</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">stories_list</span><span class="o">.</span><span class="n">selected_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">stories_list</span><span class="o">.</span><span class="n">items_source</span> <span class="o">=</span> <span class="n">stories</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="n">client</span><span class="o">.</span><span class="n">download_string_async</span> <span class="no">Uri</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">get_topic_url</span><span class="p">(</span><span class="n">topic</span><span class="p">))</span>
+</span><span class='line'>      
+</span><span class='line'>      
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>    <span class="n">stories_list</span><span class="o">.</span><span class="n">selection_changed</span> <span class="k">do</span> <span class="o">|</span><span class="n">sender</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">story</span> <span class="o">=</span> <span class="n">stories_list</span><span class="o">.</span><span class="n">selected_item</span>
+</span><span class='line'>      
+</span><span class='line'>        <span class="n">story_detail</span><span class="o">.</span><span class="n">data_context</span> <span class="o">=</span> <span class="n">story</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">story_detail</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="no">Visibility</span><span class="o">.</span><span class="n">Visible</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>    <span class="n">close_button</span><span class="o">.</span><span class="n">click</span> <span class="k">do</span> <span class="o">|</span><span class="n">sender</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">story_detail</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="no">Visibility</span><span class="o">.</span><span class="n">Collapsed</span>
+</span><span class='line'>  
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>  
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">App</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above code contains all the code necessary for our application.</p>
+
+<p>We first tell the application to use the app.xaml file. Next we define a method that builds us the request url for the digg api. I chose to use the xml format to stay as close as possible to the sample of Scott.</p>
+
+<p>Like in the C# sample we&#8217;re also downloading the file asynchronous. In the callback for when the request completes we parse the returned string into a list of stories and set that as the item source of our Listbox in the app.xaml file.</p>
+
+<p>We handle the selection_changed event of the ListBox to display a detail view on a story with a link to the digg page.</p>
+
+<p>More explanation on the xaml can be found on <a href="http://weblogs.asp.net/scottgu/archive/2008/02/22/first-look-at-silverlight-2.aspx">Scotts blog</a>.</p>
+
+<p>Make sure you get the bits you need from the <a href="http://dynamicsilverlight.net">dynamic silverlight website</a> needed for running dynamic silverlight applications.</p>
+
+<p>Put the path to chiron.exe in your PATH variable and extract the contents of the downloaded sample. open a command prompt and go to the location where you extracted the files to. type chiron /b and click on index.html</p>
+
+<p><strong><a href="http://flanders.co.nz/wp-content/uploads/2008/04/digg.zip">Download the complete code</a></strong></p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f06%2fan-ironruby-digg-client%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f06%2fan-ironruby-digg-client%2f" alt="kick it on DotNetKicks.com" /></a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-06T16:45:49+02:00" pubdate data-updated="true">Apr 6<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/ironruby/'>IronRuby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2008/04/06/an-ironruby-digg-client/" data-via="casualjim" data-counturl="http://flanders.co.nz/2008/04/06/an-ironruby-digg-client/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2008/03/19/made-some-changes-the-macbook-5-weeks-in/" title="Previous Post: Made some changes: The macbook 5 weeks in">&laquo; Made some changes: The macbook 5 weeks in</a>
+      
+      
+        <a class="basic-alignment right" href="/2008/04/09/updated-my-lightspeed-model-generator/" title="Next Post: Updated my lightspeed model generator">Updated my lightspeed model generator &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2008/04/06/an-ironruby-digg-client/';
+        var disqus_url = 'http://flanders.co.nz/2008/04/06/an-ironruby-digg-client/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

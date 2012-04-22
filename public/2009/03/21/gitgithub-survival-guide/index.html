@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git/Github survival guide - Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="Lately I’ve been helping a few people to get started on Github. I use git at the command line and my survival guide is also based on that way of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/2009/03/21/gitgithub-survival-guide">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Git/Github Survival Guide</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-21T18:33:32+01:00" pubdate data-updated="true">Mar 21<span>st</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Lately I’ve been helping a few people to get started on <a href="http://github.com">Github</a>. I use git at the command line and my survival guide is also based on that way of interacting with <a href="http://git-scm.com/">Git</a>. So I thought I’d write the procedure up so that I can just point people to this page.</p>
+
+<p>The first tip I can give you and most of what I’ll be talking about is in the <a href="http://github.com/guides/home">guides</a> from github. When you’re used to Subversion or Team Foundation Server for example you’ll need to make a mental leap. That leap would be to realise that your local copy <em>is</em> the master copy for you. The remote server like github.com is one is a little bit like an afterthought. I think it goes a little bit like this: “O cool I’ve built this really cool thing here and I’ve got it in this git repository on my machine. It would be cool if other people also had access. Wait a minute, I’ll just add a remote and push my stuff onto that server.” Problem solved.</p>
+
+<p>Most of this guide applies to both windows and *nix systems except for the next part because that will describe the install parameters for getting msysgit to behave nicely on your system.</p>
+
+<p>==== Windows only ====</p>
+
+<p>If you’re on windows I suggest you use <a href="http://code.google.com/p/msysgit">msysgit</a> as your git client. You can probably use everything I’m about to explain from explorer too if you want to use <a href="http://code.google.com/p/tortoisegit/">tortoisegit</a> or just prefer gui’s. I, personally, like having options so I’ll probably use a mix of those in the future. Ok onto the install procedure.</p>
+
+<p>Somewhere half-way through the install of msysgit it will ask you how far you want to integrate it. The correct choice is the middle one: Run Git from the Windows Command Prompt. For generating ssh keys etc you probably want to use OpenSSH.</p>
+
+<p>==== Windows only end ====</p>
+
+<p>When the install of msysgit is completed it is time to start configuring your git install for usage with github. The first step you need to take is to tell git your username and email address. You will also need your API token that you can find on your <a href="http://github.com/account">account page</a>.</p>
+
+<pre><code>[~]$ git config --global user.name &lt;span class="str"&gt;"Ivan Porto Carrero"&lt;/span&gt;
+[~]$ git config --global user.email ivan@nowhere.com
+[~]$ git config --global github.user casualjim
+[~]$ git config --global github.token [[API TOKEN]]
+</code></pre>
+
+<p>This information can be found in the github guides: <a href="http://github.com/guides/tell-git-your-user-name-and-email-address">http://github.com/guides/tell-git-your-user-name-and-email-address</a>. The configuration above is global but you can still override that on a per project basis.</p>
+
+<p>Now that git knows how to deal with github it is time to formally introduce your machine to the github server. To do so you might have to create an ssh key private/public keypair. A tip I can give you before you start the creation is that you probably don’t want to type a password everytime you push to github. So when you create your ssh key don’t use a passphrase (leave it blank when asked for one).</p>
+
+<p>The procedure on how to create the ssh keys can againn be found in the github guides: <a href="http://github.com/guides/providing-your-ssh-key">http://github.com/guides/providing-your-ssh-key</a>. On windows I would suggest that you use the openssh one. I use RSA keys but you can choose whichever flavor you want of course :) After generating the ssh keys you need to provide them to github in your <a href="http://github.com/account">account page</a>.</p>
+
+<p>This should get you up and running with github. I’m assuming most people coming to github are familiar with subversion so I’ll try to map some common operations to the command sequence you need in git.</p>
+
+<p>First things first I have a couple of aliases defined for some common operations.</p>
+
+<p>You can just copy paste the aiases section below in the .gitconfig file that you can find in the root of your personal folder. C:\users\ivan.gitconfig on vista for me and ~/.gitconfig in bash.</p>
+
+<pre><code>[alias]
+    ci = commit
+    st = status
+    co = checkout
+</code></pre>
+
+<p>If all you need is read-only access to a repository you can just clone a repository by its public clone url ie. git clone git://github.com/casualjim/ironrubymvc.git</p>
+
+<p>The first operation you’ll need is how to get source code, make changes and send in a patch. In git lingo this is called forking.</p>
+
+<p>On github you fork the project you want to make changes too. Then you clone that project on your local machine and make your changes. You then push your changes back to your repository and send a pull request to the original project. That is all you need to do to send in a patch, issue a pull request.</p>
+
+<p>I forked ironrubymvc from Jimmy Schementi and send him pull requests regularly when I’ve completed a chunk of work on it. so here’s the sequence of commands I use to do this.</p>
+
+<p><em><strong>git clone </strong></em><a href="mailto:git@github.com:casualjim/ironrubymvc.git"><em><strong>git@github.com:casualjim/ironrubymvc.git</strong></em></a></p>
+
+<p>… make some changes …</p>
+
+<p>To start updating the repository with my changes I’ll generally first ask for a status to see if I need to add some files to ignore and if there are new files that need te be included</p>
+
+<p><em><strong>git st </strong></em></p>
+
+<p>If there are files that need to be ignored I’ll add them to the .gitignore file in my project root. If there are still some new files that need to be added:</p>
+
+<p><strong><em>git add .</em></strong></p>
+
+<p>Then I’m ready to commit the changes to my local repository:</p>
+
+<p><em><strong>git ci –a –m “Made ironrubymvc do the dishes and ironing”</strong></em></p>
+
+<p>Now it’s time to push my changes to the github server.</p>
+
+<p><em><strong>git push</strong></em></p>
+
+<p>And now I need to go to the github website and send a pull request to Jimmy. He can then decide if he wants to apply the patch or make some changes.</p>
+
+<p>The next step is to keep your fork in sync with the forked repository, so that you can continue to pick up their changes and ensure that your changes still work.</p>
+
+<p><em><strong>git remote add upstream git://github.com/jschementi/ironrubymvc.git</strong></em></p>
+
+<p>to automatically fetch and then merge the changes from the upstream repository you can pull from it. You have to tell pull the remote source it has to pull from and the target branch.</p>
+
+<p><strong><em>git pull upstream master</em></strong></p>
+
+<p>A more detailed explanation of this process can be found in the github guides. <a href="http://github.com/guides/fork-a-project-and-submit-your-modifications">http://github.com/guides/fork-a-project-and-submit-your-modifications</a></p>
+
+<p>The next thing we’re going to map is svn:externals. In git this is called submodules. They have a great explanation off that in the github guides <a href="http://github.com/guides/developing-with-submodules">http://github.com/guides/developing-with-submodules</a></p>
+
+<p>Suppose you made some changes and they aren’t really what you want and you want to restore the repository to the last commit.</p>
+
+<p><strong><em>git reset &#8211;hard</em></strong></p>
+
+<p>The last topic is branching and merging changes etc. As an example I will take the <a href="http://ironruby.net">IronRuby</a> project for which Michael Letterle and myself maintain the linux branch. This branch ensures that IronRuby gets the fixes it needs to compile on mono. A typical workflow for me when I sync it with the source repository @ git://github.com/ironruby/ironruby.git from the ironruby project root on my local machine.</p>
+
+<p>Previously I did:</p>
+
+<p><em><strong>git clone git@github.com:mletterle/ironruby.git</strong></em></p>
+
+<p><em><strong>git remote add ironruby git://github.com/ironruby/ironruby.git</strong></em></p>
+
+<p>And to create and track the remote linux branch I issued the following commands:</p>
+
+<p><strong><em>git co –-track –b linux origin/linux</em></strong></p>
+
+<p><strong><em>git pull</em></strong></p>
+
+<p>This has now got my local copy set up with a linux branch and has pulled in the contents of the remote branch to my local repository.</p>
+
+<p>When there are changes in the source repository I issue the following commands:</p>
+
+<p><strong><em>git co master</em></strong> // Check out the master branch</p>
+
+<p><strong><em>git pull ironruby master</em></strong> // Pull in changes from remote</p>
+
+<p><strong><em>git co linux</em></strong> // Check out the linux branch</p>
+
+<p><strong><em>git merge master</em></strong> // Merge in the changes from the master branch</p>
+
+<p><strong><em>mate .</em></strong> // Open textmate to resolve conflicts</p>
+
+<p><strong><em>git add .</em></strong> // Add the files with the resolved conflicts back to the repository</p>
+
+<p><strong><em>git ci –a –m “Synced with upstream”</em></strong> // submit changes</p>
+
+<p><strong><em>git push</em></strong> // update the github server</p>
+
+<p>The information above can be found in the github guides as well but in several places:</p>
+
+<p><a href="http://github.com/guides/git-cheat-sheet">http://github.com/guides/git-cheat-sheet</a></p>
+
+<p><a href="http://github.com/guides/showing-and-tracking-remote-branches">http://github.com/guides/showing-and-tracking-remote-branches</a></p>
+
+<p><a href="http://github.com/guides/push-a-branch-to-github">http://github.com/guides/push-a-branch-to-github</a></p>
+
+<p><a href="http://github.com/guides/keeping-a-git-fork-in-sync-with-the-forked-repo">http://github.com/guides/keeping-a-git-fork-in-sync-with-the-forked-repo</a></p>
+
+<p><a href="http://beans.seartipy.com/2008/12/09/setting-up-ruby-on-rails-projects-with-git-and-github/">http://beans.seartipy.com/2008/12/09/setting-up-ruby-on-rails-projects-with-git-and-github/</a></p>
+
+<p>Those are the commands I use about 95% of the time when I’m working with git. I thought they might be useful to other people hence the share.</p>
+
+<p>If you combine the above with my previous post on how to git-enable your command-line <a href="http://flanders.co.nz/2009/03/19/pimp-your-command-line-for-git/">http://flanders.co.nz/2009/03/19/pimp-your-command-line-for-git/</a> . I guess you’ve got a pretty sweet setup.</p>
+
+<p><strong>There is one gotcha that I’d like to repeat one more time. When you’re branching you have to close the solution in visual studio or all kinds of nastiness will ensue. Visual studio will lock some files and if git wants to remove them it can’t. This results in a branch that is probably messed up.</strong></p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2009%2f03%2f21%2fgitgithub-survival-guide%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2009%2f03%2f21%2fgitgithub-survival-guide%2f" alt="kick it on DotNetKicks.com" /></a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/git">git</a>,<a href="http://technorati.com/tags/github">github</a>,<a href="http://technorati.com/tags/cheat+sheet">cheat sheet</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-21T18:33:32+01:00" pubdate data-updated="true">Mar 21<span>st</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/source-control/'>Source control</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://flanders.co.nz/2009/03/21/gitgithub-survival-guide/" data-via="casualjim" data-counturl="http://flanders.co.nz/2009/03/21/gitgithub-survival-guide/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2009/03/19/pimp-your-command-line-for-git/" title="Previous Post: Pimp your command-line for git">&laquo; Pimp your command-line for git</a>
+      
+      
+        <a class="basic-alignment right" href="/2009/04/08/binder-for-ironruby-mvc/" title="Next Post: Binder for ironruby mvc">Binder for ironruby mvc &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://flanders.co.nz/2009/03/21/gitgithub-survival-guide/';
+        var disqus_url = 'http://flanders.co.nz/2009/03/21/gitgithub-survival-guide/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

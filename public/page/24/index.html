@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="I changed blogs today. My new blog can be found at http://www.flanders.co.nz/blog Together with the blog I also built a new site.. The only thing &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://flanders.co.nz/page/24">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/05/switched-blogs-today/">Switched Blogs Today</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-05T14:43:28+01:00" pubdate data-updated="true">Jan 5<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I changed blogs today. My new blog can be found at <a href="http://www.flanders.co.nz/blog">http://www.flanders.co.nz/blog</a></p>
+
+<p>Together with the blog I also built a new site.. The only thing that is left to do for me is to migrate the posts from geeks to the new one.<br/>
+This blog will allow me to post zip files with projects to go with the posts about coding that I do.</p>
+
+<p>I really love .NET 2.0 everything goes pretty quickly. To build my new site I spent about 14 hours that is for designing, lay-out in masterpages, sql database and content input. The site is bilingual so when dutch people hit my site they get almost everything in dutch and the rest of the world gets it in english.</p>
+
+<p> </p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/webresourceaxd-how-do-i-use-it/">Webresource.axd. How Do I Use It ???</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ever since I got my hands on .NET 2.0 I noticed the handler webresource.axd which seemed to provide a similar function as what I was using handlers for. </p>
+
+<p>I used handlers in .NET 1.1 and before today also in .NET 2.0 to handle my javascript and css that I need in controls I developped. <br/>
+I mark them before compiling as embedded resource and then later on read them out via reflection and they get served up by the browser.</p>
+
+<p>I probably don&#8217;t have to explain that (as long as your parameters don&#8217;t change) this scripts get cached by the browser so they will only be downloaded once and re-used afterwards.</p>
+
+<p>Well in asp.NET 2.0 there is a feature that uses webresource.axd to handle all kinds of embedded resources (images, pages, etc&#8230;)</p>
+
+<p><a href="http://www.nikhilk.net/WebResourceAttribute.aspx">Nikhil Kothari </a>has a post on how to use them in <a href="http://www.nikhilk.net/WebResourceAttribute.aspx">his blog</a>, and I just copy pasted the text below.</p>
+
+<p><strong><em>Using Web Resources<br/>
+</em></strong>Imagine I am writing an HtmlEditor control and I want to use a stock bold button icon. Here&#8217;s what I&#8217;d do:</p>
+
+<ol>
+<li><p>Embed &#8220;Bold.gif&#8221; as a resource with the same name into my control&#8217;s assembly.</p></li>
+<li><p>Mark it as Web-accessible via the attribute:<br/>
+<code>    [assembly: WebResource("Bold.gif", ContentType.ImageGif)]</code></p></li>
+<li><p>Use the GetWebResourceUrl() method on Page to get a URL that can be rendered out to the client.<br/>
+<code>    boldButton.ImageUrl = Page.GetWebResourceUrl(typeof(HtmlEditor), "Bold.gif");</code></p></li>
+</ol>
+
+
+<p>This results in a URL of the form:<br/>
+<code>    WebResource.axd?a=MyControls&amp;r;=Bold.gif&amp;t;=632059604175183419</code></p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/59980.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/webdav-exchange/">WebDav Exchange &#8230;</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I live in new zealand.</p>
+
+<p>I can successfully create appointments in exchange using webDAV.  But I can only create them in the timezone Z if I change the timezone to Y (which is mine) I always get bad request.</p>
+
+<p>Do I say ok.. so not during string conversion but I just calculate the offset and add that to the date and create the appointment then that should be ok. Also not !!!</p>
+
+<p>My conversion function is very basic but i didn&#8217;t find a way to get it properly formatted in .NET so this is my way. The function below ends with “Y“ and this doesn&#8217;t work, when I end it on Z it does work. Any suggestions ?</p>
+
+<p>All sorted now.. instead of passing on the timezone I should replace the Y with the offset of the timezone to +13:00 in the new zealand case.</p>
+
+<p>string</p>
+
+<p>formatDate(DateTime input){</p>
+
+<p>return input.ToString(&#8220;yyyy-MM-ddTHH:mm:ss.fffzzz&#8221;);<br/>
+}</p>
+
+<p>**** </p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/63737.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/run-vs-2k5-webserver-from-everywhere/">Run vs 2k5 Webserver From Everywhere</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The built in webserver from Visual Studio 2005 is great for locally quickviewing asp.net websites.<br/>
+I always thought it was a pitty that I had to start visual studio for it.</p>
+
+<p>Today I came accross a blog of a guy who wrote a small shell extension so you can right-click any folder and choose run asp.net 2.0 website from the context menu. It will run the webserver on that folder. How easy do you want it ?</p>
+
+<p>Read more about it here : <br/>
+<a href="http://weblogs.asp.net/rmclaws/archive/2005/10/25/428422.aspx">http://weblogs.asp.net/rmclaws/archive/2005/10/25/428422.aspx</a><br/>
+<a href="http://weblogs.asp.net/rmclaws/archive/2005/10/26/428600.aspx">http://weblogs.asp.net/rmclaws/archive/2005/10/26/428600.aspx</a></p>
+
+<p>Download here :<br/>
+<a href="http://www.interscapeusa.com/downloads/download.aspx?file=WebServerHere_v1.msi">http://www.interscapeusa.com/downloads/download.aspx?file=WebServerHere_v1.msi</a></p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/64042.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/rss-parsing/">Rss Parsing</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As mentioned earlier in this blog, I am building a rss program together with <a href="http://datafreakz.blogspot.com">http://datafreakz.blogspot.com</a></p>
+
+<p>Right now we have about 100000 feeds from this feeds I had before the weekend about 5000 that failed. Now most of these feeds were valid rss although my google sidebar doesn&#8217;t parse a lot of them either.</p>
+
+<p>Then I&#8217;ve noticed that lots of people never took the time to read the specifications and dump whatever they like in an rss feed.<br/>
+Furthermore there are a lot of people including w3c and ms that put stylesheets in their xml.  Up until last week (because I had a parser that seemed to parse a lot of it already), I was one of these people that thought that just using the System.Xml.XmlReader would be enough and that I would get everything on the first pass through my xml.</p>
+
+<p>Now after the weekend I&#8217;ve figured out that it takes 3 passes, that is 3 different ways to get the xml in my program to parse almost everything. The next problem that shows up are feeds that do exist, but their hosts are pretty slow in resolving the domains etc.. so I will be needing some retry mechanism.  The idea behind our system is that we want to be able to parse <strong>every</strong> <strong>valid</strong> feed from the internet.</p>
+
+<p>I&#8217;ve got the different encodings sorted now.</p>
+
+<p>One of the feeds that bounces the first time :</p>
+
+<p><a href="http://presscenter.org/repository/rss/nl/Ext_102110_5.xml">http://presscenter.org/repository/rss/nl/Ext_102110_5.xml</a></p>
+
+<p>And this one doesn&#8217;t want to parse yet :</p>
+
+<p><a href="http://www.musicalfan.be/rssfeed.xml">http://www.musicalfan.be/rssfeed.xml</a></p>
+
+<p>probably because of its description field in a few posts.  but I do read feeds with html in them that is what I find so strange.. I don&#8217;t know why this one doesn&#8217;t want to parse.. for now. ;-)</p>
+
+<p>Always I will appreciate ideas&#8230;. I can&#8217;t show you my code for my parsers but it is based on the xml reader class, too which you pass an encoded textreader. at least the first try parser.  I parse more feeds than Rss.NET and I parse more than rssbandit or rssfeeder.net But I want to be able to say that I parse about 99,99% of the feeds out there. <br/>
+I don&#8217;t want to use serialisation because of the performance overhead.. If you need to parse 100 000 - 300 000 feeds every bit counts ;)  And once we open up for the general public it will be even more feeds.</p>
+
+<p>When everything will be finished online.. probably I will be providing a vs2k5 add in and outlook add in.</p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/63483.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/my-vision-on-protecting-your-querystrings/">My Vision on Protecting Your Querystrings</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://geekswithblogs.net/casualjim/articles/64639.aspx">http://geekswithblogs.net/casualjim/articles/64639.aspx</a></p>
+
+<p> </p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/64640.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/ms-antispyware-doesnt-do-its-job/">MS Antispyware Doesn&#8217;t Do Its Job</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a discussion with my friend Miel (Coolz0r) about spyware and their scanners for it. 6 months ago I did a test of several anti-spyware programs and MS antispyware became the winner. It found the most spyware and what I liked most about it was that it provide everything that Ad-aware and Spybot supplied all together. This and the spynet option.  But in 6 months a lot can change and now I have whenU on my machine together with some other heavy duty spyware.  More on the reasons for this you can find in the link below</p>
+
+<p>_</p>
+
+<p><a href="http://blog.coolz0r.com/posted/microsoft-antispy-downgrades-claria-apps.html">http://blog.coolz0r.com/posted/microsoft-antispy-downgrades-claria-apps.html</a></p>
+
+<p>_</p>
+
+<p>So the search for a good, free spyware cleaner goes on &#8230; I&#8217;ll post more when I&#8217;ve found one.  If anybody has a recommendation please let me know, because spyware me-no-like.</p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/51020.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/got-added-to-the-new-zealand-user-group/">Got Added to the New Zealand User Group</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I haven&#8217;t been posting much lately because I got pretty busy over the past few months and it looks like it isn&#8217;t going to change quickly either.</p>
+
+<p>I got added to the new zealand .NET user group with this blog. and would like to thank nic wise for adding me. his blog can be found @ <a href="http://www.fastchicken.co.nz/blog">http://www.fastchicken.co.nz/blog</a></p>
+
+<p>I decided together with 2 other guys to start writing a book about quick and simple programming using .NET 2 technology. And what better way is there than to write a fully working application for this.<br/>
+The application that we will be writing will be a Forum engine à la Communityserver</p>
+
+<p>The software will be developped under an open source license. I will be posting regularly articles about what I did and the controls I built. </p>
+
+<p>If somebody has a suggestion on features that are missing now in communityserver, or in other forum engines in general, now would be a good time to comment them in this post.</p>
+
+<p>For the moment I am planning the rss engine.  I decided that I will just be supporting RSS 2.0 and Atom 1.0  as syndicators (OPML seems to be becoming pretty popular too, so maybe I will look at OPML as well).<br/>
+The feed outputs will be kept as simple as possible (I think simple is good, the simpler it is the more programs will be able to read it even the poorly written ones.)</p>
+
+<p>The aggregator used should be based on AJAX and if I feel really bored someday I will build a smart client to as an extension as well.</p>
+
+<p>That&#8217;s all for now..</p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/61341.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/design-templates-for-websites-from-microsoft/">Design Templates for Websites From Microsoft</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://msdn.microsoft.com/asp.net/reference/design/templates/default.aspx">http://msdn.microsoft.com/asp.net/reference/design/templates/default.aspx</a></p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/64035.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2006/01/04/atlas-new-rc-build-released/">Atlas New RC Build Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-04T19:53:32+01:00" pubdate data-updated="true">Jan 4<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There is a new Atlas RC available for download.  <br/>
+This one has got really cool new features.  If you haven&#8217;t looked at atlas before you should look at it now.</p>
+
+<p>AJAX just became as simple as 1-2-3.</p>
+
+<p>Nikhil Kothari blogs about the new features :</p>
+
+<p>A quick tour of Atlas December CTP :<br/>
+<a href="http://www.nikhilk.net/AtlasM1.aspx">http://www.nikhilk.net/AtlasM1.aspx</a></p>
+
+<p>The role and functionality of the Atlas Scriptmanager :<br/>
+<a href="http://www.nikhilk.net/AtlasScriptManager.aspx">http://www.nikhilk.net/AtlasScriptManager.aspx</a></p>
+
+<p>That should get your appetite for AJAX going :-D</p>
+
+<p><a href="http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859"><img src="http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859" alt="" /></a></p>
+
+<p><img src="http://geekswithblogs.net/casualjim/aggbug/63988.aspx" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/25/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page/23/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2011/09/03/scalatra-is-a-dsl-in-a-string/">Scalatra is a DSL in a string</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("casualjim", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/106536131996809745163?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Ivan Porto Carrero -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

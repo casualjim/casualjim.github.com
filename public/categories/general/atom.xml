@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: General | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/general/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <link rel="hub" href="http://pubsubhubbub.appspot.com"/>
+  <updated>2012-04-22T21:10:37+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[work for backchat]]></title>
+    <link href="http://flanders.co.nz/2011/08/01/backchat-developers/"/>
+    <updated>2011-08-01T20:57:20+02:00</updated>
+    <id>http://flanders.co.nz/2011/08/01/backchat-developers</id>
+    <content type="html"><![CDATA[<h1>Backchat.IO is hiring!</h1>
+
+<p>BackChat.io is easiest to describe as <em>grep for real-time data</em>. We’re busy developing a platform that makes sense of the data you send it (in real-time).</p>
+
+<p>For the social web that means that you can start following certain users on a network or define a search term and you get those in a unified activity streams format.</p>
+
+<p>But for something more arcane, like say, log data, that means you can send it lines of text and have it extract out fields on which you can define filters. All of this happens in real-time and changes are reflected virtually immediately in open connections.</p>
+
+<p>Our system is designed to allow for easy definition of data sources. Sources that currently feed into our system are <a href="http://twitter.com">Twitter</a>, <a href="http://facebook.com">Facebook</a>, <a href="http://linkedin.com">LinkedIn</a>, SMTP, RSS, ATOM, PubSubHubbub, and more. By next year we hope to provide dozens, if not 100’s, of API implementations.</p>
+
+<p>In the longer term we hope to provide more intelligent stuff like real-time reporting by allowing you to define aggregates like SUM, enhance data with secondary information, and many more crazy ideas. We’re aiming to build our system exclusively on existing standards described in RFC’s or the activity streams spec. However not everything we do is described in standards and that’s where we’ll try to extend an existing standard.
+Our use cases are wide, ranging from niche collaboration or social media apps, to communication/PR/marketing agencies, to telecommunications… We operate at an abstraction on a much lower level than most similar services; so many tools you see and use on the web today can be built with only a few lines of code in your favourite language on our platform.</p>
+
+<p>The entire system is built on dogfooding and practicing what we preach. So where it makes sense we rely on our own service, like with log processing. Our entire website is built using the API methods we expose to our customers. Our API integration language will be shared with our customers too.</p>
+
+<h2>How do you guys work?</h2>
+
+<p>We use a mix of technologies like <a href="http://www.scala-lang.org/">scala</a>, <a href="http://akka.iio">akka</a>, <a href="http://mongodb.org">mongodb</a>, <a href="http://lucene.apache.org">lucene</a>, <a href="http://www.zeromq.org/">zeromq</a>, <a href="http://dropbox.com">dropbox</a>, <a href="http://flowdock.com">flowdock</a>, <a href="http://skype.com">skype</a>, …. We apply agile principles to our development process, but this doesn’t mean we follow a doctrine that is being sold because some consultant wants to make some money. To us Agile development means: design for change. Which also means that the process we use is adapted to the people in the process and not vice versa. It’s about being productive and creating an environment where you want to work.
+At the moment, all of us work from home. We’re a team of 3, looking for a fourth team-member to start in September. We don’t care where or how you work, just that you deliver 40 hours worth of output, regular github pushes (so new code can be reviewed before it hits our integration branch) and, most importantly, passion!</p>
+
+<h2>Great! What are you guys looking for?</h2>
+
+<p>We’re looking for a passionate developer. This person ideally:</p>
+
+<ul>
+<li><p>knows about concurrent and distributed programming</p></li>
+<li><p>is well-versed in Scala</p></li>
+<li><p>can accept a team decision, and understands that communication is the most important part of development as a team.</p></li>
+<li><p>is polyglot (the ability to work with C#, node.js/javascript, ruby, python and/or php)</p></li>
+<li><p>preferably knows XMPP beyond using the smack library</p></li>
+<li><p>has used mongodb</p></li>
+<li><p>knows Lucene</p></li>
+<li><p>regular expressions have little or no secrets for you</p></li>
+<li><p>does not believe in sugar-coating things and voices reservations early</p></li>
+<li><p>No! Try not. Do, or do not. There is no try. (Some of us hope you’re a Star Wars fan too)</p></li>
+</ul>
+
+
+<p>It’s a plus if you’ve done some of the following:</p>
+
+<ul>
+<li><p>BIG data</p></li>
+<li><p>Language parsing and development</p></li>
+<li><p>Natural language processing</p></li>
+<li><p>Statistics</p></li>
+<li><p>knows how to express himself in simple english and not academic language</p></li>
+<li><p>Netty server development / Java NIO</p></li>
+<li><p>Jetty customization</p></li>
+<li><p>Understands the problems communication agencies and social-media developers face</p></li>
+</ul>
+
+
+<p>What we’re not looking for is someone who has little or no experience, community zealots and big framework lovers (I’m looking at you rails, lift, spring, …). We need doers!</p>
+
+<p>You do not have to live in the UK to work with/for us. We are firm believers in smarter remote-working, and our cloud-based infrastructure is designed to allow us to work from where we want.</p>
+
+<h2>Open-Source?</h2>
+
+<p>We use a lot of open source, and we believe in being good citizens and contribute back where we can. Some of the projects we use: <a href="http://api.mongodb.org/scala/casbah/current/">casbah</a>, <a href="http://akka.io/">akka</a>, <a href="https://github.com/scalatra/scalatra">scalatra</a>, lift-mongodb-record, lift-json, codahale metrics, databinder dispatch, …
+So far most of our contributions were to scalatra and peripheral to akka. If we come up with stuff that we all agree on should really be in an open source project then we will actually take the necessary steps to make that happen.</p>
+
+<p>Any open-source library we produce is licensed as MIT and uses as few dependencies as possible (be nice to people with complicated projects).</p>
+
+<h2>What’s the vision?</h2>
+
+<p>To build the best damned developer platform for social-media and real-time data! Quickly!</p>
+
+<p>Our service is primarily aimed at developers. We provide a metered, utility billing model. Depending on which bits and pieces of our infrastructure a developer uses we calculate a price per message for each incoming channel. At the end of the month they get a bill. This billing is updated in real-time so everybody knows exactly where they stand.
+For corporate customers we provide a behind-firewall-install license. This license fee may or may not include bespoke development or integration into their systems.</p>
+
+<p>Our founding customer has been O2/Telefonica. They’re using our platform in cool ways, but we can’t talk about that just yet (ssshh).</p>
+
+<h2>Who are the company?</h2>
+
+<p>Adam Burmister is the CEO of the company and has previously worked as team lead for the bbc.com homepage. He has also done assorted javascript libraries and was nominated for a webby award for his work at xero.com. He’s a Kiwi, so be warned, he sounds funny.</p>
+
+<p>Ivan Porto Carrero is the CTO and has previously almost published a book on IronRuby and has been an MVP for the last 2 years. Worked as an architect/consultant in the .NET sphere and met Adam while he was working as a senior development at xero.com It helps to know that Ivan is from Belgium, as an extremely low bullshit tolerance and it’s best to feed him at regular times with pre-approved snacks. Also, his english sounds funny.</p>
+
+<p>Stefan De Boey was our very first helper and we haven’t managed to scare him off, he’s actually happy with his job, but won’t say so because he’s Belgian and compliments make people suspicious where he’s from (not to mention the thought of making a government).
+Stefan typically starts his day between 11am and 12:30 and finishes around 20:00.
+Also, his english sounds funny.</p>
+
+<h2>Ok, I’m sold. How do I apply?</h2>
+
+<p>Great! We’re looking forward to meeting you.</p>
+
+<p>If you could, please start by sending us your LinkedIn profile and preferably some recent open source projects you worked on.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A good url regular expression? (repost)]]></title>
+    <link href="http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost/"/>
+    <updated>2009-11-08T12:02:37+01:00</updated>
+    <id>http://flanders.co.nz/2009/11/08/a-good-url-regular-expression-repost</id>
+    <content type="html"><![CDATA[<p>I'm moving this post from <a href="http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx">http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx</a></p>
+
+<p>I started out blogging on geeks with blogs but I can't allow comments there anymore or I get too much spam, so I'm moving the post from there to this place.  Various people have contributed through the comments in the other blog post. So here I have better control over the spam and can open the comments again.</p>
+
+<p>I have been looking for a good first layer of validating an url to see if it is valid.</p>
+
+<p>For checking the format of the url it seems to me to be the most logical approach to use regular expressions. Up until now I always discarded them as being to “geeky”, meaning i don't consider it my life's biggest goal to be typing (/?[]\w) all day long (so why did i become a programmer, aaaah yes to make life easier for other people)</p>
+
+<p>Anyway.. to find a good regular expression to that validates urls not url domains. One that doesn't allow spaces in the domainname and where the domain can be suffixed with the port number.  Also I need support for the ~/ paths</p>
+
+<p>This is what I came up with.. if somebody as a better idea... or finds a mistake please let me know.. Always happy to learn something new.</p>
+
+<p><code>csharp
+^(((ht|f)tps?\:\/\/)|~/|/)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5})(:[\d]{1,5})?)/?(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&amp;\w+=\w+)*)?
+</code></p>
+
+<p>I was a bit quickly in using this regex. Simeon pilgrim indicated that the ftp urls won't validate when you add a username and a password.</p>
+
+<p>I don't really need to validate ftp so I should have removed the ftp protocol from the list of choices.  I need this just to validate urls for weblinks and the link element in an rss feed.  When I need them for ftp I will post the ftp version.. but for now I don't have time to spend on elaborating the regex.</p>
+
+<p>Anyway here is the right one :<br/>
+<code>csharp
+^(http(s?)\:\/\/|~/|/)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?/?(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&amp;\w+=\w+)*)?
+</code></p>
+
+<p>A full url validation would include resolving names through dns or making a webrequest to the provided url to see if we get a 200 response. The only way to be sure is to test if it is there in my opinion.</p>
+
+<p>Thanks Simeon.</p>
+
+<p>And for those who really want the ftp validation :
+<code>csharp
+^((ht|f)tp(s?)\:\/\/|~/|/)?([\w]+:\w+@)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?/?(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&amp;\w+=\w+)*)?
+</code></p>
+
+<p>I am not sure about numbers in the username but I believe you can have a username of numbers alone.</p>
+
+<p>Comments don't seem to work on this blog engine.. so just send me a mail through the contact form. thanks</p>
+
+<p>Two days later ...</p>
+
+<p>I discovered there is still a problem with my regular expressions... folders don't get parsed.</p>
+
+<p>I've solved the path issue, so now it should be finding all url's</p>
+
+<p>Expression:</p>
+
+<p><code>csharp
+^((ht|f)tp(s?)\:\/\/|~/|/)?([\w]+:\w+@)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((/?\w+/)+|/?)(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&amp;\w+=\w+)*)?
+</code></p>
+
+<p>Should parse the url below</p>
+
+<p><a href="http://hh-1hallo.msn.blabla.com:80800/test/test/test.aspx?dd=dd&amp;id=dki">http://hh-1hallo.msn.blabla.com:80800/test/test/test.aspx?dd=dd&amp;id=dki</a></p>
+
+<p>But not :</p>
+
+<p><a href="http://hh-1hallo">http://hh-1hallo</a>. msn.blablabla.com:80800/test/test.aspx?dd=dd&amp;id=dki</p>
+
+<p>Update 29/11/2008:</p>
+
+<p>Joe posted what seems to be a great regular expression in the comments</p>
+
+<p>he tested it with the following urls:</p>
+
+<p>http://www.google.com/search?q=good+url+regex&amp;rls=com.microsoft:*&amp;ie=UTF-8&amp;oe=UTF-8&amp;startIndex=&amp;startPage=1</p>
+
+<p>ftp://joe:password@ftp.filetransferprotocal.com</p>
+
+<p>google.ru</p>
+
+<p>https://some-url.com?query=&amp;name=joe?filter=<em>.</em>#some_anchor</p>
+
+<p>Expression:</p>
+
+<p><code>csharp
+^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~/|/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&amp;(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$
+</code></p>
+
+<p>Update 8/11/2009:</p>
+
+<p>Expression:</p>
+
+<p><code>csharp
+^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&amp;(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$
+</code></p>
+
+<p>There is a wave for this regex:</p>
+
+<p><a href="https://wave.google.com/wave/?pli=1#restored:wave:googlewave.com!w%252BsFbGJUukA">https://wave.google.com/wave/?pli=1#restored:wave:googlewave.com!w%252BsFbGJUukA</a></p>
+
+<p>Update 29/09/2010</p>
+
+<p>So people if you don't like it don't use it.
+Now this regex is troubled it has a bunch of issues but it works most of the time.  If you want a more liberal regular expression to just capture urls from text, there is a really good one on the blog of John Gruber.
+<a href="http://daringfireball.net/2010/07/improved_regex_for_matching_urls">Improved regex for matching urls @ daring fireball</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Joined the lounge network]]></title>
+    <link href="http://flanders.co.nz/2009/05/11/joined-the-lounge-network/"/>
+    <updated>2009-05-11T20:14:30+02:00</updated>
+    <id>http://flanders.co.nz/2009/05/11/joined-the-lounge-network</id>
+    <content type="html"><![CDATA[<p>Today I received my invitation to the <a href="http://thelounge.net">Lounge</a> network. I just finished changing my homepage to include their ads in my side bar.    <br/>
+My reasons for joining the ad network are that on one hand I’ve been an ad-sense member for a really long time and although I’ve had ads on multiple sites it never actually made me any money. Eventually I gave up on putting those ads on my blog. So I’m not really doing it to make any money of this blog, but if it takes a small bite out of my hosting bill I’ll be a happy man :).</p>
+
+<p>The ads that are run by the lounge are .net centric and are a much better fit to the audience of this blog. It even may be helpful to somebody at times.</p>
+
+<p>Let’s see how this works out.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pimp your command-line for git]]></title>
+    <link href="http://flanders.co.nz/2009/03/19/pimp-your-command-line-for-git/"/>
+    <updated>2009-03-19T21:11:27+01:00</updated>
+    <id>http://flanders.co.nz/2009/03/19/pimp-your-command-line-for-git</id>
+    <content type="html"><![CDATA[<p>I do development on both the Mac and windows. I prefer to use git as my source control these days and have done so for the past year or so. Git is great, I love it. I love the ease of branching a lot too. I’ll often just branch of locally just to play around with an idea without affecting the master branch.</p>
+
+<p>But having many branches can be confusing at times, especially in my case as I can only remember what I was doing for 5 seconds. So sometimes I mess up a perfectly good branch because of the confusion.</p>
+
+<p>On windows I use Powershell as my command-line. I don’t know much of powershell scripting. To be honest I mainly started using it because then I wouldn’t constantly get an error when I typed ls instead of dir :) However since then I did explore that environment a little and it <em>does</em> give me easy access to the CLR and a way to create very very powerful batch files, although I do most of my scripting in Ruby these days. It also allows you to customize your prompt. You need to allow scripts unrestricted access for this to work. You can do that by entering Set-ExecutionPolicy Unrestricted at a powershell prompt. Then you close powershell and create a file in %MYDOCUMENTS%\WindowsPowershell called profile.ps1</p>
+
+<pre><code>&lt;span class="kwrd"&gt;function&lt;/span&gt; prompt
+
+
+
+
+
+{
+
+
+
+
+
+    $host.ui.rawui.WindowTitle = $(get-location)
+
+
+
+
+
+    Write-Host (&lt;span class="str"&gt;"+ "&lt;/span&gt; + $(get-location)) -foregroundcolor Yellow
+
+
+
+
+
+
+
+
+
+
+
+        $branches = &lt;span class="str"&gt;""&lt;/span&gt;
+
+
+
+
+
+        git branch | &lt;span class="kwrd"&gt;foreach&lt;/span&gt; {
+
+
+
+
+
+            &lt;span class="kwrd"&gt;if&lt;/span&gt;($_ &lt;span class="preproc"&gt;-match&lt;/span&gt; &lt;span class="str"&gt;"^\*\s(.*)"&lt;/span&gt;){
+
+
+
+
+
+                $branches += $matches[1]
+
+
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+    &lt;span class="kwrd"&gt;if&lt;/span&gt;($branches){
+
+
+
+
+
+        Write-Host (&lt;span class="str"&gt;"("&lt;/span&gt; + $branches + &lt;span class="str"&gt;") "&lt;/span&gt;) -nonewline -fore Cyan
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Write-Host (&lt;span class="str"&gt;"»"&lt;/span&gt;) -nonewline -foregroundcolor Green
+
+
+
+
+
+    &lt;span class="kwrd"&gt;return&lt;/span&gt; &lt;span class="str"&gt;" "&lt;/span&gt;
+
+
+
+
+
+}
+</code></pre>
+
+<p>The result of this prompt looks like this:</p>
+
+<p><a href="http://flanders.co.nz/wp-content/uploads/2009/03/picture2.png"><img src="http://flanders.co.nz/wp-content/uploads/2009/03/picture2-thumb.png" alt="Picture 2" /></a></p>
+
+<p>In bash I use a .bashrc script that shows me the branch in my prompt. You need ttycolors enabled to enjoy the full prompt but this is the section that takes care of my prompt.</p>
+
+<pre><code>&lt;span class="kwrd"&gt;if&lt;/span&gt; [ -n &lt;span class="str"&gt;"$force_color_prompt"&lt;/span&gt; ]; then
+
+
+
+
+
+    &lt;span class="kwrd"&gt;if&lt;/span&gt; [ -x /usr/bin/tput ] &amp;&amp; tput setaf 1 &gt;&amp;/dev/null; then
+
+
+
+
+
+    &lt;span class="rem"&gt;# We have color support; assume it's compliant with Ecma-48&lt;/span&gt;
+
+
+
+
+
+    &lt;span class="rem"&gt;# (ISO/IEC-6429). (Lack of such support is extremely rare, and such&lt;/span&gt;
+
+
+
+
+
+    &lt;span class="rem"&gt;# a case would tend to support setf rather than setaf.)&lt;/span&gt;
+
+
+
+
+
+    color_prompt=yes
+
+
+
+
+
+    &lt;span class="kwrd"&gt;else&lt;/span&gt;
+
+
+
+
+
+    color_prompt=
+
+
+
+
+
+    fi
+
+
+
+
+
+fi
+
+
+
+
+
+
+
+
+
+
+
+parse_git_branch() {
+
+
+
+
+
+  git branch 2&gt; /dev/null | sed -e &lt;span class="str"&gt;'/^[^*]/d'&lt;/span&gt; -e &lt;span class="str"&gt;'s/* \(.*\)/(\1)/'&lt;/span&gt;
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;span class="rem"&gt;# export PS1='\e[0;32m+ \u @ \w\e[m\e[0;33m »\e[m '&lt;/span&gt;
+
+
+
+
+
+&lt;span class="kwrd"&gt;if&lt;/span&gt; [ &lt;span class="str"&gt;"$color_prompt"&lt;/span&gt; = yes ]; then
+
+
+
+
+
+    PS1=&lt;span class="str"&gt;"\[\033[01;36m\]+\u@\h\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\[\033[01;33m\]\n\$(parse_git_branch)»\[\033[00m\] "&lt;/span&gt;
+
+
+
+
+
+&lt;span class="kwrd"&gt;else&lt;/span&gt;
+
+
+
+
+
+  PS1=&lt;span class="str"&gt;"\u@\h:\w\$(parse_git_branch)\$ "&lt;/span&gt;
+
+
+
+
+
+fi
+</code></pre>
+
+<p>The result of the bash script looks like this:</p>
+
+<p><a href="http://flanders.co.nz/wp-content/uploads/2009/03/picture1.png"><img src="http://flanders.co.nz/wp-content/uploads/2009/03/picture1-thumb.png" alt="Picture 1" /></a></p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2009%2f03%2f19%2fpimp-your-command-line-for-git%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2009%2f03%2f19%2fpimp-your-command-line-for-git%2f" alt="kick it on DotNetKicks.com" /></a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/Git">Git</a>,<a href="http://technorati.com/tags/Powershell">Powershell</a>,<a href="http://technorati.com/tags/Bash">Bash</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A new year... some changes]]></title>
+    <link href="http://flanders.co.nz/2009/01/06/a-new-year-some-changes/"/>
+    <updated>2009-01-06T19:46:37+01:00</updated>
+    <id>http://flanders.co.nz/2009/01/06/a-new-year-some-changes</id>
+    <content type="html"><![CDATA[<p>With 2009 starting, started actually, it might be time to look ahead at what's to come this year.</p>
+
+<p>I hope your holidays were better than mine with my grandfather dying on Christmas eve, I wasn't in much of a celebratory mood this year.</p>
+
+<p>After having tried being a consultant for a while I have a serious hang-over from enterprise style of development. At least the dev style that only listens to what microsoft has to say and swears by their judgment under the motto: "You don't get fired for buying Microsoft". As if it wasn't bad enough all the CRUD went through stored procs over linq-2-sql. When somebody there told me to copy/paste instead of taking a little bit more care I made up my mind and left the place. This leaves me at the start of this year without a project/job, and as it looks now it might not be the best position to be in with the crisis and all.</p>
+
+<p>Another area that I desperately need to make some progress in is the <a href="http://manning.com/carrero">IronRuby in Action</a> book. So far I have 4 chapters completed and the one on Rails is about half-way there. Because I'm not making as much progress as I initially thought. This partly because I decided to turn my life<a href="http://flanders.co.nz/2008/07/13/moving-back-to-belgium/"> upside down</a> this year.
+Now that I've finally found a good place to live and my personal life isn't as messy as it used to be I've returned to writing.</p>
+
+<p>More news on the IronRuby in Action front is that I've got a co-author now. His name is <a href="http://blog.prokrams.com/">Michael Letterle</a> and he has contributed to the IronRuby project.  Michael is very passionate about Ruby development and is currently working on the Silverlight chapter of the IronRuby in Action book.</p>
+
+<p>As part of the Chapter on Rails I've built a twitter clone. In the wpf chapter I created a twitter client and to be ensure things continue to work both offline as online it seemed like a good idea to me to create the server side too.  The last couple of days I've been implementing this limited version and you can find it at <a href="http://codeplex.com/mocktwitter">http://codeplex.com/mocktwitter</a>. Finishing this application is on my to-do list for this year for now it does a little bit more than it needs to for the samples from the WPF chapter to work.</p>
+
+<p>More on the IronRuby subject. I've also created a DBI layer for ADO.NET that you can use in conjection with IronRuby to talk to ADO.NET data sources. I don't know yet if I will base my activerecord adapters on this DBI layer or just with the providers immediately. I put a <a href="http://rubydoes.net/2009/01/06/ironruby-dbi-connecting-to-adonet-datasources/">post up</a> on how to get started and where to get the sources etc on <a href="http://rubydoes.net">rubydoes.net</a></p>
+
+<p>I intend to spend some time on <a href="http://github.com/jschementi/agdlr">agdlr</a> as well as on <a href="http://github.com/casualjim/ironnails">ironnails</a> as well because ironnails has been a lot of fun to develop.</p>
+]]></content>
+  </entry>
+  
+</feed>

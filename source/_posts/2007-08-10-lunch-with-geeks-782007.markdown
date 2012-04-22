@@ -1,0 +1,60 @@
+---
+date: '2007-08-10 04:36:59'
+layout: post
+slug: lunch-with-geeks-782007
+status: publish
+title: Lunch with geeks (7/8/2007)
+wordpress_id: '169'
+categories:
+- Lunch with geeks
+---
+
+We had another geeks lunch on tuesday. We discussed a number of topics but focussed mainly on design patterns.
+
+Some of the observations we made are the following.
+
+The most overused design pattern : Singleton. With the remark that a singleton should only be used when you need to keep state in your object internally.
+
+You shouldn't care about design patterns until you figured out a couple yourself. This is a bit the chicken or the egg question because you would have to know the design patterns in order to know that you are using one.
+
+Lot's of programmers get by without the patterns although the solutions may not look as elegant.  Design patterns are in no way a silver bullet for creating quality software they just help you solve problems in a predictable way.
+
+One of the ways suggested to start adopting these patterns is to write code that works first and then refactor it to use the patterns.
+
+Next I'd like to list a bunch of resources/books that were mentioned during this discussion:
+
+Thanks to Bevan Arps for this list of books:
+
+**Design Patterns (Gang of Four)  
+**Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides  
+ISBN 0 204 63361 2
+
+**Refactoring - Improving the Design of Existing Code  
+**Martin Fowler  
+ISBN 0 204 48567 2  
+
+**Analysis Patters - Reusable Object Models  
+**Martin Fowler  
+ISBN 0 201 89542 0  
+
+**Refactoring to Patterns  
+**Joshua Kerievsky  
+ISBN 0 321 21335 1  
+
+   
+
+Ivan Towlson has put up a [blog post](http://hestia.typepad.com/flatlander/2007/08/design-patterns.html) listing the books that he remembered.  
+
+And here are some urls that hold some information on design patterns. 
+
+[http://www.developer.com/design/article.php/1474561](http://www.developer.com/design/article.php/1474561)
+
+[http://www.dofactory.com/Patterns/Patterns.aspx](http://www.dofactory.com/Patterns/Patterns.aspx)
+
+[http://www.designpatternsfor.net/](http://www.designpatternsfor.net/)
+
+   
+
+ 
+
+del.icio.us tags: [Lunch with geeks](http://del.icio.us/popular/Lunch%20with%20geeks)

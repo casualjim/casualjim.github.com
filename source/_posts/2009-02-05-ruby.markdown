@@ -1,0 +1,22 @@
+---
+date: '2009-02-05 08:00:19'
+layout: post
+slug: ruby
+status: publish
+title: 'Ruby '
+wordpress_id: '299'
+comments: true
+categories:
+- .NET 3.5
+- IronRuby
+- Presentations
+---
+
+2 weeks ago I had the chance to [talk to the Italian Alt.NET community about IronRuby](http://flanders.co.nz/2009/01/25/participating-in-the-italian-altnet-user-group/). I'm pretty excited about the Ruby language and I try to convey that enthusiasm onto my victims. From the talks I had afterwards it looks like I was able to infect at least one or two enough to make them go home and download IronRuby to have a play. It is the very first time that I get to see one of my presentations myself because this one got taped and put online.
+
+
+If there is one thing that watching this video has taught me then it will probably be that I need more practice and to prepare a lot better. Since I'm a kid I have the habit of walking into things hugely underprepared. I take the big bullet points of what I'm supposed to say and make a story around it when I start talking.  It was my belief that those things feel more natural. After having watched this presentation I may have to come back on my point of view and probably prepare better. I don't believe that learning everything you're going to say by heart is a good solution either because if you then forget one thing you're completely lost in your storyline and you may freeze.
+
+I guess it would probably be a good idea for me to get a video camera and tape a few practice runs of presentations so that I can improve and look way more professional next time I get on a stage.  That being said I really enjoy doing those things. The good thing about doing those sessions is that I get to talk to many interesting people about subjects close and dear to me. 
+
+Anyway you're probably not waiting for me to completely dissect my performance so instead I'll leave you with the [link to the video](http://vimeo.com/3059773)

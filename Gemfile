@@ -4,6 +4,7 @@ group :development do
   gem 'rake'
   gem 'rack'
   gem 'jekyll'
+  gem "redcarpet"
   gem 'rdiscount'
   gem 'pygments.rb'
   gem 'RedCloth'

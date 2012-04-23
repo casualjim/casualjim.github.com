@@ -22,6 +22,8 @@ For the social web that means that you can start following certain users on a ne
 
 But for something more arcane, like say, log data, that means you can send it lines of text and have it extract out fields on which you can define filters. All of this happens in real-time and changes are reflected virtually immediately in open connections.
 
+<!-- more -->
+
 Our system is designed to allow for easy definition of data sources. Sources that currently feed into our system are [Twitter](http://twitter.com), [Facebook](http://facebook.com), [LinkedIn](http://linkedin.com), SMTP, RSS, ATOM, PubSubHubbub, and more. By next year we hope to provide dozens, if not 100’s, of API implementations.
 
 In the longer term we hope to provide more intelligent stuff like real-time reporting by allowing you to define aggregates like SUM, enhance data with secondary information, and many more crazy ideas. We’re aiming to build our system exclusively on existing standards described in RFC’s or the activity streams spec. However not everything we do is described in standards and that’s where we’ll try to extend an existing standard.

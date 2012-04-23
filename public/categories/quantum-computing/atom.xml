@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Quantum computing | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/quantum-computing/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Quantum computers commercially available]]></title>
+    <link href="http://flanders.co.nz/2007/03/05/quantum-computers-commercially-available/"/>
+    <updated>2007-03-05T23:14:17+01:00</updated>
+    <id>http://flanders.co.nz/2007/03/05/quantum-computers-commercially-available</id>
+    <content type="html"><![CDATA[<p>I personally think this is really big.</p>
+
+<p>D-Wave Systems is the world's first and only source of quantum
+computing for commercial application. We believe quantum technology in
+concert with classical, digital processors, can and will represent
+broad and significant advancements in the application of computer
+science.</p>
+
+<p>In February 2007, D-Wave unveiled and
+demonstrated this technology publicly for the first time. The company
+plans to deliver field-deployable systems in 2008.</p>
+
+<p><a href="http://www.dwavesys.com">http://www.dwavesys.com</a></p>
+]]></content>
+  </entry>
+  
+</feed>

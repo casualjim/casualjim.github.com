@@ -1,0 +1,1210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Base4 | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/base4/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[NBlogr Presentation in Wellington]]></title>
+    <link href="http://flanders.co.nz/2007/05/01/nblogr-presentation-in-wellington/"/>
+    <updated>2007-05-01T23:17:00+02:00</updated>
+    <id>http://flanders.co.nz/2007/05/01/nblogr-presentation-in-wellington</id>
+    <content type="html"><![CDATA[<p>Tonight I got the chance to present my nblogr application to a larger audience. Unfortunately I'm in the process of fixing bugs in NBlogr and one of those bugs required me to make a change to NBlogr.Web/views/default/shared/mainmenu.boo . I had made this change on sunday around midnight right before I went to bed. Of course I forgot to test the application because and it wouldn't run on my presentation.  When I got home it took me about 3 minutes to fix. I had to import a reference to Base4.Storage in the mainmenu.boo file.</p>
+
+<p>I'd like to thank everybody for coming, their patience and listening to my ramblings.</p>
+
+<p>Anyway I've included my slide deck in this post and I think it might be a good idea to post a couple more links to some of the people I mentioned in my talk.<br/>
+<a href="http://www.base4.net">http://www.base4.net</a>  - Alex James, Auckland<br/>
+<a href="http://blog.bittercoder.com">http://blog.bittercoder.com</a> - Alex Henderson, Auckland<br/>
+<a href="http://www.ayende.com/blog">http://www.ayende.com/blog</a><br/>
+<a href="http://hammet.castleproject.org">http://hammet.castleproject.org</a></p>
+
+<p><a href="http://www.castleproject.org">http://www.castleproject.org</a><br/>
+<a href="http://www.nunit.org">http://www.nunit.org</a><br/>
+<a href="http://www.nblogr.com">http://www.nblogr.com</a></p>
+
+<p>svn repository:<br/>
+<a href="https://svn.koolkraft.net/nblogr/trunk">https://svn.koolkraft.net/nblogr/trunk</a></p>
+
+<pre><code>            [NBlogr-Wellington 02 _05_2007.ppt (440 KB)](http://www.flanders.co.nz/Blog/content/binary/NBlogr-Wellington%2002%20_05_2007.ppt)
+</code></pre>
+
+<p>To get nblogr running on your machine follow these steps :</p>
+
+<p>Make sure you have a subversion client installed or subversion itself.</p>
+
+<p>C:\Projects> svn co <a href="https://svn.koolkraft.net/nblogr/trunk">https://svn.koolkraft.net/nblogr/trunk</a><br/>
+C:\Projects> osql -E<br/>
+1> create database nblogr<br/>
+2> go<br/>
+1> quit</p>
+
+<p>open the nblogr solution.</p>
+
+<p>change the connection string in web.config</p>
+
+<p>The different configuration options are explained in the web.config</p>
+
+<p>If you want to use a different extension than aspx you have to change the httphandler configuration and set the extension in nblogr/routing</p>
+
+<p>if you want urls to be rewritten without an extension you will have to enable wildcard handling.</p>
+
+<p>hit ctrl-f5 and it should take you through the configuration. If ctrl-f5 doesn't work try setting up the application in IIS.</p>
+
+<pre><code>            **Update:   
+</code></pre>
+
+<p>**James Hippolite from telecom was so kind to blog most of the bullet points of my slides. Which can be found here <a href="http://tvornz.spaces.live.com/blog/cns%21A93B6100E328706D%21388.entry?_c=BlogPart&amp;_c02_owner=1">http://tvornz.spaces.live.com/blog/cns!A93B6100E328706D!388.entry?<em>c=BlogPart&amp;</em>c02_owner=1</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Base4 and Castle... the controller]]></title>
+    <link href="http://flanders.co.nz/2006/10/18/base4-and-castle-the-controller/"/>
+    <updated>2006-10-18T08:14:07+02:00</updated>
+    <id>http://flanders.co.nz/2006/10/18/base4-and-castle-the-controller</id>
+    <content type="html"><![CDATA[<p>The next bit for pages in general is that often they represent a list. Often this list is a really long list that you'd like to page through.</p>
+
+<p>I put this functionality into a generic base controller class. The whole idea of my set up is to provide a technique called progressive enhancement of forms.  In short you create an application that works completely without javascript using hyperlinks for gets and submit buttons etc.  Then you attach some css selector classes to the different bits of functionality and you attach these behaviors to the html elements on your page.</p>
+
+<p>I thought that that is a really nice way of enriching the experience of people that allow it to be enriched ;)  And that is the explanation of the ajaxCall bool variable on some of the methods</p>
+
+<p>The first thing is the interface for the class :</p>
+
+<p>using System;</p>
+
+<p>namespace NBlogr.Presenter</p>
+
+<p>{</p>
+
+<p>    public interface INBlogrController</p>
+
+<p>    {</p>
+
+<p>        bool IsCompositeView{get;}</p>
+
+<p>        void Delete(T item, int pageNumber, int pageSize);</p>
+
+<p>        void Delete(T item, int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p>        void Edit(Guid Id);</p>
+
+<p>        void Edit(Guid Id, bool ajaxCall);</p>
+
+<p>        void JumpToPage(int pageNumber, int pageSize);</p>
+
+<p>        void JumpToPage(int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p>        void List();</p>
+
+<p>        void List(bool ajaxCall);</p>
+
+<p>        void NavigateBack(int pageNumber, int pageSize);</p>
+
+<p>        void NavigateFirst(int pageSize);</p>
+
+<p>        void NavigateNext(int pageNumber, int pageSize);</p>
+
+<p>        void NavigateBack(int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p>        void NavigateFirst(int pageSize, bool ajaxCall);</p>
+
+<p>        void NavigateNext(int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p>        void Show();</p>
+
+<p>        void Show(bool ajaxCall);</p>
+
+<p>        void Save(T item, int pageNumber, int pageSize);</p>
+
+<p>        void Save(T item, int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p>        void CreateNew();</p>
+
+<p>        void CreateNew(bool ajaxCall);</p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>And the next thing is the base class again :</p>
+
+<p>using System;</p>
+
+<p>using System.Collections.Generic;</p>
+
+<p>using System.Text;</p>
+
+<p>using Base4.Storage;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Presenter.Abstract</p>
+
+<p>{</p>
+
+<p>    public abstract class AbstractAdminController : AbstractController, INBlogrController where T: class, IItem, new()</p>
+
+<p>    {</p>
+
+<p>        bool compositeView;</p>
+
+<p>        int _pageSize;</p>
+
+<p> </p>
+
+<p>        public AbstractAdminController()</p>
+
+<p>            : base()</p>
+
+<p>        {</p>
+
+<p>            this.compositeView = false;</p>
+
+<p>            _pageSize = 10;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public AbstractAdminController(bool compositeView) : base()</p>
+
+<p>        {</p>
+
+<p>            this.compositeView = compositeView;</p>
+
+<p>            _pageSize = 10;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        internal abstract void getList(int pageNumber, int pageSize, bool skipLayout);</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        internal void getList(int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            getList(pageNumber, pageSize, false);</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p>        #region INBlogrController Members</p>
+
+<p> </p>
+
+<p>        public bool IsCompositeView</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                return compositeView;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p>        public int PageSize</p>
+
+<p>        {</p>
+
+<p>            get</p>
+
+<p>            {</p>
+
+<p>                return _pageSize;</p>
+
+<p>            }</p>
+
+<p>            set</p>
+
+<p>            {</p>
+
+<p>                _pageSize = value;</p>
+
+<p>            }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void Delete(T item, int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            Delete(item,pageNumber,pageSize,false);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public abstract void Delete(T item, int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p> </p>
+
+<p>        public void CreateNew()</p>
+
+<p>        {</p>
+
+<p>            CreateNew(false);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void CreateNew(bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            Edit(Guid.NewGuid(), ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void Edit(Guid Id)</p>
+
+<p>        {</p>
+
+<p>            Edit(Id, false);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public abstract void Edit(Guid Id, bool ajaxCall);</p>
+
+<p> </p>
+
+<p>        public void JumpToPage(int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            getList(pageNumber, pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void JumpToPage(int pageNumber, int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(pageNumber, pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void List()</p>
+
+<p>        {</p>
+
+<p>            getList(1, _pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void List(bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(1, _pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void NavigateBack(int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            getList(--pageNumber, pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void NavigateFirst(int pageSize)</p>
+
+<p>        {</p>
+
+<p>            getList(1, pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void NavigateNext(int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            getList(++pageNumber, pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void NavigateBack(int pageNumber, int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(--pageNumber, pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void NavigateFirst(int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(1, pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void NavigateNext(int pageNumber, int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(++pageNumber, pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public void Show()</p>
+
+<p>        {</p>
+
+<p>            getList(1, _pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void Show(bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            getList(1, _pageSize, ajaxCall);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        public void Save(T item, int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            Save(item, pageNumber, pageSize, false);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public abstract void Save(T item, int pageNumber, int pageSize, bool ajaxCall);</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        #endregion</p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>Now onto the concrete implementation of my controller class</p>
+
+<p> </p>
+
+<p>using System;</p>
+
+<p>using System.Collections.Generic;</p>
+
+<p>using System.Text;</p>
+
+<p>using NBlogr.Core;</p>
+
+<p>using NBlogr.Service;</p>
+
+<p>using Base4.Storage;</p>
+
+<p>using Castle.MonoRail.Framework;</p>
+
+<p>using NBlogr.Common.Base4Integration;</p>
+
+<p>using Castle.Services.Transaction;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Presenter</p>
+
+<p>{</p>
+
+<p> </p>
+
+<p>    public class BlogController : Abstract.AbstractAdminController<Blog></p>
+
+<p>    {</p>
+
+<p>        BlogService blogService;</p>
+
+<p>        </p>
+
+<p>        public BlogController(IService<Blog> blogService)</p>
+
+<p>            : base(true)</p>
+
+<p>        {</p>
+
+<p>            this.blogService = blogService as BlogService;</p>
+
+<p>             </p>
+
+<p>             </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void internalGetList(int pageNumber, int pageSize)</p>
+
+<p>        {</p>
+
+<p>            int pageCount;</p>
+
+<p> </p>
+
+<p>            IItemList<Blog> blog = blogService.GetAll("Name", pageNumber, pageSize, out pageCount);</p>
+
+<p> </p>
+
+<p>            internalMapProperties(blog , pageNumber,pageSize, pageCount);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private void internalMapProperties(IItemList<Blog> blogs, int pageNumber, int pageSize, int pageCount)</p>
+
+<p>        {</p>
+
+<p>            int totalCount = blogs.Count;</p>
+
+<p> </p>
+
+<p>            if (PropertyBag["blog"] == null)</p>
+
+<p>                PropertyBag.Add("blog", new Blog());</p>
+
+<p>            </p>
+
+<p>            PropertyBag.Add("blogs", pageNumber);</p>
+
+<p>            PropertyBag.Add("index", pageNumber);</p>
+
+<p>            PropertyBag.Add("count", totalCount);</p>
+
+<p>            PropertyBag.Add("pageCount", pageCount);</p>
+
+<p>            PropertyBag.Add("pageSize", pageSize);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        internal override void getList(int pageNumber, int pageSize, bool skipLayout)</p>
+
+<p>        {</p>
+
+<p> </p>
+
+<p>            internalGetList(pageNumber, pageSize);</p>
+
+<p> </p>
+
+<p>            if (!skipLayout)</p>
+
+<p>                RenderView("Show", false);</p>
+
+<p>            else</p>
+
+<p>                RenderView("List", true);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p> </p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        public override void Edit(Guid Id, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            Blog blog = blogService.GetById(Id);</p>
+
+<p> </p>
+
+<p>            PropertyBag.Add("blog", blog);</p>
+
+<p>             </p>
+
+<p>            if (!ajaxCall)</p>
+
+<p>            {</p>
+
+<p>                getList(1, 0);</p>
+
+<p>            }</p>
+
+<p>            else</p>
+
+<p>                RenderView("Save", ajaxCall);</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public override void Delete([DataBind("blog")] Blog item, int pageNumber, int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            blogService.Delete(item);</p>
+
+<p> </p>
+
+<p>            if (!ajaxCall)</p>
+
+<p>            {</p>
+
+<p>                getList(1, 0);</p>
+
+<p>            }</p>
+
+<p>            else</p>
+
+<p>                RenderText(getJsonResponse("Contract deleted successfully"));</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public override void Save([DataBind("blog")] Blog item, int pageNumber, int pageSize, bool ajaxCall)</p>
+
+<p>        {</p>
+
+<p>            PropertyBag.Add("blog", blogService.Save(item));</p>
+
+<p> </p>
+
+<p>            if (!ajaxCall)</p>
+
+<p>            {</p>
+
+<p>                getList(1, 0);</p>
+
+<p>            }</p>
+
+<p>            else</p>
+
+<p>                RenderText(getJsonResponse("Contract saved successfully"));</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        private string getJsonResponse(string message)</p>
+
+<p>        {</p>
+
+<p>            return "{result: true, content: '" + message + "'}";</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>    }</p>
+
+<p>}</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Base4 and Castle ... The service]]></title>
+    <link href="http://flanders.co.nz/2006/10/17/base4-and-castle-the-service/"/>
+    <updated>2006-10-17T06:38:35+02:00</updated>
+    <id>http://flanders.co.nz/2006/10/17/base4-and-castle-the-service</id>
+    <content type="html"><![CDATA[<p><em>UPDATE: THE SERVICE CLASS HAS CHANGED AGAIN</em><strong>.<br/>
+</strong><em>Scratch the update.. it assumes that the object is already in the database which isn't always the case. For this type of synchronisation to work I need some more time. So I reverted this back to the old version</em></p>
+
+<p>This post continues my previous posts on using base4 and castle together.</p>
+
+<p>I'm sorry but there is no Active record in the base4 way of doing things.</p>
+
+<p>The previous posts you would be intrested in can be found here :</p>
+
+<p><a href="http://www.flanders.co.nz/Blog/2006/10/12/HostingBase4InsideYourWebApplication.aspx">Hosting base4 inside your web application<br/>
+</a><a href="http://www.flanders.co.nz/Blog/2006/10/16/Base4OnCastleContinuedTheFacility.aspx">Base4 and Castle continued... The facility</a></p>
+
+<p>Today I want to show you the abstract service class that I use so the controller only talks to the service and never to the dataobject directly. </p>
+
+<p>It is not a very big class but i found it pretty useful.  As it turns out almost all my service classes in a previous project started to look very much alike so I grouped that functionality in an abstract class. There is one thing you have to look out for and that is if you have something like audit fields (Created, LastModified,.....) you need to first get the object from the datastore and then set just the changed properties on the retrieved object.</p>
+
+<p>The first thing you need is the contract/interface for the service. I expect this interface to grow over time so keep checking NBlogr for updates but this where I am at now :)</p>
+
+<p>using System;</p>
+
+<p>namespace NBlogr.Service</p>
+
+<p>{</p>
+
+<p>    public interface IService</p>
+
+<p>    where T : class, Base4.Storage.IItem, new()</p>
+
+<p>    {</p>
+
+<p>        void Delete(T item);</p>
+
+<p>        Base4.Storage.IItemList GetAll(string sortExpression, int pageNumber, int pageSize, out int pageCount);</p>
+
+<p>        T GetById(Guid Id);</p>
+
+<p>        T Save(T item);</p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>And here's the abstract class :</p>
+
+<p>using Base4.Storage;</p>
+
+<p>using Castle.Core.Logging;</p>
+
+<p>using NBlogr.Common.Base4Integration;</p>
+
+<p> </p>
+
+<p>using User = NBlogr.Core.User;</p>
+
+<p>using Castle.Services.Transaction;</p>
+
+<p>using Base4.Storage.Utils;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Service.Abstract</p>
+
+<p>{</p>
+
+<p> </p>
+
+<p>    [Transactional]</p>
+
+<p>    public abstract class AbstractService : IService where T : class,IItem,new()</p>
+
+<p>    {</p>
+
+<p>        internal readonly ILogger logger;</p>
+
+<p>        internal IDataObject dao;</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        public AbstractService(ILogger logger, IDataObject dao)</p>
+
+<p>        {</p>
+
+<p>            this.logger = logger;</p>
+
+<p>            this.dao = dao;</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        [Transaction(TransactionMode.Requires)]</p>
+
+<p>        public virtual T Save(T item)</p>
+
+<p>        {</p>
+
+<p>            return dao.Save(internalPrepareSave(item));</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        internal abstract T internalPrepareSave(T item);</p>
+
+<p> </p>
+
+<p>        [Transaction(TransactionMode.Requires)]</p>
+
+<p>        public virtual void Delete(T item)</p>
+
+<p>        {</p>
+
+<p>            dao.Delete(item);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual IItemList GetAll(string sortExpression, int pageNumber, int pageSize, out int pageCount)</p>
+
+<p>        {</p>
+
+<p>            return dao.FindAll(sortExpression, pageNumber, pageSize, out pageCount);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual T GetById(Guid Id)</p>
+
+<p>        {</p>
+
+<p>            return dao.GetById(Id);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>And the last bit could be an implementation of this service.  I don't have companies in NBlogr. I took this class from another project :</p>
+
+<p>using System;</p>
+
+<p>using Castle.Services.Transaction;</p>
+
+<p>using Castle.Core.Logging;</p>
+
+<p>using NBlogr.Common.Base4Integration;</p>
+
+<p>using NBlogr.Core;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Service</p>
+
+<p>{</p>
+
+<p>    [Transactional]</p>
+
+<p>    public class BlogService : Abstract.AbstractService<Blog></p>
+
+<p>    {</p>
+
+<p> </p>
+
+<p>        public BlogService(ILogger logger, IDataObject<Blog> dao)</p>
+
+<p>            : base(logger, dao)</p>
+
+<p>        {</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        internal override Blog internalPrepareSave(Blog item)</p>
+
+<p>        {</p>
+
+<p>            Blog itemToSave = GetById(item.Id);</p>
+
+<p> </p>
+
+<p>            if (!itemToSave.Internals.InDatabase)</p>
+
+<p>            {</p>
+
+<p>                itemToSave.Created = DateTime.Now;</p>
+
+<p>                itemToSave.Creator = CurrentUser;</p>
+
+<p>            }</p>
+
+<p> </p>
+
+<p>            itemToSave.AkismetKey = item.AkismetKey;</p>
+
+<p>            //TODO: finish mapping properties</p>
+
+<p> </p>
+
+<p>            return itemToSave;</p>
+
+<p>        }</p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>This concludes the service for use with base4.  I hope you find it as useful as I do.<br/>
+If somebody knows improvements etc. Please let me know I am always keen to learn.</p>
+
+<p>I also realise that I can just call save on an IItem object but i like every tier to have it's specific task so the dataobject doesn't do much else than call IItem.Save() for now</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Some news on nblogr]]></title>
+    <link href="http://flanders.co.nz/2006/10/14/some-news-on-nblogr/"/>
+    <updated>2006-10-14T08:12:26+02:00</updated>
+    <id>http://flanders.co.nz/2006/10/14/some-news-on-nblogr</id>
+    <content type="html"><![CDATA[<p><a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=Nblogr">NBlogr</a> isn't dead.. It just underwent a transformation for the better.</p>
+
+<p>I also changed the title of the application from <strong>NBlogr - An atlas blogging engine</strong> to <strong>NBlogr - a blogging engine built on simplicity<br/>
+</strong>The reason for this change is the fact that it is currently built using jquery as javascript library.  I will look at atlas again when it releases.</p>
+
+<p>I moved <a href="http://www.nblogr.com">NBlogr</a> to run on <a href="http://www.castleproject.org/">castle</a>.  During the course of the next week I'll complete my posts on how to do Castle development with <a href="http://www.base4.net/">base4</a></p>
+
+<p>If you're interested in how it looks or you want a preview the <a href="http://www.codeplex.com/SourceControl/ListDownloadableCommits.aspx?ProjectName=Nblogr">last source in the repository builds</a> and you should be able to run it in the development server of visual studio</p>
+
+<p>I had a chat with <a href="http://blog.bluecog.co.nz/">JD</a> a while ago and he asked me about plugins. At that time I knew already I wanted to provide something for users to be able to add plugin's to the database.  But I hadn't really given it much thought on how I would do that.</p>
+
+<p>My reasoning on this subject is : <br/>
+I want users to be able to add a plug in at runtime. Plugin's for a blog are lately both server related client side. So I will create a plugin factory with a couple of providers like a google video provider, grouper video, flickr, bookmark services.  And you can write a plugin using javascript and ironpython code. The engine will evaluate that code at runtime and there has been no application restarting etc. If somebody has a better plan for doing a plugin infrastructure please let me know I haven't done any of the ground work for this yet but create a schema in base4 so now would be the best time to stop me from making big mistakes.</p>
+
+<p>Another improvement is the fact that when nblogr reaches release it will come with a couple of templates for you to chose from. I'll try to include one that is built on the css scheme of csszengarden that way you'll have an infinite repository of css to make your blog look differently instantaneously.</p>
+
+<p>The next improvement is that a user is now able to mimic wildcard requests and nblogr will handle those. So there is no need for appending aspx to pages for rewriting (routing it is called in monorail)  You get the choice in the config file to have your webserver handle the wild card mapping or nblogr. When you choose for nblogr nblogr will need write access to 2 folders in your website and create a shadow folder structure to represent the rewrite tree structure. There is weaker point here and that is that the <strong>first</strong> default document in IIS must be set to Default.aspx If you can map an extension to aspnet_isapi.dll at your webserver then you can also have the urls rewritten using a branded extension.</p>
+
+<p>I think that this are the 3 major changes for the moment to the engine.  This did set me back for the next release with a couple of weeks but in the end the final release can be done much more quickly than it would have been possible using the code I had before.</p>
+
+<p>I also promise that this time things mostly stay as they are. There will be no more experimenting but just getting Nblogr to a proper release state and shipped.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hosting Base4 inside your web application]]></title>
+    <link href="http://flanders.co.nz/2006/10/12/hosting-base4-inside-your-web-application/"/>
+    <updated>2006-10-12T05:42:20+02:00</updated>
+    <id>http://flanders.co.nz/2006/10/12/hosting-base4-inside-your-web-application</id>
+    <content type="html"><![CDATA[<p>Following up on the post of yesterday.  To use base4 with asp.net often you do not have the possibility to host <a href="http://wwww.base4.net">base4</a> as a windows service. But to host base4 in the same appdomain as you website isn't all that hard.</p>
+
+<p>I'll just share my code and how to use it. The way to go is to create a class that extends the HttpApplicatin and handle the application start and end events.</p>
+
+<p>I'll also post the code i have to integrate this with castle.</p>
+
+<p>This is my base HttpApplication, every web app inherits of this one.</p>
+
+<p>using System;</p>
+
+<p>using System.Collections.Generic;</p>
+
+<p>using System.Text;</p>
+
+<p>using System.Web;</p>
+
+<p>using Base4.Storage.Server;</p>
+
+<p>using System.Text.RegularExpressions;</p>
+
+<p>using System.Reflection;</p>
+
+<p>using System.Data.SqlClient;</p>
+
+<p>using System.Configuration;</p>
+
+<p>using Base4.Storage;</p>
+
+<p>using System.Xml;</p>
+
+<p>using System.IO;</p>
+
+<p> </p>
+
+<p>namespace Flanders.Library.Base4Integration</p>
+
+<p>{</p>
+
+<p>    public class Base4HttpApplication : HttpApplication</p>
+
+<p>    {</p>
+
+<p>        ServerConfiguration config;</p>
+
+<p>        IServerProxy proxy;</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        public Base4HttpApplication()</p>
+
+<p>        {</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void Application_Start(object sender, EventArgs e)</p>
+
+<p>        {</p>
+
+<p>            //Build the base4 server configuration from the connection strings settings in the web.config</p>
+
+<p>            config = new ServerConfiguration();</p>
+
+<p>            config.Store.Root = Server.MapPath("~/");</p>
+
+<p>            config.Store.Root = config.Store.Root.EndsWith("\") ? config.Store.Root</p>
+
+<p>                + "App_Data\Base4" : config.Store.Root + "\App_Data\Base4";</p>
+
+<p> </p>
+
+<p>            //Set the application name of the store. In my case I define a title for my application in a</p>
+
+<p>            //solution info file and use that as my app name</p>
+
+<p>            //For this to work you will need to name your database the same as your applicationname</p>
+
+<p>            if (Application["AppName"] == null)</p>
+
+<p>            {</p>
+
+<p>                Assembly assembly = Assembly.GetCallingAssembly();</p>
+
+<p>                Application["AppName"] =</p>
+
+<p>                    (AssemblyTitleAttribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute).Title;</p>
+
+<p>            }</p>
+
+<p> </p>
+
+<p>            config.Store.Name = Application["AppName"].ToString();</p>
+
+<p>            config.Store.Provider = "SQL2005";</p>
+
+<p> </p>
+
+<p>            //Set the port for base4 to listen on.  This is defined in the web.config app settings</p>
+
+<p>            if (Application["AppPort"] == null)</p>
+
+<p>                Application["AppPort"] = string.IsNullOrEmpty(ConfigurationManager.AppSettings["Base4.Port"]) ? 8809 :</p>
+
+<p>                    int.Parse(ConfigurationManager.AppSettings["Base4.Port"]);</p>
+
+<p> </p>
+
+<p>            config.Store.Port = (int)Application["AppPort"];</p>
+
+<p>            //We are hosting base4 in the same process as the website. so localhost will do :)</p>
+
+<p>            config.Store.MachineName = "localhost";</p>
+
+<p> </p>
+
+<p>            //Set the connection string for the base4 store</p>
+
+<p>            string connectionStringName = ConfigurationManager.AppSettings["DefaultConnection"];</p>
+
+<p>            if (string.IsNullOrEmpty(connectionStringName) &amp;&amp; ConfigurationManager.ConnectionStrings != null</p>
+
+<p>                &amp;&amp; ConfigurationManager.ConnectionStrings.Count > 0)</p>
+
+<p>                connectionStringName = ConfigurationManager.ConnectionStrings[0].Name;           </p>
+
+<p> </p>
+
+<p>            config.Store.ConnectionString = string.IsNullOrEmpty(connectionStringName) ?</p>
+
+<p>                ConfigurationManager.AppSettings["Store.ConnectionString"] :</p>
+
+<p>                ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;</p>
+
+<p> </p>
+
+<p>            //Set the master connection string</p>
+
+<p>            SqlConnectionStringBuilder connStrBuilder = new SqlConnectionStringBuilder(config.Store.ConnectionString);</p>
+
+<p> </p>
+
+<p>            connStrBuilder.InitialCatalog = "master";</p>
+
+<p>            config.MasterConnectionString = connStrBuilder.ToString();</p>
+
+<p> </p>
+
+<p>            //Check if we have a directory to store the files generated by base4</p>
+
+<p>            if(!Directory.Exists(config.Store.Root))</p>
+
+<p>                Directory.CreateDirectory(config.Store.Root);</p>
+
+<p> </p>
+
+<p>            //Actually start the server</p>
+
+<p>            proxy = ServerFactory.StartServer(config, false);</p>
+
+<p> </p>
+
+<p>            //Set the context for base4</p>
+
+<p>            string base4Context = string.Format("tcp://Server:@localhost:{0}/{1}", Application["AppPort"], Application["AppName"]);</p>
+
+<p> </p>
+
+<p>            Application["Base4Context"] = base4Context;</p>
+
+<p> </p>
+
+<p>            //Set the default storage context for base4</p>
+
+<p>            StorageContext.SetDefault(base4Context);</p>
+
+<p> </p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public virtual void Application_End(object sender, EventArgs e)</p>
+
+<p>        {</p>
+
+<p>            proxy.Stop();</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>Now to integrate this with monorail then this is you application class in your website :</p>
+
+<p> </p>
+
+<p>using System.Web;</p>
+
+<p>using Castle.Windsor;</p>
+
+<p>using Base4.Storage;</p>
+
+<p>using System.Configuration;</p>
+
+<p>using Flanders.Library.Base4Integration;</p>
+
+<p> </p>
+
+<p>namespace NBlogr.Presentation</p>
+
+<p>{</p>
+
+<p>    public class ASPGlobal : Base4HttpApplication, IContainerAccessor</p>
+
+<p>    {</p>
+
+<p>        private static MonoRailContainer container;</p>
+
+<p> </p>
+
+<p>        public override void Application_Start(object sender, System.EventArgs e)</p>
+
+<p>        {</p>
+
+<p>            base.Application_Start(sender, e);</p>
+
+<p>            container = new MonoRailContainer();</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        public override void Application_End(object sender, System.EventArgs e)</p>
+
+<p>        {</p>
+
+<p>            container.Dispose();</p>
+
+<p>            base.Application_End(sender, e);</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>        #region IContainerAccessor Members</p>
+
+<p> </p>
+
+<p>        public IWindsorContainer Container</p>
+
+<p>        {</p>
+
+<p>            get { return container; }</p>
+
+<p>        }</p>
+
+<p> </p>
+
+<p>        #endregion</p>
+
+<p>    }</p>
+
+<p>}</p>
+
+<p>The global.asax should only contain one line :</p>
+
+<pre><code>&lt;span class="asp"&gt;&lt;%@ Application Inherits="NBlogr.Presentation.ASPGlobal" Language="C#" %&gt;&lt;/span&gt;
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Castle | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/castle/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Implementing filters in asp.net mvc]]></title>
+    <link href="http://flanders.co.nz/2007/12/16/implementing-filters-in-aspnet-mvc/"/>
+    <updated>2007-12-16T23:03:51+01:00</updated>
+    <id>http://flanders.co.nz/2007/12/16/implementing-filters-in-aspnet-mvc</id>
+    <content type="html"><![CDATA[<p>One of the things I wanted for the framework I'm building for Xero was to implement filters.</p>
+
+<p>I have a first pass of those ready.. didn't take me to long to implement either.  I only tested the before filters I haven't gotten round to testing the After filter. I have to do a demo today that demonstrates databinding (like the castle project solved it.)  What I'm putting on my blog here is very much a proof of concept implementation and you should not use this in a production environment.</p>
+
+<p>Here's how I went about it. In this post I'll show how I implemented a filter that directs anonymous users to the login page.</p>
+
+<ol>
+<li>Define a couple enumerations</li>
+</ol>
+
+
+<p>``` csharp
+public enum Execute
+{</p>
+
+<pre><code>Before,
+After,
+BeforeAndAfter
+</code></pre>
+
+<p>}</p>
+
+<p>public enum SecureFor
+{</p>
+
+<pre><code>None,
+Anonymous,
+PerUser
+</code></pre>
+
+<p>}
+```</p>
+
+<ol>
+<li>Create an IFilter interface</li>
+</ol>
+
+
+<p>``` csharp
+using System.Web;</p>
+
+<p>namespace Xero.Mvc.Extensions.Filters
+{
+    public interface IFilter
+    {
+        Execute WhenToExecute { get; }
+        IHttpContext HttpContext { get; set; }
+        void Execute();
+    }
+}
+```</p>
+
+<ol>
+<li>Create an AbstractFilter base class</li>
+</ol>
+
+
+<p>``` csharp
+using System;
+using System.Web;</p>
+
+<p>namespace Xero.Mvc.Extensions.Filters
+{
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    public abstract class AbstractFilter : Attribute, IFilter
+    {
+        private readonly Xero.Mvc.Extensions.Execute whenToExecute;
+        private IHttpContext httpContext;
+        public AbstractFilter(Xero.Mvc.Extensions.Execute whenToExecute)
+        {
+            this.whenToExecute = whenToExecute;
+        }</p>
+
+<p>        public IHttpContext HttpContext
+        {
+            get { return httpContext; }
+            set { httpContext = value; }
+        }</p>
+
+<p>        public Xero.Mvc.Extensions.Execute WhenToExecute
+        {
+            get { return whenToExecute; }
+        }</p>
+
+<p>        public abstract void Execute();
+    }
+}
+```</p>
+
+<ol>
+<li>Create a SecureFilter base class</li>
+</ol>
+
+
+<p>``` csharp
+using System;
+using System.Web;
+using System.Collections.Generic;</p>
+
+<p>namespace Xero.Mvc.Extensions.Filters
+{
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    public abstract class AbstractSecureFilter : AbstractFilter, IFilter
+    {
+        private readonly SecureFor secureFor;</p>
+
+<p>        public AbstractSecureFilter(Xero.Mvc.Extensions.Execute whenToExecute, SecureFor secureFor)
+            : base(whenToExecute)
+        {
+            this.secureFor = secureFor;
+        }</p>
+
+<p>        public SecureFor SecureFor
+        {
+            get { return secureFor; }
+        }</p>
+
+<p>        protected void RedirectToLogin()
+        {
+            HttpContext.Response.Redirect("~/", true);
+        }
+    }
+}
+```</p>
+
+<ol>
+<li>Implement the concrete AnonymousUsersFilter</li>
+</ol>
+
+
+<p>``` csharp
+using Xero.Mvc.Extensions.Filters;
+using Xero.Mvc.Tasklist.Model.EntityClasses;
+using Xero.Mvc.LLBLGenIntegration.Services;
+using System;
+using System.Collections.Generic;
+using Xero.Mvc.Extensions;</p>
+
+<p>namespace Xero.Mvc.Tasklist.Filters
+{
+    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    public class AnonymousUsersFilter : AbstractSecureFilter
+    {
+        private User[] users;
+        private DataService<User> userService;
+        public AnonymousUsersFilter(Xero.Mvc.Extensions.Execute whenToExecute, SecureFor secureFor) : this(whenToExecute, secureFor, null) { }</p>
+
+<p>        private AnonymousUsersFilter(Xero.Mvc.Extensions.Execute whenToExecute, SecureFor secureFor, User[] users)
+            : base(whenToExecute, secureFor)
+        {
+            this.users = users;
+            this.userService = new DataService<User>();
+        }
+        public AnonymousUsersFilter(Xero.Mvc.Extensions.Execute whenToExecute, User[] users) : this(whenToExecute, SecureFor.PerUser, users) { }</p>
+
+<p>        public User[] Users
+        {
+            get { return users; }
+        }</p>
+
+<p>        public override void Execute()
+        {
+            if (SecureFor == Xero.Mvc.Extensions.SecureFor.Anonymous &amp;&amp; HttpContext.Session["userId"] == null)
+            {
+                RedirectToLogin();
+            }</p>
+
+<p>            if (SecureFor == Xero.Mvc.Extensions.SecureFor.PerUser &amp;&amp; Users == null)
+                RedirectToLogin();</p>
+
+<p>            if (SecureFor == Xero.Mvc.Extensions.SecureFor.PerUser)
+            {
+                User currentUser = userService.FindOneById((Guid)HttpContext.Session["userId"]);
+                List<User> allowedUsers = new List<User>(Users);
+                if (allowedUsers.Find(usr => usr.Name.ToUpperInvariant() == currentUser.Name.ToUpperInvariant()) == null)
+                RedirectToLogin();
+            }
+        }
+    }
+}
+```</p>
+
+<ol>
+<li>Implement the filter on a controller</li>
+</ol>
+
+
+<p><code>csharp
+[AnonymousUsersFilter(Xero.Mvc.Extensions.Execute.Before, SecureFor.Anonymous)]
+public abstract class SecureControllerBase : SmartXeroController
+</code></p>
+
+<ol>
+<li>There are a couple of places where you can implement the execution of the filter logic. I chose to do it before the actual controller class is being loaded. To do that I had to create a handler and a routehandler</li>
+</ol>
+
+
+<p>7.a The MvcHandler</p>
+
+<p>``` csharp
+using System.Web.Mvc;
+using System;
+using Xero.Mvc.Core.Exceptions;
+using Xero.Mvc.Extensions.Filters;
+using System.Linq;</p>
+
+<p>namespace Xero.Mvc.Extensions
+{
+    public class XeroMvcHandler : MvcHandler
+    {</p>
+
+<p>        protected override void ProcessRequest(System.Web.IHttpContext httpContext)
+        {
+            if (this.RequestContext == null)
+            {
+                throw new NoRequestContextException();
+            }</p>
+
+<p>            string controllerName = this.RequestContext.RouteData.Values["controller"].ToString();</p>
+
+<p>            Type controllerType = this.GetControllerType(controllerName);
+            if (controllerType == null)
+            {
+                throw new NoControllerFoundException(this.RequestContext.HttpContext.Request.Path);
+            }</p>
+
+<p>            IFilter[] filters = controllerType.GetCustomAttributes(typeof(IFilter), true) as IFilter[];
+            filters
+                .Where(attr => attr.WhenToExecute == Xero.Mvc.Extensions.Execute.Before || attr.WhenToExecute == Xero.Mvc.Extensions.Execute.BeforeAndAfter)
+                .ToList()
+                .ForEach(attr =>
+                {
+                    if (attr != null)
+                    {
+                        attr.HttpContext = httpContext;
+                        attr.Execute();
+                    }
+                });</p>
+
+<p>            IController controllerInstance = this.GetControllerInstance(controllerType);
+            ControllerContext controllerContext = new ControllerContext(this.RequestContext, controllerInstance);
+            controllerInstance.Execute(controllerContext);
+            filters
+                .Where(attr => attr.WhenToExecute == Xero.Mvc.Extensions.Execute.After || attr.WhenToExecute == Xero.Mvc.Extensions.Execute.BeforeAndAfter)
+                .ToList()
+                .ForEach(attr =>
+                {
+                    if (attr != null)
+                    {
+                        attr.HttpContext = httpContext;
+                        attr.Execute();
+                    }
+                });
+        }
+    }
+}
+```</p>
+
+<p>7b. The Route Handler</p>
+
+<p>``` csharp
+using System.Web.Mvc;
+using System.Web;</p>
+
+<p>namespace Xero.Mvc.Extensions
+{
+    public class XeroMvcRouteHandler : IRouteHandler
+    {</p>
+
+<p>        #region IRouteHandler Members
+        public System.Web.IHttpHandler GetHttpHandler(RequestContext requestContext)
+        {
+            return new XeroMvcHandler { RequestContext = requestContext };
+        }</p>
+
+<p>        #endregion
+    }
+}
+```</p>
+
+<ol>
+<li>And the last step is to tell your application that it needs to use the new route handler. You can do that in the <code>global.asax.cs</code></li>
+</ol>
+
+
+<p>``` csharp
+protected override void SetupRoutes()
+{
+  // Note: Change Url= to Url="[controller].mvc/[action]/[id]" to enable
+  //       automatic support on IIS6</p>
+
+<p>  RouteTable.Routes.Add(new Route
+  {</p>
+
+<pre><code>  Url = "Login/Default.aspx",
+  Defaults = new { controller = "Login", action = "Index", id = (string)null },
+  RouteHandler = typeof(XeroMvcRouteHandler) // Our custom route handler
+</code></pre>
+
+<p>  });</p>
+
+<p>  RouteTable.Routes.Add(new Route
+  {</p>
+
+<pre><code>  Url = "[controller]/[action]/[id]",
+  Defaults = new { action = "Index", id = (string)null },
+  RouteHandler = typeof(XeroMvcRouteHandler)
+</code></pre>
+
+<p>  });</p>
+
+<p>  RouteTable.Routes.Add(new Route
+  {</p>
+
+<pre><code>  Url = "Default.aspx",
+  Defaults = new { controller = "Login", action = "Index", id = (string)null },
+  RouteHandler = typeof(XeroMvcRouteHandler)
+</code></pre>
+
+<p>  });
+}
+```</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2fblog%2farchive%2f2007%2f12%2f17%2fimplementing-filters-in-asp.net-mvc.aspx"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2fblog%2farchive%2f2007%2f12%2f17%2fimplementing-filters-in-asp.net-mvc.aspx" alt="kick it on DotNetKicks.com" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ASP.NET mvc taken for a test drive]]></title>
+    <link href="http://flanders.co.nz/2007/12/12/aspnet-mvc-taken-for-a-test-drive/"/>
+    <updated>2007-12-12T19:46:46+01:00</updated>
+    <id>http://flanders.co.nz/2007/12/12/aspnet-mvc-taken-for-a-test-drive</id>
+    <content type="html"><![CDATA[<p>A couple of days ago Microsoft released a CTP of the much discussed ASP.NET MVC handler. I decided to take it for a test drive.</p>
+
+<p>At first I just wanted to have a look at how to use the MVC handler with the ADO.NET Entities but quickly found that I can easily replace like the view engine.</p>
+
+<p>So I diverted my intentions and wanted to look at how hard it would be to plug it straight into the architecture of xero.</p>
+
+<p>At Xero we currently use a 2 step view approach where each page transforms its output through xsl and renders html that way.  Our O/R Mapper of choice is LLBLGen Pro, who does a great job at mapping stuff but the API could be a lot nicer IMHO.</p>
+
+<p>I'll make my application available soon, as soon as I removed the dependencies on LLBLGen and some of our custom classes. I have to do it this way because we're a publicly listed company and I'm not allowed to give out that information.</p>
+
+<p>Aaanyway in all it took me about 4 hours to plug in an xslt view engine and implement attribute based filters.</p>
+
+<p>Overall I'm quite happy with what I'm seeing that's in there. A couple of convenience methods like RenderText(...) would be nice. It would also be cool if it could find out the name of the requested action and then pass that as the current view so you don't have to specify the name of which view you want to render all the time.</p>
+
+<p>We did run into some trouble while writing unit tests apparently we can't pass the view context a temp data dictionary but I'm sure that will be fixed soon.</p>
+
+<p>So my conclusion is: There did go a fair bit amount of thought into the handler. I like what I see very much and I'll definitely keep a close eye on new developments in that space.</p>
+
+<p>del.icio.us Tags: <a href="http://del.icio.us/popular/asp.net%20mvc">asp.net mvc</a>,<a href="http://del.icio.us/popular/xero%20architecture">xero architecture</a>,<a href="http://del.icio.us/popular/aspnetmvc">aspnetmvc</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Auckland Codecamp]]></title>
+    <link href="http://flanders.co.nz/2007/08/13/auckland-codecamp/"/>
+    <updated>2007-08-13T01:02:58+02:00</updated>
+    <id>http://flanders.co.nz/2007/08/13/auckland-codecamp</id>
+    <content type="html"><![CDATA[<p>The last codecamp was a huge success :D  We had lots of interesting speakers and I now know a lot more about the WCF service factory than I did before.</p>
+
+<p>My session at codecamp was about Javascript best practices. I think it went pretty well judging by the reactions I got from some of the people in the audience.</p>
+
+<p>I mentioned that I would put up <a href="http://koolkraft.net/JavascriptPresentation.zip">my slides and the demo application</a></p>
+
+<p>In the afternoon I did not stay at codecamp but instead went with <a href="http://base4.net/Blog.aspx">Alex James</a> and <a href="http://nikhilk.net/">Nikhil Kothari</a> to explore Auckland for a while.  During the exploration of Auckland we of course discussed some geeky things like Alex's pet pieve : Data 2.0 and I could not resist talking about MVC and webforms with Nikhil, after all how often will I get the chance to talk to the architect of webforms face to face.</p>
+
+<p>Anyway I'd like to construct a list of arguments in favor of MVC (eg. Castle/Monorail) and webforms.  So if you're reading this blog and you have something you can contribute to this list <strong>please leave a comment</strong>.</p>
+
+<p>So far I have : it's easier to develop complex UI's with an MVC type framework than it is with webforms. I'm more productive in the MVC framework than I am with the classic ASP.NET model.  The classic asp.net model promotes code duplication or at least makes it easier to fall into that trap.</p>
+
+<p> Nikhil has some valid points in defence of webforms:</p>
+
+<blockquote><p>Sooner or later you are going to need some state that's why we have viewstate :) and you will typically maintain your own state in a hidden field. Webforms is a framework and you roll your own specific framework for every new site.  There is nothing you can with MVC that you can't do with webforms. </p></blockquote>
+
+<p>All his arguments are valid in my book.</p>
+
+<p>I have to get back to teched now but as soon as I get some more time I'm sending Nikhil a very small project programmed in the MVC way and the same app in webforms.</p>
+
+<p> </p>
+
+<p>Technorati tags: <a href="http://technorati.com/tags/codecamp">codecamp</a>, <a href="http://technorati.com/tags/nzteched">nzteched</a>, <a href="http://technorati.com/tags/castle%20vs%20webforms">castle vs webforms</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NBlogr Presentation in Wellington]]></title>
+    <link href="http://flanders.co.nz/2007/05/01/nblogr-presentation-in-wellington/"/>
+    <updated>2007-05-01T23:17:00+02:00</updated>
+    <id>http://flanders.co.nz/2007/05/01/nblogr-presentation-in-wellington</id>
+    <content type="html"><![CDATA[<p>Tonight I got the chance to present my nblogr application to a larger audience. Unfortunately I'm in the process of fixing bugs in NBlogr and one of those bugs required me to make a change to NBlogr.Web/views/default/shared/mainmenu.boo . I had made this change on sunday around midnight right before I went to bed. Of course I forgot to test the application because and it wouldn't run on my presentation.  When I got home it took me about 3 minutes to fix. I had to import a reference to Base4.Storage in the mainmenu.boo file.</p>
+
+<p>I'd like to thank everybody for coming, their patience and listening to my ramblings.</p>
+
+<p>Anyway I've included my slide deck in this post and I think it might be a good idea to post a couple more links to some of the people I mentioned in my talk.<br/>
+<a href="http://www.base4.net">http://www.base4.net</a>  - Alex James, Auckland<br/>
+<a href="http://blog.bittercoder.com">http://blog.bittercoder.com</a> - Alex Henderson, Auckland<br/>
+<a href="http://www.ayende.com/blog">http://www.ayende.com/blog</a><br/>
+<a href="http://hammet.castleproject.org">http://hammet.castleproject.org</a></p>
+
+<p><a href="http://www.castleproject.org">http://www.castleproject.org</a><br/>
+<a href="http://www.nunit.org">http://www.nunit.org</a><br/>
+<a href="http://www.nblogr.com">http://www.nblogr.com</a></p>
+
+<p>svn repository:<br/>
+<a href="https://svn.koolkraft.net/nblogr/trunk">https://svn.koolkraft.net/nblogr/trunk</a></p>
+
+<pre><code>            [NBlogr-Wellington 02 _05_2007.ppt (440 KB)](http://www.flanders.co.nz/Blog/content/binary/NBlogr-Wellington%2002%20_05_2007.ppt)
+</code></pre>
+
+<p>To get nblogr running on your machine follow these steps :</p>
+
+<p>Make sure you have a subversion client installed or subversion itself.</p>
+
+<p>C:\Projects> svn co <a href="https://svn.koolkraft.net/nblogr/trunk">https://svn.koolkraft.net/nblogr/trunk</a><br/>
+C:\Projects> osql -E<br/>
+1> create database nblogr<br/>
+2> go<br/>
+1> quit</p>
+
+<p>open the nblogr solution.</p>
+
+<p>change the connection string in web.config</p>
+
+<p>The different configuration options are explained in the web.config</p>
+
+<p>If you want to use a different extension than aspx you have to change the httphandler configuration and set the extension in nblogr/routing</p>
+
+<p>if you want urls to be rewritten without an extension you will have to enable wildcard handling.</p>
+
+<p>hit ctrl-f5 and it should take you through the configuration. If ctrl-f5 doesn't work try setting up the application in IIS.</p>
+
+<pre><code>            **Update:   
+</code></pre>
+
+<p>**James Hippolite from telecom was so kind to blog most of the bullet points of my slides. Which can be found here <a href="http://tvornz.spaces.live.com/blog/cns%21A93B6100E328706D%21388.entry?_c=BlogPart&amp;_c02_owner=1">http://tvornz.spaces.live.com/blog/cns!A93B6100E328706D!388.entry?<em>c=BlogPart&amp;</em>c02_owner=1</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Wtf ?? Ajax and the hidden cost of use]]></title>
+    <link href="http://flanders.co.nz/2006/12/12/wtf-ajax-and-the-hidden-cost-of-use/"/>
+    <updated>2006-12-12T06:00:40+01:00</updated>
+    <id>http://flanders.co.nz/2006/12/12/wtf-ajax-and-the-hidden-cost-of-use</id>
+    <content type="html"><![CDATA[<p>In it world Sean McGrath has been talking about <a href="http://www.itworld.com/AppDev/nlsebizajax061212/index.html">Ajax and the hidden cost of use</a>.</p>
+
+<p>I got to this post through Jon Udell, who has a post about <a href="http://weblog.infoworld.com/udell/2006/12/12.html#a1577">ajax and automation</a>.</p>
+
+<p>Anyway the sort of arguments that Sean is using make me think he has yet to complete a good ajax application.</p>
+
+<blockquote><p><em>A common buzzword in the industry is the concept of a "front end". In an ideal world, the front end just handles all the graphical user interface stuff while the back end does all the real work. In this ideal world, you can just bypass the front end and work with the back end directly when you want to integrate applications. Sadly, we do not live in this ideal world</em>.</p></blockquote>
+
+<p>I'm going of a rant here because I thought that the whole discussion AJAX is it good vs bad? was closed about a year ago.</p>
+
+<p>He obviously hasn't seen any of the Castle or ruby implementations who do just that. For example I can unit test my complete controllers base with out running a browser.</p>
+
+<p>Unless i'm really sure that an application will be used in one type of browser or it's successor and this browser is ajax capable.. then and only then the user interface will rely on javascript for the interaction.</p>
+
+<p>People then go why don't you cache values and have javascript work it out for you the next time this gives a perceived performance benefit. There are 2 main reasons for it :</p>
+
+<p>1 separation of concerns the only decision an UI can make is should I show this red or green based on a value of the object etc. But nothing else.</p>
+
+<p>2 you want live data not data that is almost live (i'm taling about a system where minutes matter in the workflow) :)</p>
+
+<blockquote><p><em>Think now of web-based applications you most like to use. How are their front ends and back ends? Well, historically, they have been quite cleanly separated. After all, a web browser only has limited capabilities. Behind the scenes it is really only capable of sending two commands GET and POST to things called URLs. Everything else (slight simplification!) happens at the back end. <br/>
+Ah, but that was then and this is now. Now we have AJAX and JSON and Flash and the Google Web Toolkit and Windows Presentation Foundation and... <br/>
+All these things help us to make web applications easier to use. In so doing, the clean separation between front end and back end gets more and more blurred. <strong>With every blurring of the separation, application integration becomes more complex. </strong></em></p></blockquote>
+
+<p>I guess somebody is really missing the point here a UI is just a shell over lots of services that can do the job with or without the UI on it.  All the real work is to be done in the service layer or deeper down in you app.</p>
+
+<p>I think Windows Presentation Foundation says it all in its name already <em>Presenation</em> <strong>only </strong>whatever is not related to the presenation of your data in the UI shouldn't be there.</p>
+
+<p>What I think is going on here is that he's affraid to take the plunge because the arguments he uses are arguments I had against building a full ajax site about 2 years ago.  I've set them aside.. and just do it now.</p>
+
+<p>I must say that using <a href="http://www.castleproject.org/">castle</a> has been a tremendous help for me into getting things done in the same timeframe as i would have with the classic model.</p>
+
+<p>For instance I'm about to finish a project that  in a clasic model would have consisted out of 70+ very dataintensive forms. The result of using ajax a.o. technologies now has the application down to 5 forms</p>
+
+<p>I still had to write the 70+ views and but not nearly as many search functions etc.  I do ajax on the AHA  principle (which means I send html snippets) because JSON and building dom nodes breaks backwards compatibility and would have slowed down development a lot.</p>
+
+<p>To get to the automation bit .. I think ajax makes it much more easy to interact with the backend then the classic model would have done. There are many more options to choose from (which is kind of a dissease of our time.. too many options) and you have a much finer grained control over what passes through the pipeline in terms of bits and bytes. just pull up any http request listener and you'll have all the things you need to replay your actions vs. parse forms and go through the html to figure out the fields etc.</p>
+
+<p>Ok that's it for my morning rant.  I just thought somebody needed to put his views into context. I have to give him that technology certainly didn't come to a standstill over the last year so it's getting increasingly difficult to keep up.</p>
+
+<p>I've known a couple of really good people to give up the game this year because it's all moving too fast in some respects or not how they want it to move. In my opinion things are indeed moving very fast at the moment.. but that's what makes it so exciting :D</p>
+]]></content>
+  </entry>
+  
+</feed>

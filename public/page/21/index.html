@@ -1,0 +1,1105 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <title>Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="For those of you that are concerned with design patterns for ajax check out this site : [http://ajaxpatterns.org/](http://ajaxpatterns.org/)  I have &hellip;">
+  
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link rel="canonical" href="http://flanders.co.nz/page/21">
+  <link href="/favicon.png" rel="icon">
+  <link href="/css/base.css" rel="stylesheet" type="text/css">
+  <link href="/css/skeleton.css" rel="stylesheet" type="text/css">
+  <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <link href="/css/skins/blue.css" rel="stylesheet" type="text/css">
+
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114.png">
+
+  <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+  <script src="/js/modernizr.js" type="text/javascript"></script>
+  <script src="/js/jquery.easing.1.3.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/js/jquery.illuminate.0.7.min.js"></script>
+  <!-- tweet -->
+  <script type="text/javascript" src="/js/tweet/twitter.js"></script>
+  <script type="text/javascript" src="/js/tweet/setting.js"></script>
+  
+  <script type="text/javascript" src="/js/custom.js"></script>
+  <script type="text/javascript" src="/javascripts/twitter.js"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body >
+  <div id="wrapper">
+    <header role="banner"> <div class="container">
+    <div class="row clearfix">
+      <hdgroup>
+        <div class="four columns">
+          <div class="logo">
+            <img src="/images/logo.png" alt="" />
+            <h2>Rants &amp; ramblings</h2>
+          </div>  
+        </div>
+      </hdgroup>
+      <nav role="navigation"><!-- <ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+   -->
+<ul>
+  <li>
+    <a href="/">Home
+      <span>Homepage</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/archives">Archives
+      <span>Articles</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/projects">Projects
+      <span>Open-Source</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/about">About me
+      <span>Introduction</span>
+    </a>    
+  </li>
+</ul>
+</nav>
+
+    </div>
+  </div>  
+<!-- <hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+ -->
+</header>
+    <div class="container bodycontent">
+      <div class="row clearfix">
+        <div class="sixteen columns headline">
+          <h2>Ivan Porto Carrero</h2>
+          <p class="italic">IO(thoughts) foreach (_.propagandize)</p>
+        </div>
+      </div>  
+
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <!-- start of row -->
+      <div class="row clearfix">
+        <div class="sixteen columns">
+          <!-- twitter feed -->
+          <div class="twitter_feed">
+            <ul class="tweet_list"></ul>
+          </div>
+        </div>
+      </div>  
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <div id="maincontent" class="clearfix">
+        <div class="five columns">  
+  <aside class="left-sidebar">
+    
+        
+<div class="widget row">
+  <h5>Search form</h5>  
+  <div id="search-form">
+    <form action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:flanders.co.nz" />
+        <input id="search-box" type="text" name="q" results="0" placeholder="Search"/>
+        <input type="submit" value="Search" id="search-button" />
+        <div class="clear"></div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+   <section>
+  <div class="widget row">
+    <h5>Recent Posts</h5>  
+    <ul id="recent_posts">
+      
+        <li class="post">
+          <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2009/11/08/a-good-url-regular-expression-repost/">A good url regular expression? (repost)</a>
+        </li>
+      
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="widget row">
+    <h5>GitHub Repos</h5>
+    <ul id="gh_repos">
+      <li class="loading">Status updating&#8230;</li>
+    </ul>
+    
+    <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+    
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <div class="widget row">
+    <h5>Latest Tweets</h5>
+    <ul id="tweets">
+      <li class="loading">Status updating&#8230;</li>
+    </ul>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        getTwitterFeed("casualjim", 4, false);
+      });
+    </script>
+    <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+    
+      <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+    
+  </div>
+</section>
+
+
+<section>
+  <div class="widget row">
+    <h5>On Delicious</h5>
+    <div id="delicious"></div>
+    <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+    <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+  </div>
+</section>
+
+
+<section class="googleplus">
+  <div class="widget row">
+    <h5>
+      <a href="https://plus.google.com/106536131996809745163?rel=author">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+        Google+
+      </a>
+    </h5>
+  </div>
+</section>
+
+
+
+    
+  </aside>
+</div>
+<div class="eleven columns">
+<div class="blog-index">
+  
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">03</p>  
+    <div class="month-year"><p><span>Jul</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/07/03/ajaxpatternsorg/" title="">AjaxPatterns.org</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>For those of you that are concerned with design patterns for ajax check out this site :</p>
+
+<pre><code>            [http://ajaxpatterns.org/](http://ajaxpatterns.org/) 
+</code></pre>
+
+<p>I have to say that that site is a real gem.  I for one am concerned with usability and am not discriminating so I think the leap to accessibility is only very small.  We are planning an application that is ajaxed and should still be completely usable by blind users which will be intresting to build.</p>
+
+<p>In preparation for this i stumbled upon <a href="http://www.maxkiesler.com/index.php/weblog/comments/how_to_make_your_ajax_applications_accessible/">http://www.maxkiesler.com/index.php/weblog/comments/how_to_make_your_ajax_applications_accessible/</a></p>
+
+<p>That page has got about 40 links to sites that discuss accesibility in an ajaxed world.</p>
+
+<p>The last issue I&#8217;m facing is the fact that because asp.NET renders webresource urls that are incredibly long. The w3 xhtml validator won&#8217;t validate my pages and only because of this url.  I want to render valid xhtml 1.1 pages. So that&#8217;s something I will be looking at in the next few weeks when I&#8217;ve got some spare time.</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">30</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/30/javascript-obfuscation/" title="">Javascript Obfuscation</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>I&#8217;ve been getting much better along with atlas lately. Almost up to the point that it takes me almost the same time to create page in asp.net than it does me to create a page in atlas. Notice the word almost :) And that&#8217;s optimism talking</p>
+
+<p>Anyway it does take a wee while longer to create an atlas page than it would to create an asp.net page. But the result is about 10x as usable and than a normal page.</p>
+
+<p>That being said. All that atlas goodnes comes at a cost : A lot of javascript being pushed down to the browser. When I was in wellington on wednesday there was somebody talking about atlas in the user group.  Seen as I will go talk to the regional groups I was quite keen what Tatham had to say on the subject.</p>
+
+<p>It was interesting but at a certain point he talked about the &#8220;obfuscated&#8221; javascript files. Those are just packed. That made me think that I also want to have packed javascript that is slightly less readable. I remember I have some open source library that I downloaded a year or so ago.</p>
+
+<p>Well the guy has a nice library that you can download here :</p>
+
+<p><a href="http://dean.edwards.name/packer/">http://dean.edwards.name/packer/</a></p>
+
+<p>It&#8217;s nice but his HttpHandler doesn&#8217;t work for me. But there&#8217;s a simple work-around. Make your own handler that reads the javascript file and uses his Pack function.</p>
+
+<p>If somebody is interested in the code just drop me an email and i&#8217;ll send it to you.</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">28</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/28/safari-fix-for-the-client-library-of-atlas/" title="">Safari Fix for the Client Library of Atlas</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>If you&#8217;re not using the control toolkit for atlas and are doing some client side scripting. you may find that the April CTP has doesn&#8217;t always work in the safari browser.</p>
+
+<p>This is in part due to the way that safari attaches events.</p>
+
+<p>In the control toolkit they use the following script to &#8220;patch&#8221; the april CTP of atlas to support safari a whole lot better. Some might find it useful :-)</p>
+
+<p>   40     // This fixes a bug in the Atlas Safari compatibility layer that</p>
+
+<p>   41  // prevents chaining multiple handlers to an event.  We will remove</p>
+
+<p>   42  // this after an Atlas CTP refresh resolves the underlying issue.</p>
+
+<p>   43  //</p>
+
+<p>   44  if (window.__safari) {</p>
+
+<p>   45     window.console.log(&#8220;Patching Safari compat layer&#8221;);</p>
+
+<p>   46     (function() {</p>
+
+<p>   47         var attachEventProxy = function(eventName, eventHandler) {</p>
+
+<p>   48             this.addEventListener(eventName.slice(2), eventHandler, true);</p>
+
+<p>   49         }</p>
+
+<p>   50 </p>
+
+<p>   51         var detachEventProxy = function (eventName, eventHandler) {</p>
+
+<p>   52             this.removeEventListener(eventName.slice(2), eventHandler, true);</p>
+
+<p>   53         }</p>
+
+<p>   54 </p>
+
+<p>   55         window[&#8220;HTMLHtmlElement&#8221;] = document.createElement(&#8220;html&#8221;).constructor;</p>
+
+<p>   56 </p>
+
+<p>   57         function HTMLElement() {}</p>
+
+<p>   58 </p>
+
+<p>   59         HTMLElement.prototype = HTMLHtmlElement.<strong>proto</strong>.<strong>proto</strong>;</p>
+
+<p>   60         var HTMLDocument = document.constructor;</p>
+
+<p>   61         window.attachEvent = attachEventProxy;</p>
+
+<p>   62         window.detachEvent = detachEventProxy;</p>
+
+<p>   63         HTMLDocument.prototype.attachEvent = attachEventProxy;</p>
+
+<p>   64         HTMLDocument.prototype.detachEvent = detachEventProxy;</p>
+
+<p>   65         HTMLElement.prototype.attachEvent = attachEventProxy;</p>
+
+<p>   66         HTMLElement.prototype.detachEvent = detachEventProxy;</p>
+
+<p>   67 </p>
+
+<p>   68     })();</p>
+
+<p>   69 }</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">24</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/24/make-atlas-support-the-guid-in-javascript/" title="">Make ATLAS Support the Guid in Javascript</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">24</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/24/django-vs-ruby/" title="">Django vs Ruby</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Ruby looks to me like a hack. I&#8217;m not the only one with problems there :)</p>
+
+<p><a href="http://tabo.aurealsys.com/archives/2005/10/11/django-or-why-i-chose-it-over-turbogears-and-ruby-on-rails/">http://tabo.aurealsys.com/archives/2005/10/11/django-or-why-i-chose-it-over-turbogears-and-ruby-on-rails/</a></p>
+
+<blockquote><p>I  decided to ignore Ruby for the moment and focus on Rails. What i noted:</p>
+
+<ul>
+<li><p>Very simple to install and set up new projects</p></li>
+<li><p>You create a database and it’s tables, and Rails will handle them</p></li>
+<li><p>Things get messy when you want to write SQL instead of using the framework to access the data model</p></li>
+<li><p>URL generation is simple but not flexible</p></li>
+<li><p>Rails templates looked ASPish, horrible, almost cthulhian. I couldn’t stand the sight of them. There is too much code in them and worst of all, I couldn’t find a way to change the template system (Clearsilver in Rails anyone?)</p></li>
+</ul>
+</blockquote>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">24</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/24/modern-web-design-time-division/" title="">Modern Web Design Time Division</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>My <a href="http://blog.coolz0r.com/2006/06/24/modern-web-design/">friend Miel </a>found this site from <a href="http://poisonedminds.com/d/20060621.html">poisoned minds.</a></p>
+
+<p>They have a nice breakdow on how time is really spent when developing a website. Of course this is good for a laugh :)</p>
+
+<p><img src="http://poisonedminds.com/comics/pm20060621.png" alt="Poisoned mind webdesign piechart" /></p>
+
+<p>I think they do have a point with the pure css lay-out. I for one am a dropshadow fan because if I put 2 divs on top of each other they need to look like there is some distance between them. I like the depth af the whole idea.  Up till now I haven&#8217;t found a way to create a rectangle with rounded corners and a dropshadow (like in photoshop or fireworks dropshadow) using only divs. I can do it easily using tables tho.</p>
+
+<p>But IE users must die. People love to attack microsoft stuff and I think those that complain about the quirks in IE start developing their site for other browsers than IE and that&#8217;s where those people make a thinking mistake. The logic behind it is : if 95% of the users use IE why would you start developing a site that does not target this browser primarily.</p>
+
+<p>Actually it is really starting to piss me off. All the time spent whining about how bad everything is what ms does, while working on a Windows XP machine with Office 2003/7 and visual studio on it, the time should be spent on making your life and the life of others easier. If you understand pc&#8217;s and coding a little it means you rarely have to be faced with the same problem twice.<br/>
+I&#8217;ve been making websites for 8 years now, most of them not so pretty especially the first few years :)<br/>
+And I haven&#8217;t come across the IE problem that all the others seem to be facing.  However i do have problems with browsers like Konqueror (this is just a piece of sh**), safari (Konqueror based say no more) and Opera.<br/>
+Up to the point that i don&#8217;t want to spend the money on supporting those (except for safari if it is really necessary).</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">23</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/23/essential-tools-for-web-development/" title="">Essential Tools for Web Development</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Peter has a post giving an overview of some tools that are essential to him as a developer.</p>
+
+<p><a href="http://jonesie.net.nz/EssentialTools.aspx">http://jonesie.net.nz/EssentialTools.aspx</a></p>
+
+<p>I would say that I use most of them but not all and I would like to add a few to the list because i mainly do webdevelopment and that&#8217;s a different story then winforms.<br/>
+Obviously I made the choice to go for atlas so I won&#8217;t sum up any other ajax frameworks. That is reserved for a separate post. </p>
+
+<p>AJAX/Web development:</p>
+
+<p>Internet Explorer : <br/>
+<a href="http://www.fiddlertool.com/Fiddler/version.asp">Fiddler</a> - a tool to view http traffic (that gets sent through IE)<br/>
+<a href="http://www.nikhilk.net/Project.WebDevHelper.aspx">WebdevelopmentHelper BHO </a>- A tool written by Nikhil Kothari and I consider it crucial<br/>
+<a href="http://www.microsoft.com/downloads/details.aspx?familyid=e59c3964-672d-4511-bb3e-2d5e1db91038&amp;displaylang=en">Internet Explorer Developer Toolbar</a> - This has got a lot of cool things you do want to know about your page sometimes.</p>
+
+<p>Mozilla/firefox : <br/>
+<a href="http://greasemonkey.mozdev.org/">Greasemonkey</a> - makes firefox highly extensible.<br/>
+<a href="http://chrispederick.com/work/webdeveloper/">WebDeveloper toolbar</a> - This has got a lot of cool things you do want to know about your page sometimes.<br/>
+<a href="http://www.mozilla.org/projects/venkman/">Venkman Javascript Debugger</a> - Javascript debugging is a must :)<br/>
+<a href="http://blog.monstuff.com/archives/000291.html">Greasemonkey Http Trace script</a> - does the same as the BHO or fiddler for IE.</p>
+
+<p>Collaborative development:<br/>
+We are mostly using team foundation server to do continuous integration. However sometimes when a lot of different parties are involved we can&#8217;t use the team foundation testing suite and then we use other tools to do our integration.</p>
+
+<p><a href="http://www.testdriven.net/default.aspx">TestDriven.NET</a> - does nunit testing and code coverage in VS 2005 - this used to be free but it isn&#8217;t anymore.<br/>
+<a href="http://confluence.public.thoughtworks.org/display/CCNET/Welcome+to+CruiseControl.NET">CruiseControl.NET</a> - does the builds based on nAnt or msbuild build scripts etc. It&#8217;s the continous integration server alternative that we use<br/>
+<a href="http://www.roland-weigelt.de/ghostdoc/">GhostDoc</a> - essential for documenting your code.</p>
+
+<p> </p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">01</p>  
+    <div class="month-year"><p><span>Jun</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/06/01/enable-intellisense-for-skin-files/" title="">Enable Intellisense for Skin Files</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Vladimir Bychkov explains it nicely.</p>
+
+<p><a href="http://vladimir.bychkov.info/blog/PermaLink,guid,be76b3bf-c524-456c-9c8f-a2584924aa32.aspx">http://vladimir.bychkov.info/blog/PermaLink,guid,be76b3bf-c524-456c-9c8f-a2584924aa32.aspx</a></p>
+
+<p>This will take a lot of the pain out of creating themes :)</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">31</p>  
+    <div class="month-year"><p><span>May</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/05/31/net-user-group-meeting-tonight/" title="">.NET User Group Meeting Tonight</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Tonight we had a user group meeting on XForms.</p>
+
+<p>First let me tell you that I think it is a big shame that we don&#8217;t get Xforms capabilities in IE6 or in IE7.<br/>
+It would get rid of all the javascript hassle and hoops we have to go through to get the simplest things done.</p>
+
+<p>Anyway, I&#8217;ve been working with atlas a bit more now. And it is really cool just a shame that i can&#8217;t use other libraries in conjunction.  But I still have to explore the animation api maybe if i can do things that i consider cool enough I don&#8217;t need other libraries any more.</p>
+
+<p>Back to the user group meeting. <a href="http://www.vistic.net">Peter Nunn</a>, the driving force behind a .NET XSP server application, came to give us a very passionate explanation on how xforms work and how they implemented them. <br/>
+The effect you get is very similar to what I&#8217;m doing with ATLAS for the moment. Async pages that just get data from webservices, some might even call it SOA.<br/>
+Where ATLAS gets cluttered combining 3 technologies in one page, Xforms does everything completely through xml. More clean&#8230; yes sir, more reusable .. yes sir, easily queriable.. yes sir.</p>
+
+<p>Conclusion : we want more of where that came from but this time on every platform. Just once everybody should agree.. would make the life of a lot of developpers a lot easier :)  Would probably put a lot of people out of business too.</p>
+
+<p>Would i use it ?  In the case where i develop for intranet applications i might be tempted to do so. As for my applications for uncontrolled environments (the internet) no thank you.<br/>
+Xforms is only supported in firefox and while everybody is telling you how great mozilla is, my stats still show over 90% of my visitors use internet explorer. That being said, people trust plug-ins that are widely accepted like the flash plug-in. But people don&#8217;t tend to trust obscure plug-ins from sourceforge, or other unknown companies in my experience.</p>
+
+<p>So I&#8217;ll continue the ATLAS path that I chose to take until there is  cross browser XFORMS solution that has penetrated deeply enough in peoples living rooms.</p>
+
+<p> </p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">30</p>  
+    <div class="month-year"><p><span>May</span><br />2006</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2006/05/30/vista-beta-2-has-to-go/" title="">Vista Beta 2 Has to Go :-(((</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>The company that hosts one of the servers that I use online is using OpenVPN as their vpn server.</p>
+
+<p>And there are no drivers available voor the enhanced security model of Windows vista.  Yep let&#8217;s call it enhanced security model instead of f***** security dialog boxes that pop up whenever you want to do something that is not an installed program on your pc.<br/>
+I am loving vista absolutely so I&#8217;m not uninstalling because I don&#8217;t think it works.</p>
+
+<p>I just think that in my case it is too early to make the move untill openvpn has support for vista in their range. Otherwise I can&#8217;t connect to my online sql server and server which makes my life at lot more stress free but eventually their would be less money coming in :)</p>
+
+<p> </p>
+
+<p> </p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/22/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page/20/">Newer &rarr;</a>
+    
+  </div>
+</div>
+</div>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><!-- start of footer container -->
+  <div class="container">
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="twelve columns">
+        <div class="logo">
+          <img src="/images/logo.png" alt="" />
+          <h2>Rants &amp; ramblings</h2>
+        </div>
+      </div>
+
+      <div class="four columns">        
+        <h6>Social networks</h6>
+        <ul class="social_network">
+          <li class="rollover"><a href="http://facebook.com/ivanportocarrero" class="yellowtip" title="Facebook"><span class="fb-rollover"></span><img src="/images/social/fb.png" alt="" /></a></li>
+          <li class="rollover"><a href="http://twitter.com/casualjim" class="yellowtip" title="Follow me"><span class="twitter-rollover"></span><img src="/images/social/twitter.png" alt="" /></a></li>
+          <li class="rollover"><a href="https://plus.google.com/u/1/106536131996809745163/posts" class="yellowtip" title="Google plus"><span class="google-rollover"></span><img src="/images/social/google-plus.png" alt="" /></a></li>
+        </ul>       
+      </div>
+    </div>
+    <!-- end of row -->
+  
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="eight columns">
+        <h6>About me</h6>
+        <p>
+        Welcome to my blog. This is a collection of random thoughts and rants.
+        </p>
+        <p>
+        Allow me to introduce myself. My name is Ivan Porto Carrero and I'm an enthusiastic developer on  Scala, .NET and Ruby.<br />Through this blog I hope I can share some of that passion and maybe help somebody out when they are looking on how to do something.
+        </p>
+      </div>
+      <div class="four columns">
+        <h6>Latest posts</h6>
+        <ul class="square">
+        
+          <li>
+            <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+          </li>
+        
+          <li>
+            <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+          </li>
+        
+          <li>
+            <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+          </li>
+        
+          <li>
+            <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+          </li>
+        
+          <li>
+            <a href="/2009/11/08/a-good-url-regular-expression-repost/">A good url regular expression? (repost)</a>
+          </li>
+        
+        </ul> 
+      </div>
+      <div class="four columns">
+        <h6>Browse pages</h6>
+        <ul class="square">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives">Archives</a></li>
+          <li><a href="/projects">My projects</a></li>
+        </ul> 
+      </div>
+    </div>
+    <!-- end of row -->
+    
+
+    <!-- start of footer divider -->
+    <div class="sixteen columns">
+      <div class="footer-divider row"></div>
+    </div>  
+    <!-- end of footer divider -->
+    
+    <!-- start of bottoms -->
+    <div class="clearfix footnote">
+      <div class="eight columns">
+        <p class="copyright">Copyright &copy; 2012 - Ivan Porto Carrero - All Right Reserved</p>
+      </div>
+      <div class="eight columns">
+        <p class="align-right"><span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, designed by <a href="http://iweb-studio.com" target="_blank">iwebstudio</a></p>
+      </div>
+    </div>
+    <!-- end of bottoms -->
+
+  </div>
+  <!-- end of footer container -->
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+<p id="back-top">
+  <a href="#top"><span></span>To top</a>
+</p>
+
+</body>
+</html>

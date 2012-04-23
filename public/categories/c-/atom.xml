@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: C# | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/c-/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IronRuby just got a mocking framework – kind of]]></title>
+    <link href="http://flanders.co.nz/2009/05/14/ironruby-just-got-a-mocking-framework-kind-of/"/>
+    <updated>2009-05-14T23:31:50+02:00</updated>
+    <id>http://flanders.co.nz/2009/05/14/ironruby-just-got-a-mocking-framework-kind-of</id>
+    <content type="html"><![CDATA[<p>As I mentioned in a previous <a href="http://flanders.co.nz/2009/05/03/mocking-for-ironruby/">post</a>. I started working on a small mocking framework. It has now progressed far enough to handle the most common mocking tasks.</p>
+
+<p>Below I pasted the output of the integration tests for CLR interop.</p>
+
+<pre><code>when isolating CLR interfaces        
+- should work without expectations         
+- should work with an expectation with any arguments         
+- should work with an expectation getting different method call result         
+- should work for an assertion on a specific argument 
+
+when isolating CLR classes        
+- should work without expectations         
+- should work with an expectation for any arguments         
+- should work with an assertion for specific arguments         
+- should fail for an assertion with wrong arguments 
+
+when isolating CLR instances        
+- should work without expectations         
+- should work with an expectation for any arguments         
+- should fail for an assertion for specific arguments         
+- should allow to delegate the method call to the real instance (partial mock)
+</code></pre>
+
+<p>you will need bacon installed to run the specs:</p>
+
+<p>  igem install bacon</p>
+
+<p>you can then install the caricature gem in ironruby by issueing</p>
+
+<p>  igem install caricature</p>
+
+<p>To use it there are some examples in the file spec/integration_spec.rb</p>
+
+<p>```ruby spec/integration_spec.rb
+require 'rubygems'
+require 'bacon'
+require 'caricature'</p>
+
+<p>ninja.when_told_to(:survive_attack_with).return(5)</p>
+
+<p>weapon.attack(ninja).should.equal 5</p>
+
+<p>ninja.was_told_to?(:survive_attack_with).with(:any).should.be.successful
+```</p>
+
+<p>There is a gotcha though, when you use it in a CLR class you're bound to CLR rules and it only overrides the methods that are marked as virtual. We also can't isolate static or sealed types at the moment.</p>
+
+<p>I took the approach of doing away with the terminology of mocking and subbing and instead chose the much clearer Isolation. By default any method returns null or the default value of a value type. You can tell an isolation to return a specific value or raise an error etc. Later on you can then assert if the method was actually called.</p>
+
+<p>This fits in better with the way you probably structure your tests.</p>
+
+<p>I hope you like it.</p>
+
+<p>You can find the source in my github account.</p>
+
+<p><a href="http://github.com/casualjim/caricature">http://github.com/casualjim/caricature</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject knows a new trick]]></title>
+    <link href="http://flanders.co.nz/2009/03/15/ninject-knows-a-new-trick/"/>
+    <updated>2009-03-15T01:32:30+01:00</updated>
+    <id>http://flanders.co.nz/2009/03/15/ninject-knows-a-new-trick</id>
+    <content type="html"><![CDATA[<p>Earlier this week Nate <a href="http://kohari.org/2009/03/13/ninject-github-crazy-delicious/">already said</a> that I was doing some work on <a href="http://ninject.org">Ninject</a>, now I have it working :). Everything I’m about to talk about is currently in the master tree of the <a href="http://github.com/enkari/ninject">ninject github</a> repository. Getting <a href="http://ironruby.net">IronRuby</a> to play nice with <a href="http://ninject.org">Ninject</a> was surprisingly easy :).</p>
+
+<p>There was only one place that required some kind of weird workaround and from that workaround I’m entirely sure that it will go away by the time .NET 4.0 will be here. The DLR duplicates a number of delegates from .NET 4.0 but .NET 3.5 also defines them (i.e. System.Func&lt;T, TT>) and then you get great exception messages like: System.Func is not of type System.Func. The solution is to not reference System.Core in your project. Except that Ninject expects the System.Core variant at some point and that was solved by aliasing the System.Core assembly and talking to the types in that assembly by their alias.</p>
+
+<p>Anyway the juicy stuff :) How can you take advantage of Ninjects newly found friendship with <a href="http://ironruby.net">IronRuby</a>.</p>
+
+<p><a href="http://ninject.org">Ninject</a> now has 2 flavors of Kernels. We have a StandardKernel that knows how to deal with the module configuration system that uses a fluent interface defined in C#. And now we also have a DlrKernel that extends the StandardKernel with a RubyModuleLoader plugin. If you tell the DlrKernel to look inside a path for configuration files it will scan those folders for <em>.dll or </em>.rb files. Those files should contain the configuration for the ninject bindings.</p>
+
+<p>So to create a Kernel that is ruby enabled you would use the following code:</p>
+
+<p>``` csharp  <br/>
+IKernel kernel = DlrKernel();
+kernel.AutoLoadModulesRecursively();</p>
+
+<p>var samurai = kernel.Get<IWarrior>();
+System.Console.WriteLine(samurai.Weapon.Name);
+```</p>
+
+<p>The above snippet could then for example load a configuration file that has been defined like this:</p>
+
+<p>``` ruby  <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes</p>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IWeapon, :to => Sword
+  ninject.bind IWarrior, :to => Samurai
+end
+```</p>
+
+<p>The configuration above shows how most of a typical configuration would be defined by you the full configuration API at your disposal. All the options for the configuration can be specified in 2 ways. The first way is in a hash like syntax and the second way uses a more fluent syntax.</p>
+
+<p>``` ruby
+to_configure_ninject do |ninject|</p>
+
+<p>  ninject.bind IServiceA, :to => ServiceA, :as => :singleton,</p>
+
+<pre><code>                      :meta =&gt; { :type =&gt; "superservice" },
+                      :name =&gt; "aaaaa",
+                      :with =&gt; { 
+                        :parameter =&gt; { :my_param =&gt; lambda { |context| "param_value" } },
+                        :constructor_arguments =&gt; {:const_arg =&gt; 56 },
+                        :property_values =&gt; {:property_name =&gt; 94 },
+                      },
+                      :on_activation =&gt; lambda { |obj| obj.do_some_work },
+                      :on_deativated =&gt; lambda { |obj| obj.do_some_cleanup },
+                      :when =&gt; lambda { |context| "a value" } # or
+                      # :when =&gt; { :injected_into =&gt; ServiceB } or
+                      # :when =&gt; { :target_has =&gt; AnAttribute } or
+                      # :when =&gt; { :member_has =&gt; AnAttribute } or
+                      # :when =&gt; { :class_has =&gt; AnAttribute }
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>Or</p>
+
+<p>``` ruby
+to_configure_ninject do |ninject|</p>
+
+<p>  ninject.bind IServiceA, :to => ServiceA, :as => :singleton do</p>
+
+<pre><code>meta :type =&gt; "superservice" 
+name "aaaaa"    
+
+with :parameter =&gt; { :my_param =&gt; lambda { |context| "param_value" } }    
+with :constructor_arguments =&gt; { :const_arg =&gt; 56 }    
+with :property_values =&gt; { property_name =&gt; 94 }    
+
+on_activation do |obj| 
+  obj.do_some_work 
+end    
+
+on_deativation { |obj| obj.do_some_cleanup }
+
+condition do |context|     
+  true
+end 
+
+# or
+
+condition :injected_into =&gt; SomeClass 
+
+# or ...
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>Some of the nicer consequences of using Ruby as a configuration language is the syntax for open generics. The example below shows how to configure types with open generics.</p>
+
+<p>``` ruby  <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes
+include Ninject::Tests::Integration::StandardKernelTests</p>
+
+<h1>IGeneric is a generic interface and GenericService is a generic type</h1>
+
+<h1>we don't have to specify any special notation for open generics</h1>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IGeneric, :to => GenericService, :as => :transient
+  ninject.bind IGeneric, :to => GenericService2
+end
+```</p>
+
+<p>To specify a condition the syntax would look like this</p>
+
+<p>``` ruby <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes</p>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IWeapon, :to => Shuriken do</p>
+
+<pre><code>condition do |request|        
+    request.target.nil? 
+         ? false 
+         : request.target.member.reflected_type == Samurai.to_clr_type
+  end 
+</code></pre>
+
+<p>  end
+  ninject.bind IWeapon, :to => Sword
+  ninject.bind IWarrior, :to => Samurai
+end
+```</p>
+
+<p>Well that’s all. I hope you like it. I will be looking into more ways to integrate DLR stuff into <a href="http://ninject.org">Ninject</a> the most obvious is allowing you to inject dynamic types into static classes.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Beating a dead horse: Stored Procedures]]></title>
+    <link href="http://flanders.co.nz/2008/10/23/beating-a-dead-horse-stored-procedures/"/>
+    <updated>2008-10-23T20:37:23+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/23/beating-a-dead-horse-stored-procedures</id>
+    <content type="html"><![CDATA[<p>I seem to be having the same conversations with the dev teams whenever I switch clients. The topic of this post is one that many people have written about before. I'm just going to put my opinion on my blog so I can refer people to it in the future instead of having to repeat myself every time.
+What prompted this post is that since I've moved to Belgium I've had to take a step back from living on the bleeding edge and using open source projects. Most of the work is concentrated in Brussels and is at big corporates or banks not exactly what you'd see as the progressive thinkers (with reason).
+I guess it would be safe to say that I've been immersed in "enterprise" development. In short I still haven't seen anything that is more complicated than a web app like <a href="http://www.xero.com">Xero</a>. But perhaps more about that in another post. This one is about stored procedures and their valid uses.</p>
+
+<p>My current client is pretty interested in the newer technologies (anything that is out of beta) and how to put them into production.  As such they use LINQ as their data layer. They follow the classic MS guidance of data logic, business logic and - the trigger for this post - stored procedures to encapsulate all the data access.
+People that have worked with me in the past will be able to vouch for the fact that I feel strongly against stored procedures. But before we get to why I don't want to use them, let's look at some of the reasons people have given me in the past why they were using them.</p>
+
+<ul>
+<li>Performance. Because stored procedures are (pre)compiled</li>
+<li>Security. They can lock down tables from being accessed by users directly but they can get to the database through the stored procedures layer</li>
+<li>Maintenance. You can change a stored procedure more easily than deploying a new build of your application because no compilation is needed.</li>
+<li>Less data to send over the wire because stored procedures can execute more sql statements at once.</li>
+</ul>
+
+
+<p>All of that stuff sounds pretty great right? As I've said before my current client has developed their data layer in their framework using Linq2Sql. I think Linq2Sql is not too bad, at least it gets the corporates into an ORM mindset because it comes from MS which makes it a vastly easier technology to sell than NHibernate for example.
+But when you're going to use Linq in conjunction with stored procedures for basic CRUD operations I think you're kind of missing the whole point of Linq2Sql or ORM's altogether for that matter. So there you have it, this is why I cannot resist posting about this subject although many people have said pretty much the same as I'm going to say in this post.</p>
+
+<h3>Credit where credit is due</h3>
+
+<p>The list of people below have helped me in forming my opinion on this subject. I've had the pleasure of having lengthy discussion on this topic with the first 3 people on the list. I consider the people on this list to be authorities in .NET development and 4 of them have written their own ORM in the past. Alex James and Andrew Peters now both work on the Entity Framework team.
+* <a href="http://blogs.msdn.com/alexj">Alex James</a>
+* <a href="http://andrewpeters.net">Andrew Peters</a>
+* <a href="http://turtle.net.nz">Jeremy Boyd</a>
+* <a href="http://weblogs.asp.net/fbouma">Frans Bouma</a>
+* <a href="http://ayende.com/Blog">Ayende (Oren Eini)</a>
+* <a href="http://codebetter.com/jmiller">Jeremy D. Miller</a>
+* <a href="http://codinghorror.com">Jeff Atwood</a></p>
+
+<p>Let's look at the reasons mentioned above and work our way through them seeing how they pan out in the end and you can draw your own conclusions on the matter.</p>
+
+<h3>Performance</h3>
+
+<h4>Stored procedures are precompiled</h4>
+
+<p>The fact that stored procedures are precompiled and dynamic queries aren't is a complete myth. Ever since Sql Server 7.0 the query plans are cached for both of them. If you change a parameter in a stored procedure it has to be recompiled too.You can check the Sql documentation to verify that.
+IMHO this also falls in the category premature optimizations. It could be that you have a query that is so complex or that is a real bottleneck for your application then it might be worth it to invest the time and write a stored procedure for it that queries the database differently and as such get rid of the bottle neck but take on a higher maintenance cost.</p>
+
+<h4>Batching of queries and returning multiple result sets</h4>
+
+<p>Another argument people often bring to the table is that in a stored procedure I can issue many sql statements on the same database connection. I hate to break the news to you but you get the same benefits when you're using dynamic sql (preferably the parameterized kind). You could issue one command that returns multiple result sets just like the body of your stored procedure. Or you could issue more than one command on the same connection and still get a very similar result.</p>
+
+<h3>Security</h3>
+
+<h4>Sql Injection attacks</h4>
+
+<p>Another argument I keep hearing is the fact that when you build dynamic sql statements you open yourself up for sql injection attacks which isn't that case for stored procedures.
+There is some truth in that but it definitely isn't the whole truth. What they mean by that is that if you're going to build your dynamic query by concatenating strings then you could indeed open yourself up to a sql injection attack but I've seen this happen in stored procedures too it's just a little bit harder to do it there.
+However if you build your sql statement by using a parameterized query you get the same security benefits as a stored procedure would give you.</p>
+
+<h4>Different permissions on tables and stored procedures</h4>
+
+<p>This isn't such a big problem. I've mostly seen people use one dedicated user to access the database. Lots of times there is a SOA like architecture that allows the client application to not even know what type of database it's connecting too.  I haven't seen many places yet where they actually implement security that is that strict.
+So the reasoning goes if you secure your application properly then this shouldn't be a big problem.
+Ayende has a more elaborate post on the subject: <a href="http://ayende.com/Blog/archive/2006/04/05/StoredProceduresForSecurity.aspx">Stored Procedures for Security</a></p>
+
+<h3>Maintenance</h3>
+
+<p>This is probably a very ambiguous problem. From a development point of view this might probably be the worst argument in favor for stored procedures. However if you look at it from the POV of the enterprise it might actually hold some value.
+At my current client all the applications have to be distributed by a separate team, and that makes the deployment a costly scenario.
+That is because once your application goes into production and something small needs to change the deployment team has to go around and deploy that application again on every workstation in the company. I know about click-once but nobody has any rights to install anything on their pc which makes that pretty hard to do.
+Now from my POV this is the most invalid argument of all of them because of the maintenance overhead it adds.
+When you give stored procs to a developer they see shiny quick shortcuts to quickly get some data out and perhaps already transform some of that data in their query. That is all good the first time you have to deploy the application. But the next person needs to add a column to a table and suddenly he will have to go through all the stored procedures (at least 3 of them for the C,R and D of CRUD) to add the column. Then he has to go in the data layer of your n-tiered application and modify the entity and perhaps the methods that map to the stored procedures.  Then comes time to deploy and you forgot to modify your update script with that one column you added to a stored proc. Of course this stored proc is the one that saves one of the core entities of your application and suddenly the new release is throwing errors all over the place.
+I skipped the part of transforming some data. As <a href="http://flanders.co.nz">my previous post</a> suggests: that stuff is business logic and doesn't belong in a stored procedure.</p>
+
+<h3>Some more reading on the subject</h3>
+
+<ul>
+<li>Jeff Atwood claiming that T-SQL is the assembly language of contemporary development.</li>
+</ul>
+
+
+<p><a href="http://www.codinghorror.com/blog/archives/000117.html">Who Needs Stored Procedures, Anyways?</a>
+* Frans Bouma explaining his point of view:</p>
+
+<p><a href="http://weblogs.asp.net/fbouma/archive/2003/11/18/38178.aspx">Stored procedures are bad, m'kay?</a>
+* Jeremy Miller swearing this is really going to be his last post on stored procedures:</p>
+
+<p><a href="http://codebetter.com/blogs/jeremy.miller/archive/2006/05/25/145450.aspx">Why I do not use Stored Procedures</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[If you ever wanted to play fur elise in the console]]></title>
+    <link href="http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console/"/>
+    <updated>2008-10-22T14:08:53+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/22/if-you-ever-wanted-to-play-fur-elise-in-the-console</id>
+    <content type="html"><![CDATA[<p>At work today we were playing around with the console.. here's one of our experiments whilst creating a stoplight workflow (WF).</p>
+
+<p>```csharp <br/>
+private static void FurElise()
+{</p>
+
+<pre><code>    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(315, 200);
+    Console.Beep(370, 200);
+    Console.Beep(335, 200);
+    Console.Beep(282, 600);
+    Console.Beep(180, 200);
+    Console.Beep(215, 200);
+    Console.Beep(282, 200);
+    Console.Beep(315, 600);
+    Console.Beep(213, 200);
+    Console.Beep(262, 200);
+    Console.Beep(315, 200);
+    Console.Beep(335, 600);
+    Console.Beep(213, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(400, 200);
+    Console.Beep(420, 200);
+    Console.Beep(315, 200);
+    Console.Beep(370, 200);
+    Console.Beep(335, 200);
+    Console.Beep(282, 600);
+    Console.Beep(180, 200);
+    Console.Beep(215, 200);
+    Console.Beep(282, 200);
+    Console.Beep(315, 600);
+    Console.Beep(213, 200);
+    Console.Beep(330, 200);
+    Console.Beep(315, 200);
+    Console.Beep(282, 600);
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Common mistakes in software development (part 2): Mixing up the layers]]></title>
+    <link href="http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers/"/>
+    <updated>2008-10-01T05:10:54+02:00</updated>
+    <id>http://flanders.co.nz/2008/10/01/common-mistakes-in-software-development-part-2-mixing-up-the-tiers</id>
+    <content type="html"><![CDATA[<p>In my <a href="http://flanders.co.nz/2008/09/24/common-mistakes-in-software-development/">previous post</a> I explained some very quick wins to make your code a little bit cleaner. As I've been appointed an <a href="http://www.asp.net">asp.net</a> project at work at the moment I have the chance to get more ammunition for blogging :).
+This time I'd like to talk about properly separating your tiers so that the next person doesn't have to go through the complete application and make changes everywhere just to make a minor change to the application.</p>
+
+<p>One  of the problems; one of the most time consuming that is; I've seen is that people are confused on what they have to put in the data logic layer and what is business logic. In my case this is fairly extreme because there isn't an ORM tool but rather every entity gets populated by calling a stored procedure and then in the code the graph objects get set. Whether this is a good approach for fetching your data or not is not within the scope of this blog post, but I'm guessing there are more people who are facing this type of situation.</p>
+
+<p>Anyway let's start with the beginning and explain the typical <a href="http://en.wikipedia.org/wiki/N-tier">n-tier architecture</a> people seem to follow. This is not a particular pattern like <a href="http://en.wikipedia.org/wiki/Model-view-controller">MVC</a> or <a href="http://en.wikipedia.org/wiki/Model-view-presenter">MVP</a> that people are talking about so much lately. This goes back to the guidance that can be found on the <a href="http://msdn.microsoft.com">msdn website</a>.  This type of architecture is often used in combination with data sets but not in my example for this post. This architecture is generally divided in 3 parts that can, but don't have to, run on different machines if needs be.  When talking about this type of architecture people mostly talk about an n-tier application.</p>
+
+<h2>The first part is the data layer.</h2>
+
+<p>The golden rule for this one: this is the gateway between the rest of your application and the database. <strong>NONE</strong> of the other layers should be talking directly to the database but instead should be doing their talking through this layer.  That means if you have stored procedures you provide wrappers for them in this layer. You populate your entities in this layer too.
+Other functions you can perform in this layer is setting the graph members (populating relationships). IMHO if you're talking to the database (open/close connection) you're doing stuff that belongs in the data layer which includes populating relationships.</p>
+
+<p>Encapsulating this logic in it's own layer, which could potentially be walled off through only exposing it with remoting or WCF, allows you to reuse the code in different places of your applications or sharing this data access assembly with multiple applications.</p>
+
+<h2>The second part is the business logic layer.</h2>
+
+<p>This layer encapsulates all the operations you do on entities to express the business rules. That means you would probably do most of your work in this layer. Basically <strong>all</strong> of the programming you will be doing for the business rules should be done here. Business logic doesn't live in stored procedures, it doesn't live in the UI or the data layer. Nope this layer is where it lives and nowhere else.  This statement may raise some eyebrows but only and only when you find that a certain routine is a bottleneck and it is really data intensive you can put it in a stored procedure but more on that subject in another blog post.
+If you find yourself transforming data so you can display it in your GUI then you're probably expressing business rules that aren't explicitly stated as a business rule.
+When you find yourself to be concatenating strings or writing logic to translate your pages in your GUI layer then you're probably expressing business logic (business logic doesn't have to come from business ;) in case that wasn't clear).
+Another common find in business logic is validation for example because this generally expresses some kind of strict rule that comes from the business domain your application deals with. Validation is a tricky one but the rule is you should do <strong>all</strong> validation in your business logic. To provide a better user experience you can maybe reuse that validation on the client side. In the case of web development you probably will have to duplicate that validation in javascript if you really need it.</p>
+
+<p>Separating these rules into their own layer allows you to reuse the methods and classes you create in the business logic layer, in different parts of your UI or even reuse it in different applications.
+By separating this logic it should be easier for you to do some automated testing like unit testing and/or integration testing of that code.</p>
+
+<h2>The third and last layer</h2>
+
+<p>This is typically the UI layer but you could easily use web/WCF services as an interface to your logic. The UI doesn't have to be a GUI it can also be a CLI (Command-Line Interface) or something. But that is how you interact with the user or external application. The idea is that in this layer you have virtually no logic except for what's on the screen <strong>everything</strong> else should be handled by your business logic. To clarify this statement: you can show/hide UI elements or add/remove elements to the UI and respond to events triggered by user actions but the data of that response and the processing really belongs in the business logic layer.</p>
+
+<p>The UI layer can talk to both the business logic and data logic layers. If for example you're getting a category list with just an id and name from the database chances are you won't need to transform that data so your UI can bind directly to the entities returned by your data layer. But more complex items like an invoice for example will probably need some processing and then it should probably pass through the business logic layer.</p>
+
+<p>This is typically a somewhat harder part of your application to provide tests for although there are some libraries out there that make it easier but still there are easier parts to test in your application.</p>
+
+<p>So that was a quick refresher on what the classic n-tier architecture is about an how it should be structured. I hope you will agree with me into stating that its not that hard and pretty straight-forward to implement, but what I find in the "enterprise" is far from the points mentioned above.
+It is a bloody mix of everything everywhere, leaving me thinking -come on guys it's not that hard-:
+<em>talking to the database => datalayer</em>
+<em>showing windows/adding UI elements,... => UI layer</em>
+<em>everything else => business logic</em></p>
+
+<p>Failing to abide by the previous simple rules will result in hell freezing over, entire plagues will be released upon the world; to cut a long story short: the world as you know it will seize to exist and turn into complete chaos.
+Following the rules should result in less code duplication, an instantaneously easier to maintain codebase and probably more happy successors for when you move on to the next project.  It should also give you a higher degree of code reuse.
+If there is one thing you should take away from this article then it should be:
+<strong>Don't mix your tiers</strong></p>
+
+<p>Of course there are a couple of situations when you can diverge from the ideas presented in this post but you should always be able to justify why you break the rule. So you need a good reason to break the proposed architecture and that would probably also warrant a comment so the next guy also knows what's going on.
+The most important part is to separate all non-UI logic out from the UI layer and put it in one of the lower layers.</p>
+
+<p>Thanks for reading
+Ivan - writing for more maintainable software -</p>
+]]></content>
+  </entry>
+  
+</feed>

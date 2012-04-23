@@ -1,5 +1,5 @@
 ---
-date: '2008-03-18 03:35:04'
+date: "2008-03-18 03:35:04"
 layout: page
 slug: about
 status: publish

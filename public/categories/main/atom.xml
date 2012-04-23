@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Main | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/main/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Intentional programming]]></title>
+    <link href="http://flanders.co.nz/2007/02/13/intentional-programming/"/>
+    <updated>2007-02-13T21:00:20+01:00</updated>
+    <id>http://flanders.co.nz/2007/02/13/intentional-programming</id>
+    <content type="html"><![CDATA[<p>This is a great read. It's a really long article but i found it really interesting and continued it to the end (which is very very rare in my case)</p>
+
+<p>It's about Charles Simonyi and what he has been up to in his carreer plus his plans for the future.</p>
+
+<p>Charles Simonyi--Microsoft's former chief architect, the tutelary genius behind its most famous applications, the inventor of the method of writing code that the company's programmers have used for 25 years, and now the proponent of an ambitious project to reprogram software</p>
+
+<p><a href="http://www.technologyreview.com/Infotech/18047">http://www.technologyreview.com/Infotech/18047</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FTP Server with sql acces]]></title>
+    <link href="http://flanders.co.nz/2006/03/01/ftp-server-with-sql-acces/"/>
+    <updated>2006-03-01T16:36:58+01:00</updated>
+    <id>http://flanders.co.nz/2006/03/01/ftp-server-with-sql-acces</id>
+    <content type="html"><![CDATA[<p>I have the need to run an ftp server for one of my applications. It is to complement a web application where there is a pretty big datatransfer.  Users need to be able to register and upon activation they need to be able to upload movies (20-70MB) to a folder online. These movies need to be made available online and proposed for review to somebody in the company.</p>
+
+<p>So far so good. Were it not that we are running IIS Ftp server for the moment who stores it's users in the AD of the server. That is not the place where I want to store credentials for my users. Also I wanted to make only one folder available for a user and to accomplish this IIS is just too difficult to manage.  Thus again time for an internet hunt and yessss there is is Blackmoon FTP server who allows to do the entire configuration in a sql database or an access database. </p>
+
+<p>Fits like a glove in my opinion :) <br/>
+I downloaded it, installed it end yes it just works. I can now do the full configuration through the generated DAL from ORM.NET. All it took to integrate an FTP server in my application was one afternoon and that's it.</p>
+
+<p>You can download blackmoon from their site. They offer a free version for personal use. But even from the enterprise edition with domain license you won't become  poor man :)<br/>
+http://www.blackmoonftpserver.com</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A poor man's code generation]]></title>
+    <link href="http://flanders.co.nz/2006/03/01/a-poor-mans-code-generation/"/>
+    <updated>2006-03-01T15:50:25+01:00</updated>
+    <id>http://flanders.co.nz/2006/03/01/a-poor-mans-code-generation</id>
+    <content type="html"><![CDATA[<p>There has been a lot of talk about code generation and ORM software around where I was.</p>
+
+<p>I got curious and embarked on a free codegeneration exploration. Being new to the concept of codegeneration my requirements were the following :</p>
+
+<ul>
+<li><p>It needs to be faster then the dataset generator of visual studio 2005</p></li>
+<li><p>It needs to support relations</p></li>
+<li><p>It needs to support stored procedures or at the very least use dynamic query language that uses parameters to set up queries to the database.</p></li>
+<li><p>It needs to be with a very very fast learning curve.</p></li>
+<li><p>It needs to be free (although I also looked at the wilson O/R mapper which is practically free and LLBL codegen which is definetely not free)</p></li>
+</ul>
+
+
+<p>These are my findings :</p>
+
+<p>The one that is most easily found is mygeneration with the dOOdads architecture out of the box. Of course you can create your own templates to customize the generated code to you your specific needs and architecture.<br/>
+my generation can be found at : <a href="http://www.mygenerationsoftware.com/portal/default.aspx">http://www.mygenerationsoftware.com/portal/default.aspx</a><br/>
+It does work fine but the dOOdads architecture does not support relations and these you have to make yourself again.  I found it all a bit too much fiddling about and it didn't meet my 2 of my requirements, thus the search went on.</p>
+
+<p>Next I found ORM.NET, which is the one I am using for the moment. Total setup time of a DAL that is easily queried 1,5 min flat. I was impressed, and best of all it is completely free. Apparently it is written by a consulting firm that used it for their internal needs. They no longer support it and it turned open source.<br/>
+ORM.NET gets my stars. And I will be using it a lot in simpler scenario's like websites etc.<br/>
+ORM.NET can be found at : <a href="http://www.olero.com/OrmWeb/index.aspx?p=ORM.ascx">http://www.olero.com/OrmWeb/index.aspx?p=ORM.ascx</a></p>
+
+<p>While looking for some documentation on ORM.NET I came across a link to ntiergen.net which can handle about any job. It generates stored procedures for you, along the DAL and the needed classes. You get to configure all your stored procedures beforehand and get the opportunity to create views and complicated queries through their interface.  Normally it is priced at $449 but the link I found offers a fully functional licensed version open for the public. I downloaded it and just gave it a brief look as I am very pressed for time at the moment.<br/>
+nTierGen.NET can be found at <a href="http://weblogs.asp.net/gavinjoyce/archive/2004/08/28/222017.aspx">http://weblogs.asp.net/gavinjoyce/archive/2004/08/28/222017.aspx</a></p>
+
+<p>Happy code generating !!!</p>
+
+<p> </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Seems like work isn't slowing down for the moment]]></title>
+    <link href="http://flanders.co.nz/2006/02/26/seems-like-work-isnt-slowing-down-for-the-moment/"/>
+    <updated>2006-02-26T20:30:42+01:00</updated>
+    <id>http://flanders.co.nz/2006/02/26/seems-like-work-isnt-slowing-down-for-the-moment</id>
+    <content type="html"><![CDATA[<p>I thought I was busy before I got this thing on my hand.   Now it's even worse.  <br/>
+I don't know where to crawl first.</p>
+
+<p>I got my MYOB professional partner subscription last week and am trying to integrate it now in the program I'm writing.  And I have to say.. It's not all that hard.. just open the docs and you're good to go.</p>
+
+<p>But what annoys the hell out of me, apart from not being able to run myob on a win2k3 server, is that myob is slow as a dog.  A request can easily take up to 30 seconds to complete. This gives me an excuse to delve into the async pattern. It appeals a lot to me.. but seens as I 'm always pressed for time I don't get to experiment all that often.. But this problem does give me the necessity to do it.</p>
+
+<p>Maybe I will post my findings later.  If the async pattern doesn't give me a good viable solution to my problem I have another way of going about it.  SQL server 2005 supports managed code, which we are all very aware off, so<em> </em> I can reference and consume a webservice and stick all the myob datatable queries in a sql db as xml, index it and it is also searchable.</p>
+
+<p>But first let's get to the async pattern..</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Can't remember the connection string ?]]></title>
+    <link href="http://flanders.co.nz/2006/01/08/cant-remember-the-connection-string/"/>
+    <updated>2006-01-08T09:34:45+01:00</updated>
+    <id>http://flanders.co.nz/2006/01/08/cant-remember-the-connection-string</id>
+    <content type="html"><![CDATA[<p>There is a website out there that remembers them for you.  I've used them on multiple occasions because my memory for these things seems to be in need of a reboot</p>
+
+<p>Anyway here's the url : http://www.connectionstrings.com/</p>
+]]></content>
+  </entry>
+  
+</feed>

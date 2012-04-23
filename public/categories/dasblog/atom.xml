@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: DasBlog | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/dasblog/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T12:05:35+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[This blog has been moved and upgraded]]></title>
+    <link href="http://flanders.co.nz/2007/07/08/this-blog-has-been-moved-and-upgraded/"/>
+    <updated>2007-07-08T09:25:04+02:00</updated>
+    <id>http://flanders.co.nz/2007/07/08/this-blog-has-been-moved-and-upgraded</id>
+    <content type="html"><![CDATA[<p>I moved my blog to be on <a href="http://www.webhost4life.com/default.asp?refid=casualjim">webhost4life.com</a></p>
+
+<p>I'm also changing blogging engines and announcing that I will stop  development on nblogr.</p>
+
+<p>NBlogr was almost ready for a v1 release but it has  too big of a memory footprint. The footprint is 70MB which is too much for a  blog.</p>
+
+<p>To fix this I would have to change my data access layer to a different  approach.  I decided instead to switch to subtext and I'll see which features I  can provide from nblogr for subtext as plugins. I also don't have the time  anymore to occupy myself with nblogr.</p>
+
+<p>The feed should remain working without  a change. I upgraded my blog to subtext using <a href="http://www.ayende.com/Blog/archive/2007/02/03/From-DasBlog-To-SubText.aspx">Ayende's  instructions</a></p>
+
+<p>Which means that the permalinks should still work but urls  that contain a guid won't work anymore.</p>
+
+<p>The reason for moving from dasblog to  subtext are the same as why i started nblogr in the first place. Dasblog has  been nothing but a hassle for me. It is often down, does only trackbacks to my  own domain, and many more annoyances.</p>
+]]></content>
+  </entry>
+  
+</feed>

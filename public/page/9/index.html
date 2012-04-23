@@ -1,0 +1,1167 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <title>Ivan Porto Carrero</title>
+  <meta name="author" content="Ivan Porto Carrero">
+
+  
+  <meta name="description" content="So this weekend I discovered that SVNBridge is working fine now. I haven&#8217;t tried it against our production TFS server but against codeplex it &hellip;">
+  
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link rel="canonical" href="http://flanders.co.nz/page/9">
+  <link href="/favicon.png" rel="icon">
+  <link href="/css/base.css" rel="stylesheet" type="text/css">
+  <link href="/css/skeleton.css" rel="stylesheet" type="text/css">
+  <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <link href="/css/skins/blue.css" rel="stylesheet" type="text/css">
+
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114.png">
+
+  <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+  <script src="/js/modernizr.js" type="text/javascript"></script>
+  <script src="/js/jquery.easing.1.3.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/js/jquery.illuminate.0.7.min.js"></script>
+  <!-- tweet -->
+  <script type="text/javascript" src="/js/tweet/twitter.js"></script>
+  <script type="text/javascript" src="/js/tweet/setting.js"></script>
+  
+  <script type="text/javascript" src="/js/custom.js"></script>
+  <script type="text/javascript" src="/javascripts/twitter.js"></script>
+  <link href="/atom.xml" rel="alternate" title="Ivan Porto Carrero" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-240612-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body >
+  <div id="wrapper">
+    <header role="banner"> <div class="container">
+    <div class="row clearfix">
+      <hdgroup>
+        <div class="four columns">
+          <div class="logo">
+            <img src="/images/logo.png" alt="" />
+            <h2>Rants &amp; ramblings</h2>
+          </div>  
+        </div>
+      </hdgroup>
+      <nav role="navigation"><!-- <ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:flanders.co.nz" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+   -->
+<ul>
+  <li>
+    <a href="/">Home
+      <span>Homepage</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/archives">Archives
+      <span>Articles</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/projects">Projects
+      <span>Open-Source</span>
+    </a>    
+  </li>
+  <li>
+    <a href="/about">About me
+      <span>Introduction</span>
+    </a>    
+  </li>
+</ul>
+</nav>
+
+    </div>
+  </div>  
+<!-- <hgroup>
+  <h1><a href="/">Ivan Porto Carrero</a></h1>
+  
+    <h2>IO(thoughts) foreach (_.propagandize)</h2>
+  
+</hgroup>
+ -->
+</header>
+    <div class="container bodycontent">
+      <div class="row clearfix">
+        <div class="sixteen columns headline">
+          <h2>Ivan Porto Carrero</h2>
+          <p class="italic">IO(thoughts) foreach (_.propagandize)</p>
+        </div>
+      </div>  
+
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <!-- start of row -->
+      <div class="row clearfix">
+        <div class="sixteen columns">
+          <!-- twitter feed -->
+          <div class="twitter_feed">
+            <ul class="tweet_list"></ul>
+          </div>
+        </div>
+      </div>  
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <div id="maincontent" class="clearfix">
+        <div class="five columns">  
+  <aside class="left-sidebar">
+    
+        
+<div class="widget row">
+  <h5>Search form</h5>  
+  <div id="search-form">
+    <form action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:flanders.co.nz" />
+        <input id="search-box" type="text" name="q" results="0" placeholder="Search"/>
+        <input type="submit" value="Search" id="search-button" />
+        <div class="clear"></div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+   <section>
+  <div class="widget row">
+    <h5>Recent Posts</h5>  
+    <ul id="recent_posts">
+      
+        <li class="post">
+          <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+        </li>
+      
+        <li class="post">
+          <a href="/2009/11/08/a-good-url-regular-expression-repost/">A good url regular expression? (repost)</a>
+        </li>
+      
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="widget row">
+    <h5>GitHub Repos</h5>
+    <ul id="gh_repos">
+      <li class="loading">Status updating&#8230;</li>
+    </ul>
+    
+    <a href="https://github.com/casualjim">@casualjim</a> on GitHub
+    
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'casualjim',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <div class="widget row">
+    <h5>Latest Tweets</h5>
+    <ul id="tweets">
+      <li class="loading">Status updating&#8230;</li>
+    </ul>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        getTwitterFeed("casualjim", 4, false);
+      });
+    </script>
+    <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+    
+      <a href="http://twitter.com/casualjim" class="twitter-follow-button" data-show-count="false">Follow @casualjim</a>
+    
+  </div>
+</section>
+
+
+<section>
+  <div class="widget row">
+    <h5>On Delicious</h5>
+    <div id="delicious"></div>
+    <script type="text/javascript" src="http://feeds.delicious.com/v2/json/casualjim?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+    <p><a href="http://delicious.com/casualjim">My Delicious Bookmarks &raquo;</a></p>
+  </div>
+</section>
+
+
+<section class="googleplus">
+  <div class="widget row">
+    <h5>
+      <a href="https://plus.google.com/106536131996809745163?rel=author">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+        Google+
+      </a>
+    </h5>
+  </div>
+</section>
+
+
+
+    
+  </aside>
+</div>
+<div class="eleven columns">
+<div class="blog-index">
+  
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">29</p>  
+    <div class="month-year"><p><span>Oct</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/10/29/svnbridge-is-finally-working/" title="">SVNBridge Is Finally Working</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>So this weekend I discovered that SVNBridge is working fine now.</p>
+
+<p>I haven&#8217;t tried it against our production TFS server but against codeplex it works great.</p>
+
+<p><a href="http://www.codeplex.com/SvnBridge">http://www.codeplex.com/SvnBridge</a></p>
+
+<p>SvnBridge - Use TortoiseSVN with Team Foundation Server</p>
+
+<blockquote><p><strong>Project Description</strong><br/>
+SvnBridge allows you to use TortoiseSVN and other Subversion clients with Team Foundation Server. It converts the calls made by your Subversion client to the API supported by TFS. <br/>
+SvnBridge works by running an executable on your local machine that acts as the bridge to TFS. You point SvnBridge at the TFS server, and point TortoiseSVN at the bridge running on your local machine. This allows you to use TortoiseSVN with any TFS server without needing to change the TFS server in any way (no need to convince your system administrator of anything!).</p></blockquote>
+
+<p>If you haven&#8217;t checked it out already, it&#8217;s definitely worth a look.</p>
+
+<p> </p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/subversion">subversion</a>, <a href="http://del.icio.us/popular/team%20foundation%20server">team foundation server</a>, <a href="http://del.icio.us/popular/tfs">tfs</a>, <a href="http://del.icio.us/popular/source%20control">source control</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">26</p>  
+    <div class="month-year"><p><span>Oct</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/10/26/i-like-what-im-seeing-from-microsoft-lately/" title="">I Like What I&#8217;m Seeing From Microsoft Lately</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Microsoft has just hired <a href="http://blog.wekeroad.com/2007/10/26/microsoft-subsonic-and-me/">Rob Connery</a> from SubSonic, and his job is going to be to work on his own open source project.</p>
+
+<p>I am very pleasantly surprised by that news, and this is the change of direction so many people have been waiting for I think.</p>
+
+<p>I for one like this whole new direction of embracing open source. It seems like lately the party can&#8217;t stop, they also hired: Scott Hanselman, Phil Haack and Alex James. I should maybe start thinking about getting one aggregated feed from msdn :)</p>
+
+<p>It&#8217;s good to see that open source projects are now being endorsed. I can&#8217;t wait to see what&#8217;s next. </p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">24</p>  
+    <div class="month-year"><p><span>Oct</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/10/24/generics-overwhelming/" title="">Generics Overwhelming</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Ayende put <a href="http://ayende.com/Blog/archive/2007/10/23/MonoRail-Tricks.aspx">this post up</a> which looks freakishly a lot like some code I wrote a couple of months ago.</p>
+
+<pre><code>&lt;style type="text/css"&gt;&lt;![CDATA[.cf { font-family: consolas; font-size: 10pt; color: #fffbca; background: #202020; }
+.cl { margin: 0px; }
+.cb1 { color: #fa8072; }
+.cb2 { color: #00d2d2; }
+.cb3 { color: silver; }
+.cb4 { color: #d0d0d0; }
+.cb5 { color: #2b91af; }
+&lt;/style&gt;
+&lt;div class="cf"&gt;
+&lt;p class="cl"&gt;&lt;span class="cb1"&gt;public&lt;/span&gt; &lt;span class="cb1"&gt;abstract&lt;/span&gt; &lt;span class="cb1"&gt;class&lt;/span&gt; &lt;span class="cb2"&gt;AccountServiceBase&lt;/span&gt;&lt;span class="cb3"&gt;&lt;&lt;/span&gt;&lt;span class="cb4"&gt;T&lt;/span&gt;, &lt;span class="cb4"&gt;K&lt;/span&gt;, &lt;span class="cb4"&gt;Q&lt;/span&gt;&lt;span class="cb3"&gt;&gt;&lt;/span&gt; : &lt;span class="cb5"&gt;IAccountService&lt;/span&gt;&lt;span class="cb3"&gt;&lt;&lt;/span&gt;&lt;span class="cb4"&gt;K&lt;/span&gt;&lt;span class="cb3"&gt;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p class="cl"&gt;        &lt;span class="cb1"&gt;where&lt;/span&gt; &lt;span class="cb4"&gt;T&lt;/span&gt; : &lt;span class="cb2"&gt;BankImportSetup&lt;/span&gt;, &lt;span class="cb5"&gt;IAccountData&lt;/span&gt;, &lt;span class="cb1"&gt;new&lt;/span&gt;()
+&lt;/p&gt;&lt;p class="cl"&gt;        &lt;span class="cb1"&gt;where&lt;/span&gt; &lt;span class="cb4"&gt;K&lt;/span&gt; : &lt;span class="cb1"&gt;class&lt;/span&gt;, &lt;span class="cb5"&gt;IAccountData&lt;/span&gt;, &lt;span class="cb1"&gt;new&lt;/span&gt;()
+&lt;/p&gt;&lt;p class="cl"&gt;        &lt;span class="cb1"&gt;where&lt;/span&gt; &lt;span class="cb4"&gt;Q&lt;/span&gt; : &lt;span class="cb1"&gt;class&lt;/span&gt;, &lt;span class="cb5"&gt;IEntityQueries&lt;/span&gt;&lt;span class="cb3"&gt;&lt;&lt;/span&gt;&lt;span class="cb4"&gt;T&lt;/span&gt;, &lt;span class="cb4"&gt;K&lt;/span&gt;&lt;span class="cb3"&gt;&gt;&lt;/span&gt;, &lt;span class="cb1"&gt;new&lt;/span&gt;()&lt;/p&gt;
+&lt;p class="cl"&gt;        .....&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>The reason for building it this way is that I have to implement something for heaps of banks each one has a subtle difference in the way they are processed. But 95% of the code would be the same for every BankImportSetup entity.</p>
+
+<p>This way I could save a lot of time by going a bit overboard on the generics side of it.</p>
+
+<p>To cut a long story short. Generics are fun but they can be pretty overwhelming at first.</p>
+
+<p> </p>
+
+<p>PS. My colours look very different on my pc. It&#8217;s copy source as html that doesn&#8217;t pick up all the colors resharper adds.</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">22</p>  
+    <div class="month-year"><p><span>Oct</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/10/22/rejoining-the-pack/" title="">Rejoining the Pack</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>The last year I&#8217;ve dabbled a lot with linux, ruby etc. Investigating alternative means of developing web applications.  I have switched back to vista ultimate x64 now because I spend about 95% of my time developing on windows so it didn&#8217;t make sense to run linux as a base system.  Both ubuntu with Beryl or vista are just as slow/fast on my computer the admin time for my windows system is a lot shorter than the one for my ubuntu system.</p>
+
+<p>I&#8217;m not taking a hard line against webforms any more, I still think I won&#8217;t be using them in complex projects but for quick prototyping the dynamic datacontrols are pretty cool. Which won&#8217;t stop me from building my own mvc style architecture because the current defacto standard is suffering from code bloat and a too tight integration of javascript frameworks etc.</p>
+
+<p>This weekend I&#8217;ve finally started playing around with c# 3.0 and silverlight and I liked what I saw a lot. </p>
+
+<p>I&#8217;m getting my head around the new technolgies by building a little texas holdem multiplayer game.  So the technologies this project will use are: .net 3.5 with c# 3.0, silverlight 1.1 (with xaml), WCF.</p>
+
+<p>I started building that texas holdem poker game because I couldn&#8217;t find a nice one that I could install on my LAN or one that wouldn&#8217;t require me to get a mortgage if I would lose a game online.</p>
+
+<p>The microsoft one that comes with vista ultimate is nice and i aim to beat it by making it multiplayer.</p>
+
+<p>The most challenging bit of this poker game is definitely the AI for the computer players because I don&#8217;t want them to be idiots but also not the best players in the world seen as i&#8217;m not the world&#8217;s greatest poker player (I&#8217;m still working for a living :)). If somebody that reads this blog has done some similar work or knows of some resources for me to work through some of that stuff please share them.</p>
+
+<p>So far I&#8217;ve got the following logic going:</p>
+
+<p>Evaluating wheter it&#8217;s a good hand or a bad hand: simulate about 1000 games with the same hand,same cards on the table and the same number of players.</p>
+
+<p>That gives me an idea of how good the hand is and if it should fold.  Next I want to figure out whether the player should bet, check or raise this is done by looking at the odds and the maximum score I could reach as well as how far along we are in the game.. I have more in my head but not enoughtime to write it all down. I&#8217;ll write more on this subject in the course of the next few weeks.</p>
+
+<p>I&#8217;m planning on making the multiplayer version open sourced for demo purposes but not the one that contains the AI for the computer players.</p>
+
+<p> </p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/texas%20holdem">texas holdem</a>, <a href="http://del.icio.us/popular/silverlight">silverlight</a>, <a href="http://del.icio.us/popular/.NET%203.5">.NET 3.5</a>, <a href="http://del.icio.us/popular/Linq">Linq</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">18</p>  
+    <div class="month-year"><p><span>Oct</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/10/18/get-all-the-css-classes-in-use-on-your-page/" title="">Get All the Css Classes in Use on Your Page</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>By using javascript that can be done pretty easily. The script below requires prototype</p>
+
+<p>var classes = [];<br/>
+function collectClasses(ele){<br/>
+  var children = ele.childElements();<br/>
+  if(children.length > 0){<br/>
+    children.each(function(el){collectClasses(el);});<br/>
+  } <br/>
+  else{<br/>
+   ele.classNames()<br/>
+     .each(function(className){classes.push(className)});<br/>
+   return classes;<br/>
+  }<br/>
+}<br/>
+var body = document.getElementsByTagName(&#8216;body&#8217;)[0];<br/>
+collectClasses(body);<br/>
+var myUniqueClasses = classes.uniq();</p>
+
+<p> </p>
+
+<p>The myUniqueClasses variable holds all the classnames that are in use on your page.</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/javascript">javascript</a>, <a href="http://del.icio.us/popular/dhtml">dhtml</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">20</p>  
+    <div class="month-year"><p><span>Sep</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/09/20/vlite-stripping-down-your-vista-install/" title="">VLite: Stripping Down Your Vista Install</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>One of my collegues at <a href="http://www.xero.com">Xero</a> put me onto this tool <a href="http://www.vlite.net/">vlite</a> which helps you build a custom ISO with only the features you need for your vista install.</p>
+
+<p>Nowadays I&#8217;m running <a href="http://www.ubuntu.com">ubuntu x64</a> with vmware as my base system and I have a <a href="http://www.microsoft.com/windows/products/windowsvista/default.mspx">vista</a> running in a vmware workstation virtual machine. I&#8217;m using vmware workstation instead of server because it allows me to use dual monitors inside my virtual machine which I think is abslotely fantastic.  Thanks to <a href="http://blog.bittercoder.com">Alex Henderson</a> for pointing that out to me.</p>
+
+<p>My vista has got sql server 2k5 and visual studio 2008 beta 2 installed.</p>
+
+<p>So the stripped down version of vista fits on a cd instead of a dvd and is heaps faster than the regular install of vista. My vista only needs IIS I don&#8217;t need all the other stuff it has got.</p>
+
+<p>I hope you will find this as useful as I did when I learnt about this tool.</p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/vlite">vlite</a>, <a href="http://del.icio.us/popular/vista">vista</a>, <a href="http://del.icio.us/popular/ubuntu">ubuntu</a>, <a href="http://del.icio.us/popular/vmware">vmware</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">04</p>  
+    <div class="month-year"><p><span>Sep</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/09/04/wellington-lunch-with-geeks-04092007/" title="">Wellington - Lunch With Geeks (04/09/2007)</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>This week we had another lunch with geeks.  The attendance was good and we talked about a number of things.</p>
+
+<p>The first thing we talked about was broadening the scope of this group to other technologies. We are looking for people from RoR community and the Java community. We do have 1 java person that attends our meetings regularly but we&#8217;d like to get some more. So if you&#8217;re in Wellington and you do development these lunches may be something for you.</p>
+
+<p> </p>
+
+<p>Another thing we talked about was: What&#8217;s the best microsoft product? And what&#8217;s the worst?</p>
+
+<p>on the question of worst we had a consensus : windows ME.</p>
+
+<p>on the question what is the best product I guess the most votes went to CLR/.NET Framework. Somebody also mentioned Flight Simulator :)</p>
+
+<p> </p>
+
+<p>We also talked about Aspect Oriented programming and we got a little confused by what the PolicyInjection Block is about in the Enterprise Library.  It claims to do AOP but somebody pointed out that it doesn&#8217;t quite do that. It does most of the AOP features but not all of them and it&#8217;s a little intrusive because it has to be defined by the caller.</p>
+
+<p> </p>
+
+<p>The only problem we had was that there was another group in the pizza place so I couldn&#8217;t understand most of what was being said. Please email me the stuff I forgot about or add it in the comments.</p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">21</p>  
+    <div class="month-year"><p><span>Aug</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/08/21/wellington-lunch-with-geeks-21082007/" title="">Wellington - Lunch With Geeks (21/08/2007)</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Last week there was no lunch with geeks because of Tech Ed.  Naturally we started our session rehashing what we thought were the highlights of Tech Ed NZ.</p>
+
+<p>In general everybody really liked the keynote by <a href="http://www.expeng.com/lou-carbone.htm">Lou Carbone</a> and we were definitely not the only ones, mauricio has a more <a href="http://www.geekzone.co.nz/teched/3539">detailed post on the keynote</a>.  Anyway it was really entertaining and educational at the same time, I couldn&#8217;t believe some of the things hotels do with towels and toilet rolls.  Designing for to trigger emotions instead of functionality would be the biggest lesson for me. <br/>
+My favourite quote from tech ed would be something <a href="http://jim.webber.name/">Jim Webber</a> said during a session about Dynamic languages vs. Static languages:</p>
+
+<blockquote><p>If you polish a turd, your hands will be smelly but you will still have a turd. <br/>
+(Jim Webber on wsdl)</p></blockquote>
+
+<p>After that we started the topic at hand: <strong><em>Vendor certification is it really worth it? </em></strong>- A topic suggested by <a href="http://blogs.provoke.co.nz/theengineroom">Pablo Garcia</a> from <a href="http://provoke.co.nz/">Provoke solutions</a>.</p>
+
+<p>The discussion was long but seemed to often get back to the same basic ideas. I&#8217;ll just summarize:</p>
+
+<p>It&#8217;s worth it:</p>
+
+<ul>
+<li>It&#8217;s worth it if you&#8217;re an intermediate or a junior developer and looking for a job</li>
+<li>It&#8217;s a benchmark for people that have been in the industry for a long time to assure that they are still current.</li>
+<li>it can be really useful for systems people</li>
+</ul>
+
+
+<p>It&#8217;s not worth it:</p>
+
+<ul>
+<li>A senior that has heaps of certifications and boasts about them => Mort alert</li>
+<li>it doesn&#8217;t teach you any of the concepts behind problem solving and analysis, but focusses more on learning-by-heart</li>
+<li>it often promotes less-than-best practices aka enterprise practices</li>
+<li>it is in no way a guarantee that the person really knows his stuff it only proves he can memorize a bunch of things.</li>
+<li>seen as software development is an art, exams are inappropriate because the grader needs to like your writing style before everything else.</li>
+</ul>
+
+
+<p>The discussion went on about the benefit of a university training vs. the certification process and that seemed to go on forever. Some of the members of our group started recalling memories from when they were in uni and why exams were too subjective to effectively measure the skill of a student.</p>
+
+<p> </p>
+
+<p>We did all agree that certification done by vendors isn&#8217;t the best way to go about it, and that it would be a much better idea if these certifications would be issued by some global, independent organization. That would immediately raise the credibility of these disciplines.</p>
+
+<p>That was our session.</p>
+
+<p>If forgot something please let me know :)</p>
+
+<p><strong>UPDATE:</strong> I added a link to Pablo&#8217;s blog <a href="http://blogs.provoke.co.nz/theengineroom">http://blogs.provoke.co.nz/theengineroom</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">20</p>  
+    <div class="month-year"><p><span>Aug</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/08/20/whats-your-personality-type/" title="">What&#8217;s Your Personality Type ?</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>Through John Clegg I found out about a personality test on bbc.co.uk.</p>
+
+<p>He has a more lengthy explanation on how he got there on <a href="http://blog.projectxtech.com/2007/08/20/whats-your-personality-type/">his blog</a></p>
+
+<p>Anyway I&#8217;m always interested in finding out which type of person I am etc. So I could not resist and took the test.<br/>
+If you&#8217;re like me and just itching to find out more about yourself or you just have some time to spare you can take the test here <a href="http://www.bbc.co.uk/science/humanbody/mind/surveys/whatamilike/">http://www.bbc.co.uk/science/humanbody/mind/surveys/whatamilike/</a></p>
+
+<p>Apparently I&#8217;m a <em><strong>Big Thinker</strong></em> </p>
+
+<p>The four aspects that make up this personality type are:</p>
+
+<p><img src="http://www.bbc.co.uk/science/humanbody/images/mind/whatamilike/types/big_thinker.gif" alt="Spontaneous, Ideas, Heads and Extrovert" /></p>
+
+<h3>Summary of Big-Thinkers</h3>
+
+<ul>
+<li>Outspoken, ingenious and bored by routine</li>
+<li>Think of themselves as talkative, curious and self-sufficient</li>
+<li>May neglect the routine work required to make their plans successful</li>
+</ul>
+
+
+<h3>More about Big-Thinkers</h3>
+
+<p>Big Thinkers are always looking for the next big idea or opportunity. They’re adept at spotting trends and thinking on their feet. Big Thinkers like to jump in and find innovative solutions to complex problems and are good at developing strategies for the future.</p>
+
+<p>Big Thinkers are usually curious, logical and energetic. This chatty group enjoys a good debate and asserting their opinions. Sometimes others may find the way they express their ideas too abrupt or challenging.</p>
+
+<p>In situations where they can&#8217;t use their talents or are unappreciated, Big Thinkers may be rude, critical of others or rebellious. Under extreme stress, Big Thinkers can become preoccupied with unimportant details and lose sight of the &#8216;big picture&#8217;.</p>
+
+<p>Big Thinkers may ignore important details in their plans and overlook the impact their ideas have on the people around them.</p>
+
+<h3>Big-Thinker Careers</h3>
+
+<p>The entrepreneurial spirit of the Big Thinkers often leads them to seek new challenges; this is often more important to them than working in a particular field or a specific career.</p>
+
+<p><strong>Disclaimer:</strong></p>
+
+<p>It&#8217;s important to remember that no survey can predict personality type with 100 percent accuracy. Experts say that we should use personality type to better understand ourselves and others, but shouldn&#8217;t feel restricted by our results.</p>
+
+<p> </p>
+
+<p> </p>
+
+<p>del.icio.us tags: <a href="http://del.icio.us/popular/personality">personality</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  
+    <article class="blogpost row">
+      
+  <div class="post-heading"> 
+        
+
+
+
+    <p class="date">13</p>  
+    <div class="month-year"><p><span>Aug</span><br />2007</p></div>
+
+
+
+        
+          <div class="post-title">
+            <h5>
+              <a href="/2007/08/13/auckland-codecamp/" title="">Auckland Codecamp</a>
+            </h5>
+          </div> 
+        
+        <div class="clear"></div>
+      </div>
+      <!-- end of post heading -->
+      
+      <!-- start of post meta -->
+      <div class="post-meta">
+        <p>
+           
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ivan Porto Carrero</span></span>
+
+           
+         </p>  
+      </div>
+      <!-- end of post meta -->
+      
+ 
+
+  <div class="entry-content"><p>The last codecamp was a huge success :D  We had lots of interesting speakers and I now know a lot more about the WCF service factory than I did before.</p>
+
+<p>My session at codecamp was about Javascript best practices. I think it went pretty well judging by the reactions I got from some of the people in the audience.</p>
+
+<p>I mentioned that I would put up <a href="http://koolkraft.net/JavascriptPresentation.zip">my slides and the demo application</a></p>
+
+<p>In the afternoon I did not stay at codecamp but instead went with <a href="http://base4.net/Blog.aspx">Alex James</a> and <a href="http://nikhilk.net/">Nikhil Kothari</a> to explore Auckland for a while.  During the exploration of Auckland we of course discussed some geeky things like Alex&#8217;s pet pieve : Data 2.0 and I could not resist talking about MVC and webforms with Nikhil, after all how often will I get the chance to talk to the architect of webforms face to face.</p>
+
+<p>Anyway I&#8217;d like to construct a list of arguments in favor of MVC (eg. Castle/Monorail) and webforms.  So if you&#8217;re reading this blog and you have something you can contribute to this list <strong>please leave a comment</strong>.</p>
+
+<p>So far I have : it&#8217;s easier to develop complex UI&#8217;s with an MVC type framework than it is with webforms. I&#8217;m more productive in the MVC framework than I am with the classic ASP.NET model.  The classic asp.net model promotes code duplication or at least makes it easier to fall into that trap.</p>
+
+<p> Nikhil has some valid points in defence of webforms:</p>
+
+<blockquote><p>Sooner or later you are going to need some state that&#8217;s why we have viewstate :) and you will typically maintain your own state in a hidden field. Webforms is a framework and you roll your own specific framework for every new site.  There is nothing you can with MVC that you can&#8217;t do with webforms. </p></blockquote>
+
+<p>All his arguments are valid in my book.</p>
+
+<p>I have to get back to teched now but as soon as I get some more time I&#8217;m sending Nikhil a very small project programmed in the MVC way and the same app in webforms.</p>
+
+<p> </p>
+
+<p>Technorati tags: <a href="http://technorati.com/tags/codecamp">codecamp</a>, <a href="http://technorati.com/tags/nzteched">nzteched</a>, <a href="http://technorati.com/tags/castle%20vs%20webforms">castle vs webforms</a></p>
+</div>
+  
+  
+
+
+    </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div>
+</div>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><!-- start of footer container -->
+  <div class="container">
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="twelve columns">
+        <div class="logo">
+          <img src="/images/logo.png" alt="" />
+          <h2>Rants &amp; ramblings</h2>
+        </div>
+      </div>
+
+      <div class="four columns">        
+        <h6>Social networks</h6>
+        <ul class="social_network">
+          <li class="rollover"><a href="http://facebook.com/ivanportocarrero" class="yellowtip" title="Facebook"><span class="fb-rollover"></span><img src="/images/social/fb.png" alt="" /></a></li>
+          <li class="rollover"><a href="http://twitter.com/casualjim" class="yellowtip" title="Follow me"><span class="twitter-rollover"></span><img src="/images/social/twitter.png" alt="" /></a></li>
+          <li class="rollover"><a href="https://plus.google.com/u/1/106536131996809745163/posts" class="yellowtip" title="Google plus"><span class="google-rollover"></span><img src="/images/social/google-plus.png" alt="" /></a></li>
+        </ul>       
+      </div>
+    </div>
+    <!-- end of row -->
+  
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="eight columns">
+        <h6>About me</h6>
+        <p>
+        Welcome to my blog. This is a collection of random thoughts and rants.
+        </p>
+        <p>
+        Allow me to introduce myself. My name is Ivan Porto Carrero and I'm an enthusiastic developer on  Scala, .NET and Ruby.<br />Through this blog I hope I can share some of that passion and maybe help somebody out when they are looking on how to do something.
+        </p>
+      </div>
+      <div class="four columns">
+        <h6>Latest posts</h6>
+        <ul class="square">
+        
+          <li>
+            <a href="/2011/08/01/backchat-developers/">work for backchat</a>
+          </li>
+        
+          <li>
+            <a href="/2010/09/30/radical-language-and-platform-shift/">Radical language and platform shift</a>
+          </li>
+        
+          <li>
+            <a href="/2010/03/12/video-of-fosdem-ironruby-presentation/">Video of FOSDEM IronRuby presentation</a>
+          </li>
+        
+          <li>
+            <a href="/2009/12/01/adding-a-console-to-your-ironruby-application/">Adding a console to your IronRuby application</a>
+          </li>
+        
+          <li>
+            <a href="/2009/11/08/a-good-url-regular-expression-repost/">A good url regular expression? (repost)</a>
+          </li>
+        
+        </ul> 
+      </div>
+      <div class="four columns">
+        <h6>Browse pages</h6>
+        <ul class="square">
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives">Archives</a></li>
+          <li><a href="/projects">My projects</a></li>
+        </ul> 
+      </div>
+    </div>
+    <!-- end of row -->
+    
+
+    <!-- start of footer divider -->
+    <div class="sixteen columns">
+      <div class="footer-divider row"></div>
+    </div>  
+    <!-- end of footer divider -->
+    
+    <!-- start of bottoms -->
+    <div class="clearfix footnote">
+      <div class="eight columns">
+        <p class="copyright">Copyright &copy; 2012 - Ivan Porto Carrero - All Right Reserved</p>
+      </div>
+      <div class="eight columns">
+        <p class="align-right"><span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, designed by <a href="http://iweb-studio.com" target="_blank">iwebstudio</a></p>
+      </div>
+    </div>
+    <!-- end of bottoms -->
+
+  </div>
+  <!-- end of footer container -->
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'casualjim';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+<p id="back-top">
+  <a href="#top"><span></span>To top</a>
+</p>
+
+</body>
+</html>

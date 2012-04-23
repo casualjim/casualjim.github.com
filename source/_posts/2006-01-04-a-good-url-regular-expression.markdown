@@ -1,10 +1,8 @@
 ---
-date: '2006-01-04 19:53:32'
 layout: post
 slug: a-good-url-regular-expression
 status: publish
-title: A good url regular expression ?
-wordpress_id: '143'
+title: "A good url regular expression ?"
 categories:
 - Main
 - Old Blog
@@ -108,4 +106,3 @@ But not :
 
 [![](http://www.pheedo.com/img.phdo?s=ws-58bab757b1982e63240738f517c2db883329859)](http://www.pheedo.com/click.phdo?s=ws-58bab757b1982e63240738f517c2db883329859)
 
-![](http://geekswithblogs.net/casualjim/aggbug/61722.aspx)

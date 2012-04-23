@@ -1,0 +1,15 @@
+  {% if site.simple_search %}
+<div class="widget row">
+  <h5>Search form</h5>  
+  <div id="search-form">
+    <form action="{{ site.simple_search }}" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:{{ site.url | shorthand_url }}" />
+        <input id="search-box" type="text" name="q" results="0" placeholder="Search"/>
+        <input type="submit" value="Search" id="search-button" />
+        <div class="clear"></div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+  {% endif %} 

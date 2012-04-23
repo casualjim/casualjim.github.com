@@ -1,0 +1,592 @@
+---
+date: '2007-11-26 18:51:07'
+layout: post
+slug: mixins-in-c-30
+status: publish
+title: Getting mixin like behavior in C# 3.0
+wordpress_id: '191'
+categories:
+- .NET 3.5
+- C#
+---
+
+UPDATE: I titled this post wrong. I should have said that you can mimic Mixins to a certain extend with extensions methods.  But extension methods are exactly that, **Exten(d)**sions of classes. These methods only have access to the public interface of a class you. You also need to specify a using statement with the namespace of your extension class to every class you want to be using the extended object in. Extension methods are syntactic sugar for what you used to do with static helper methods.  That are IMHO the most important differences with a mixin because instead of mixing in functionality you are now extending an existing objects. So the title of the post used to be Mixins in C# 3.0.  And now is getting mixin like behavior in C# 3.0
+
+ 
+
+Yesterday Jeremy Miller put a post up with a [list of features](http://codebetter.com/blogs/jeremy.miller/archive/2007/11/25/what-do-you-want-in-c-vnext.aspx) he would like to see added to the next version of C#. I don't agree with everything on that list and some of it is already here. 
+
+ 
+
+I'll take his points and add my comments to them.:
+
+ 
+
+1. Mixins (I'll demonstrate how to get mixin like behavior in C#)
+
+ 
+
+2. Symbols => useless, a symbol is nothing but an interned string. C# is a static language why on earth would you want to go and add non statically typed features to that language
+
+ 
+
+3. Hashes => Hashes are already a languages feature in C# 3.0, they are called dictionaries.
+
+ 
+
+4. Automatic delegation => as Ayende said: Mixins
+
+ 
+
+5. Metaprogramming => no objection here although you can do it now with reflection emit
+
+ 
+
+6. Make virtual the default to make mocking easier.
+
+ 
+
+ 
+
+ 
+
+Ayende has got a similar [reply up on his blog](http://www.ayende.com/Blog/archive/2007/11/26/C-vNext.aspx) and he adds a couple of features.       
+I agree with his features so I won't be commenting on them except for asking _when do we get those_?
+
+ 
+
+Now the bigger problem I've got with this is I quite like the distinction of capabilities from one language to the next. Like say Ruby vs. C# there are things that can be easily or better done using c# and there are things that are easier using ruby. **However why aren't you using Ruby if all you want are language features from Ruby in C# ? **Ruby is a beautiful language and it's not just because of the features, they make it even nicer. It's because of the syntax and the freedom.
+
+ 
+
+I think Ayende clearly gets the benefits because he uses boo a lot. I tend to use Ruby a lot more than I do boo.
+
+ 
+
+Now let's get on to what is the title of this post.
+
+ 
+
+The way I see it a Mixin is a way to add additional and common logic to classes, you can't do that in C# at this moment but you can get mixin like behavior by using extension methods.
+
+ 
+
+And this can be achieved by using extension methods in 2 different ways. The [first approach has been documented by Bill Wagner](http://msdn2.microsoft.com/en-us/vcsharp/bb625996.aspx) but for the record I only found out about it after I had written my little test application to show you what I think is the best way of implementing Mixins. A mixin is often compared to an interface and it's implementation (you can't use an abstract class because that could break your inheritance chain in the long run, interfaces are the correct way to implement them)
+
+ 
+
+The first method is to extend an interface and by adding that interface and the Extension methods namespace to your code file you get all those methods mixed into your class. Without the interface it doesn't work. For simplicity I'll use a IList in reality I would have somewhat more complex objects. There is only one thing that doesn't feel too right to me and that is that every class you're going to use it in needs to know about the extension methods location. I would like to see that if you implement it  on a class it gets propagated whenever you use an instance of that class. Anyway let's see some code:      
+
+
+ 
+
+The first step is to define an interface that we can extend later.
+
+ 
+
+  
+
+using System.Collections.Generic;
+
+   
+
+ 
+
+   
+
+namespace Mixins.Mixins
+
+   
+
+{
+
+   
+
+    public interface IAuditable
+
+   
+
+    {
+
+   
+
+        IList<string> Auditors{ get; }
+
+   
+
+    }
+
+   
+
+}
+
+ 
+
+ 
+
+ 
+
+The next step is to define the extension methods
+
+ 
+
+  
+
+using System.Collections.Generic;
+
+   
+
+ 
+
+   
+
+namespace Mixins.Mixins.Auditable
+
+   
+
+{
+
+   
+
+    public static class AuditableMixin
+
+   
+
+    {
+
+   
+
+        public static bool HasBeenAudited(this IAuditable targetClass)
+
+   
+
+        {
+
+   
+
+            return targetClass.Auditors.Count > 0;
+
+   
+
+        }
+
+   
+
+ 
+
+   
+
+        public static bool HasBeenAuditedBy(this IAuditable targetClass, string name)
+
+   
+
+        {
+
+   
+
+            return targetClass.Auditors.Contains(name);
+
+   
+
+        }
+
+   
+
+ 
+
+   
+
+        public static IList<string> AddAuditor(this IAuditable targetClass, string name)
+
+   
+
+        {
+
+   
+
+            targetClass.Auditors.Add(name);
+
+   
+
+            return targetClass.Auditors;
+
+   
+
+        }
+
+   
+
+ 
+
+   
+
+        public static IList<string> RemoveAuditor(this IAuditable targetClass, string name)
+
+   
+
+        {
+
+   
+
+            if (HasBeenAuditedBy(targetClass, name))
+
+   
+
+            {
+
+   
+
+                targetClass.Auditors.Remove(name);
+
+   
+
+            }
+
+   
+
+            return targetClass.Auditors;
+
+   
+
+        }
+
+   
+
+    }
+
+   
+
+}
+
+ 
+
+    
+And the last step is to create an actual object that will have our mixin.
+
+ 
+
+  
+
+    
+
+using Mixins.Mixins;
+
+     
+
+using System.Collections.Generic;
+
+     
+
+ 
+
+     
+
+//Extend our object with the mixin methods
+
+     
+
+using Mixins.Mixins.Auditable;
+
+     
+
+ 
+
+     
+
+namespace Mixins
+
+     
+
+{
+
+     
+
+    public class DataRecord : IAuditable
+
+     
+
+    {
+
+     
+
+        private List<string> auditors;
+
+     
+
+ 
+
+     
+
+        public DataRecord()
+
+     
+
+        {
+
+     
+
+            auditors = new List<string>();
+
+     
+
+        }
+
+     
+
+ 
+
+     
+
+        public string Name
+
+     
+
+        {
+
+     
+
+            get;
+
+     
+
+            set;
+
+     
+
+        }
+
+     
+
+ 
+
+     
+
+        public string Email
+
+     
+
+        {
+
+     
+
+            get;
+
+     
+
+            set;
+
+     
+
+        }
+
+     
+
+ 
+
+     
+
+ 
+
+     
+
+        #region IAuditable Members
+
+     
+
+ 
+
+     
+
+        public IList<string> Auditors
+
+     
+
+        {
+
+     
+
+            get { return auditors; }
+
+     
+
+        }
+
+     
+
+ 
+
+     
+
+        #endregion
+
+     
+
+    }
+
+     
+
+}
+
+  
+
+ 
+
+ 
+
+ 
+
+Now to test it I used this console app:
+
+ 
+
+  
+
+using System;
+
+   
+
+using System.Collections.Generic;
+
+   
+
+using System.Linq;
+
+   
+
+using System.Text;
+
+   
+
+ 
+
+   
+
+// Extend our object with the mixin methods
+
+   
+
+using Mixins.Mixins.Auditable;
+
+   
+
+ 
+
+   
+
+namespace Mixins
+
+   
+
+{
+
+   
+
+    class Program
+
+   
+
+    {
+
+   
+
+        static void Main(string[] args)
+
+   
+
+        {
+
+   
+
+            DataRecord record = new DataRecord();
+
+   
+
+            record.AddAuditor("Ivan Porto Carrero");
+
+   
+
+            record.AddAuditor("Kirk Jackson");
+
+   
+
+ 
+
+   
+
+            Console.WriteLine("The current auditors are: ");
+
+   
+
+            record.Auditors.ToList().ForEach(auditor => Console.WriteLine(auditor));
+
+   
+
+ 
+
+   
+
+            Console.WriteLine();
+
+   
+
+ 
+
+   
+
+            record.RemoveAuditor("Kirk Jackson");
+
+   
+
+            Console.WriteLine("The current auditors are (after removal): ");
+
+   
+
+            record.Auditors.ToList().ForEach(auditor => Console.WriteLine(auditor));
+
+   
+
+ 
+
+   
+
+        }
+
+   
+
+    }
+
+   
+
+}
+
+ 
+
+The second way I had in mind doesn't provide everything I get from this first way and was by extending a base class. I'll drop that explanation and just go for the conclusion.
+
+ 
+
+ 
+
+ 
+
+As I said before the only thing that doesn't make extension methods to be complete mixins is the fact that you can't actually mix it into a class, you can get really close but not all the way there. Now that isn't such a huge problem, it gives you a bit more granular control. Another thought I have about this is, extension methods don't have access to the private variables of your class only to the public interface of your class. That is also a limitation that proper mixins don't have.
+
+ 
+
+ 
+
+ 
+
+What do you think ?
+
+ 
+
+ 
+
+ 
+
+  
+
+del.icio.us Tags: [C# 3.0](http://del.icio.us/popular/C#%203.0),[mixins](http://del.icio.us/popular/mixins),[programming](http://del.icio.us/popular/programming)
+
+  

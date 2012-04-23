@@ -1,0 +1,8 @@
+{% capture date %}{{ page.date }}{{ post.date }}{% endcapture %}
+{% capture has_date %}{{ date | size }}{% endcapture %}
+
+{% if has_date != '0' %}
+    <p class="date">{{ date | date: "%d" }}</p>  
+    <div class="month-year"><p><span>{{ date | date: "%b" }}</span><br />{{ date | date: "%Y" }}</p></div>
+{% endif %}
+

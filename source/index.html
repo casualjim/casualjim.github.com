@@ -1,14 +1,25 @@
 ---
 layout: default
 ---
-
+<div class="five columns">  
+  <aside class="left-sidebar">
+    {% if site.post_asides.size %}
+      {% include_array post_asides %}
+    {% else %}
+      {% include_array default_asides %}
+    {% endif %}
+  </aside>
+</div>
+<div class="eleven columns">
 <div class="blog-index">
   {% assign index = true %}
   {% for post in paginator.posts %}
   {% assign content = post.content %}
-    <article>
+    <article class="blogpost row">
       {% include article.html %}
     </article>
+    <!-- divider for blog post -->
+    <div class="divider"></div>
   {% endfor %}
   <div class="pagination">
     {% if paginator.next_page %}
@@ -20,10 +31,5 @@ layout: default
     {% endif %}
   </div>
 </div>
-<aside class="sidebar">
-  {% if site.blog_index_asides.size %}
-    {% include_array blog_index_asides %}
-  {% else %}
-    {% include_array default_asides %}
-  {% endif %}
-</aside>
+</div>
+

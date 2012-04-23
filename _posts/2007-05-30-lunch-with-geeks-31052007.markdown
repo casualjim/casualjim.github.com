@@ -1,0 +1,62 @@
+---
+date: '2007-05-30 18:44:51'
+layout: post
+slug: lunch-with-geeks-31052007
+status: publish
+title: Lunch with geeks (31/05/2007)
+wordpress_id: '13'
+categories:
+- General
+- Lunch with geeks
+---
+
+
+		
+
+Another Thursday, another lunch with geeks in wellington.
+
+
+		
+
+We decided to move the lunch to be on tuesdays. This will allow for Tim Haines to join the discussions.
+
+
+		
+
+Today the attendees were Simone, JD, Andrew Peters, Kirk Jackson and yours truly.  
+We touched a broad range of topics in our talks which went from Google Gears to Linux vs. Windows to everybody has a killer idea for a website to microsoft surface and we also touched briefly on database servers.
+
+
+		
+
+We started out discussing  offline storage for web apps, because Google announced it's gears plugin today. The opinions in our discussion leaned more towards nobody really liking the idea of offline storage for webapps except me.  According to Simone this introduced an unnecessary layer of complexity.  JD quoted [DHH on why offline storage doesn't really matter](http://www.37signals.com/svn/posts/347-youre-not-on-a-fucking-plane-and-if-you-are-it-doesnt-matter), the internet is everywhere.  
+Kirk doesn't see the point. I tend to think that there has to be some middle ground.
+
+
+		
+
+Next I uttered my frustrations about the ongoing vs. debates and we picked windows vs. linux. The problem in this sentence is clearly the vs.  Instead of beating the other people to death the energy would be better used by finding some sort of compromise. Andrew said he'd love to see a world where there was a choice between multiple OS'es and everything would just work on all of them.. I too would like to see that day. 
+
+
+		
+
+From there we moved on to the fact that every Joe Schmo has a killer idea to build but they often don't realise that the development is only a small part of a bigger picture. After development a lot more money needs to be spent on marketing, sales and support.
+
+
+		
+
+JD put our attention onto Microsoft surface for which most of us got links etc yesterday. Bottom line it looks really cool but the team seems relatively small according to Kirk. JD then explained us why it could be such a small team and that we might be able to get some preview of it before the end of the year.  
+We had a bit of fun by coming up with ways to use this device which go from gaming to having a digital tv-guide,....
+
+
+		
+
+JD then asked me about the CRM I'm building in rails for when he could get some preview or test of it. The reply to this was a little bit more complicated but it brought us to our next point of discussion. Andrew asked me if I had used postgres because I was saying that we are moving this crm now to mysql so it can run on dreamhost.  He went on about running the unit tests for lightspeed and their different database providers. It turns out that postgres performs better than all the other databases they support on windows in their unit tests. (this hasn't been benchmarked in an official lab or anything)
+
+
+		
+
+This concluded our discussions. If I forgot something please email me or add them in the comments.
+
+
+

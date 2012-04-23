@@ -1,14 +1,39 @@
 {% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
 {% include head.html %}
-<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} {% if page.sidebar == 'collapse' or site.sidebar == 'collapse' %} class="collapse-sidebar sidebar-footer" {% endif %}>
-  <header role="banner">{% include header.html %}</header>
-  <nav role="navigation">{% include navigation.html %}</nav>
-  <div id="main">
-    <div id="content">
-      {{ content | expand_urls: root_url }}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %}>
+  <div id="wrapper">
+    <header role="banner">{% include header.html %}</header>
+    <div class="container bodycontent">
+      <div class="row clearfix">
+        <div class="sixteen columns headline">
+          <h2>{{ site.title }}</h2>
+          <p class="italic">{{ site.subtitle }}</p>
+        </div>
+      </div>  
+
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <!-- start of row -->
+      <div class="row clearfix">
+        <div class="sixteen columns">
+          <!-- twitter feed -->
+          <div class="twitter_feed">
+            <ul class="tweet_list"></ul>
+          </div>
+        </div>
+      </div>  
+      <div class="sixteen columns">
+        <div class="divider row"></div>
+      </div>  
+      
+      <div id="maincontent" class="clearfix">
+        {{ content | expand_urls: root_url }}
+      </div>
     </div>
+    <footer role="contentinfo">{% include footer.html %}</footer>
   </div>
-  <footer role="contentinfo">{% include footer.html %}</footer>
   {% include after_footer.html %}
 </body>
 </html>

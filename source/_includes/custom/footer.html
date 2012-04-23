@@ -1,4 +1,74 @@
-<p>
-  Copyright &copy; {{ site.time | date: "%Y" }} - {{ site.author }} -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+<!-- start of footer container -->
+  <div class="container">
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="twelve columns">
+        <div class="logo">
+          <img src="{{ root_url }}/images/logo.png" alt="" />
+          <h2>Rants &amp; ramblings</h2>
+        </div>
+      </div>
+
+      <div class="four columns">        
+        <h6>Social networks</h6>
+        <ul class="social_network">
+          <li class="rollover"><a href="http://facebook.com/ivanportocarrero" class="yellowtip" title="Facebook"><span class="fb-rollover"></span><img src="{{ root_url }}/images/social/fb.png" alt="" /></a></li>
+          <li class="rollover"><a href="http://twitter.com/{{site.twitter_user}}" class="yellowtip" title="Follow me"><span class="twitter-rollover"></span><img src="{{ root_url }}/images/social/twitter.png" alt="" /></a></li>
+          <li class="rollover"><a href="https://plus.google.com/u/1/106536131996809745163/posts" class="yellowtip" title="Google plus"><span class="google-rollover"></span><img src="{{ root_url }}/images/social/google-plus.png" alt="" /></a></li>
+        </ul>       
+      </div>
+    </div>
+    <!-- end of row -->
+  
+    <!-- start of row - 4 widget columns -->
+      <div class="row clearfix">
+      <div class="eight columns">
+        <h6>About me</h6>
+        <p>
+        Welcome to my blog. This is a collection of random thoughts and rants.
+        </p>
+        <p>
+        Allow me to introduce myself. My name is Ivan Porto Carrero and I'm an enthusiastic developer on  Scala, .NET and Ruby.<br />Through this blog I hope I can share some of that passion and maybe help somebody out when they are looking on how to do something.
+        </p>
+      </div>
+      <div class="four columns">
+        <h6>Latest posts</h6>
+        <ul class="square">
+        {% for post in site.posts limit: site.recent_posts %}
+          <li>
+            <a href="{{ root_url }}{{ post.url }}">{{ post.title }}</a>
+          </li>
+        {% endfor %}
+        </ul> 
+      </div>
+      <div class="four columns">
+        <h6>Browse pages</h6>
+        <ul class="square">
+          <li><a href="{{ root_url }}/">Home</a></li>
+          <li><a href="{{ root_url }}/archives">Archives</a></li>
+          <li><a href="{{ root_url }}/projects">My projects</a></li>
+        </ul> 
+      </div>
+    </div>
+    <!-- end of row -->
+    
+
+    <!-- start of footer divider -->
+    <div class="sixteen columns">
+      <div class="footer-divider row"></div>
+    </div>  
+    <!-- end of footer divider -->
+    
+    <!-- start of bottoms -->
+    <div class="clearfix footnote">
+      <div class="eight columns">
+        <p class="copyright">Copyright &copy; {{ site.time | date: "%Y" }} - {{ site.author }} - All Right Reserved</p>
+      </div>
+      <div class="eight columns">
+        <p class="align-right"><span class="credit">Powered by <a href="http://octopress.org">Octopress</a>, designed by <a href="http://iweb-studio.com" target="_blank">iwebstudio</a></p>
+      </div>
+    </div>
+    <!-- end of bottoms -->
+
+  </div>
+  <!-- end of footer container -->

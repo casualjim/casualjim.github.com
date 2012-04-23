@@ -204,19 +204,27 @@ h4.dropcap-title {
 	hr { border: solid #ddd; border-width: 1px 0 0; clear: both; margin: 10px 0 30px; height: 0; }
 
 
-/*------------------- preformated text, code --------------------*/
+/* ------------------- preformated text, code -------------------- */
 code, pre {
+	background-color:#f8f8f8;
 	border:1px solid #ddd;
-  	background:#fefefe;
-  	padding:7px 10px;
-	font-size:11px;
-  	display:block;
-  	color:#858585;
-  	margin-bottom:10px;
-	/*border-left:5px solid #ddd;*/
-	overflow:hidden;
+	font-size:12px;
+	line-height:19px;
+	overflow:auto;
+	padding:6px 10px;
+	border-radius:3px;
+	max-width:590px;
+	min-width:590px;
 }
 
+pre.line-numbers {
+	min-width:0px;
+	max-width:30px;
+}
+
+code {
+	border:none;
+}
 
 /* #Links
 ================================================== */

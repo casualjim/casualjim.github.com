@@ -9,7 +9,7 @@ var github = (function(){
   }
   return {
     showRepos: function(options){
-      $.ajax({
+      $.getJSON({
           url: "http://github.com/api/v2/json/repos/show/"+options.user+"?callback=?"
         , type: 'jsonp'
         , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }

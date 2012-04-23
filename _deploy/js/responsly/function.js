@@ -1,0 +1,7 @@
+
+			$(function() {
+		$('.slidyContainer').slidy({
+		});
+				
+				
+			});

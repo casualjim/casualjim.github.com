@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ninject | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/ninject/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T22:54:14+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject knows a new trick]]></title>
+    <link href="http://flanders.co.nz/2009/03/15/ninject-knows-a-new-trick/"/>
+    <updated>2009-03-15T01:32:30+01:00</updated>
+    <id>http://flanders.co.nz/2009/03/15/ninject-knows-a-new-trick</id>
+    <content type="html"><![CDATA[<p>Earlier this week Nate <a href="http://kohari.org/2009/03/13/ninject-github-crazy-delicious/">already said</a> that I was doing some work on <a href="http://ninject.org">Ninject</a>, now I have it working :). Everything I’m about to talk about is currently in the master tree of the <a href="http://github.com/enkari/ninject">ninject github</a> repository. Getting <a href="http://ironruby.net">IronRuby</a> to play nice with <a href="http://ninject.org">Ninject</a> was surprisingly easy :).</p>
+
+<p>There was only one place that required some kind of weird workaround and from that workaround I’m entirely sure that it will go away by the time .NET 4.0 will be here. The DLR duplicates a number of delegates from .NET 4.0 but .NET 3.5 also defines them (i.e. System.Func&lt;T, TT>) and then you get great exception messages like: System.Func is not of type System.Func. The solution is to not reference System.Core in your project. Except that Ninject expects the System.Core variant at some point and that was solved by aliasing the System.Core assembly and talking to the types in that assembly by their alias.</p>
+
+<p>Anyway the juicy stuff :) How can you take advantage of Ninjects newly found friendship with <a href="http://ironruby.net">IronRuby</a>.</p>
+
+<p><a href="http://ninject.org">Ninject</a> now has 2 flavors of Kernels. We have a StandardKernel that knows how to deal with the module configuration system that uses a fluent interface defined in C#. And now we also have a DlrKernel that extends the StandardKernel with a RubyModuleLoader plugin. If you tell the DlrKernel to look inside a path for configuration files it will scan those folders for <em>.dll or </em>.rb files. Those files should contain the configuration for the ninject bindings.</p>
+
+<p>So to create a Kernel that is ruby enabled you would use the following code:</p>
+
+<p>``` csharp  <br/>
+IKernel kernel = DlrKernel();
+kernel.AutoLoadModulesRecursively();</p>
+
+<p>var samurai = kernel.Get<IWarrior>();
+System.Console.WriteLine(samurai.Weapon.Name);
+```</p>
+
+<p>The above snippet could then for example load a configuration file that has been defined like this:</p>
+
+<p>``` ruby  <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes</p>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IWeapon, :to => Sword
+  ninject.bind IWarrior, :to => Samurai
+end
+```</p>
+
+<p>The configuration above shows how most of a typical configuration would be defined by you the full configuration API at your disposal. All the options for the configuration can be specified in 2 ways. The first way is in a hash like syntax and the second way uses a more fluent syntax.</p>
+
+<p>``` ruby
+to_configure_ninject do |ninject|</p>
+
+<p>  ninject.bind IServiceA, :to => ServiceA, :as => :singleton,</p>
+
+<pre><code>                      :meta =&gt; { :type =&gt; "superservice" },
+                      :name =&gt; "aaaaa",
+                      :with =&gt; { 
+                        :parameter =&gt; { :my_param =&gt; lambda { |context| "param_value" } },
+                        :constructor_arguments =&gt; {:const_arg =&gt; 56 },
+                        :property_values =&gt; {:property_name =&gt; 94 },
+                      },
+                      :on_activation =&gt; lambda { |obj| obj.do_some_work },
+                      :on_deativated =&gt; lambda { |obj| obj.do_some_cleanup },
+                      :when =&gt; lambda { |context| "a value" } # or
+                      # :when =&gt; { :injected_into =&gt; ServiceB } or
+                      # :when =&gt; { :target_has =&gt; AnAttribute } or
+                      # :when =&gt; { :member_has =&gt; AnAttribute } or
+                      # :when =&gt; { :class_has =&gt; AnAttribute }
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>Or</p>
+
+<p>``` ruby
+to_configure_ninject do |ninject|</p>
+
+<p>  ninject.bind IServiceA, :to => ServiceA, :as => :singleton do</p>
+
+<pre><code>meta :type =&gt; "superservice" 
+name "aaaaa"    
+
+with :parameter =&gt; { :my_param =&gt; lambda { |context| "param_value" } }    
+with :constructor_arguments =&gt; { :const_arg =&gt; 56 }    
+with :property_values =&gt; { property_name =&gt; 94 }    
+
+on_activation do |obj| 
+  obj.do_some_work 
+end    
+
+on_deativation { |obj| obj.do_some_cleanup }
+
+condition do |context|     
+  true
+end 
+
+# or
+
+condition :injected_into =&gt; SomeClass 
+
+# or ...
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>Some of the nicer consequences of using Ruby as a configuration language is the syntax for open generics. The example below shows how to configure types with open generics.</p>
+
+<p>``` ruby  <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes
+include Ninject::Tests::Integration::StandardKernelTests</p>
+
+<h1>IGeneric is a generic interface and GenericService is a generic type</h1>
+
+<h1>we don't have to specify any special notation for open generics</h1>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IGeneric, :to => GenericService, :as => :transient
+  ninject.bind IGeneric, :to => GenericService2
+end
+```</p>
+
+<p>To specify a condition the syntax would look like this</p>
+
+<p>``` ruby <br/>
+require File.dirname(<strong>FILE</strong>) + '/../Ninject.Tests.dll'
+include Ninject::Tests::Fakes</p>
+
+<p>to_configure_ninject do |ninject|
+  ninject.bind IWeapon, :to => Shuriken do</p>
+
+<pre><code>condition do |request|        
+    request.target.nil? 
+         ? false 
+         : request.target.member.reflected_type == Samurai.to_clr_type
+  end 
+</code></pre>
+
+<p>  end
+  ninject.bind IWeapon, :to => Sword
+  ninject.bind IWarrior, :to => Samurai
+end
+```</p>
+
+<p>Well that’s all. I hope you like it. I will be looking into more ways to integrate DLR stuff into <a href="http://ninject.org">Ninject</a> the most obvious is allowing you to inject dynamic types into static classes.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Taking Ninject to new places]]></title>
+    <link href="http://flanders.co.nz/2008/04/23/taking-ninject-to-new-places/"/>
+    <updated>2008-04-23T06:36:15+02:00</updated>
+    <id>http://flanders.co.nz/2008/04/23/taking-ninject-to-new-places</id>
+    <content type="html"><![CDATA[<p>When I started looking at <a href="http://ninject.org">Ninject</a> I was pretty impressed by how nice the code looks and how well the project has been put together.  <a href="http://kohari.org">Nate</a> had been profiling the project yesterday and it performs slightly better than its cousin from the <a href="http://castleproject.org">Castle framework</a> but that difference is almost negligible.
+However I recommend you download the Ninject framework and just look at its codebase because it may teach you some new tricks or give you some new insights. The rest of this post will explain a small MVP framework for Ninject and WPF that I added to <a href="http://code.google.com/p/ninject-contrib/">Ninject contrib</a> last weekend.</p>
+
+<p>When I downloaded the Ninject code for the first time I immediately saw that it had integration points for <a href="http://castleproject.org">Monorail</a>, <a href="http://asp.net">ASP.NET</a> and Winforms but sadly I was looking at it for a WPF application. For doing the type of MVP I wanted to do with WPF I couldn't straight copy what was there for Winforms and neither what was there for Webforms. It looked like it walked some middle ground. So I looked very closely at what Nate had done before me and learned.</p>
+
+<p>Apart from the occasional IronRuby demo I had never used WPF with the intent of building a moderately sized system on top of it. I did have a couple of design guidelines that helped me through my voyage but most of my what I applied comes from Jeremy Miller's blog in his excellent build your own CAB series. I looked at 1 post in particular the <a href="http://codebetter.com/blogs/jeremy.miller/archive/2007/05/25/build-you-own-cab-part-3-the-supervising-controller-pattern.aspx">third one</a> about the Supervising controller.</p>
+
+<p>I figured out that I didn't want to make my view now anything or as little as possible about my presenter or at least as little as possible. The way I have it now allows one view per presenter; they are mapped one-to-one. In the repository of the contrib project there is the framework and a little sample application. A log viewer that uses the framework to demonstrate its usage.
+I was going to tell you about Modules etc. but all that stuff is nicely explained in the ninject wiki so I don't really feel the need to write it all up again. I will however explain you how to get started with the MVP framework that now comes with Ninject.</p>
+
+<p>We need to tell our application that we want to use Ninject and to do that there are 2 ways:</p>
+
+<ul>
+<li>Inherit of <code>Ninject.Framework.PresentationFoundation.NinjectWpfApplication</code> which also makes you change the XAML of the application. I didn't really like that so I came up with a second way.</li>
+<li>Initialize the application through the KernelContainer static helper class.</li>
+</ul>
+
+
+<p>``` csharp
+[LogMyCalls]
+public partial class App
+{</p>
+
+<pre><code>protected override void OnStartup(StartupEventArgs e)
+{
+    // KernelContainer.InitializeApplicationWith(this, new LinFuModule(), new NLogModule(), new WpfModule(), new LoggingModule());
+    this.InitializeApplicationWith(new LinFuModule(), new NLogModule(), new WpfModule(), new LoggingModule());
+    base.OnStartup(e);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This tells our application that we are going to use Ninject in this application. And should initialize all the services we will need in our application.
+Next on the list is the View. There is probably a better way to do this (read I'm not entirely happy with this but have a rather small brain). We need to tell the view which presenter we will be using, for that I added a PresentedBy attribute that takes a type (the presenter type).  And you also have to override the OnInitialized event and again use the KernelContainer helper class to initialize the presenter. There is a reason for this, at a certain point during my testing I had it so that the view was agnostic of the controller but that meant I would have to skip a couple of checks before running the window. I may add that later again not sure.  The views aren't decorated with the service attribute so they won't get picked up by the AutoModule instead we inject it manually through its initialisation procedure.</p>
+
+<p>``` csharp
+[PresentedBy(typeof(LogsPresenter))]
+public partial class LogsView :  ILogsView
+{</p>
+
+<pre><code>public LogsView()
+{
+    InitializeComponent();
+}
+
+protected override void OnInitialized(EventArgs e)
+{
+    base.OnInitialized(e);
+
+    this.WireUp(); // KernelContainer.WireUp(this);
+}
+
+[PublishAction]
+public event EventHandler GenerateLogs;
+
+[PublishAction]
+public event EventHandler FilterLogs;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>So far we've got a view that knows how to initialize a presenter but it also needs to be able to communicate with the presenter. I chose to expose the relevant items I will need in my presenter through properties on the view and I chose to use a Publish/Subscribe model through a customized Ninject MessageBroker to handle my events. This allowed me to not couple my view too tightly to the presenter. You can customize the name of the published action but not the publisher at this moment. And that's what the PublishAction is for.  It uses a standard event handler but will ignore the arguments that you would send to it. The presenter should go back to the view to interrogate it about its state.</p>
+
+<p>And the last piece we need to talk about is the Presenter. The Ninject presentation foundation project holds a Generic PresenterBase class that takes the interface/type of the view as a type parameter. I let Ninject auto-register my components so I just decorated the presenter class with [Service] and it will get picked up by the Ninject Kernel. You can subscribe to an action from the view by using a [SubscribeToAction] attribute. That attribute takes the class name of the view as a parameter as well as the name of the action you want to subscribe to.</p>
+
+<p>``` csharp  <br/>
+[Service, LogMyCalls]
+public class LogsPresenter : PresenterBase<ILogsView>
+{</p>
+
+<pre><code>private readonly ILogService _logService;
+private readonly IRandomDataService _randomDataService;
+
+[Inject]
+public LogsPresenter(ILogService logService, IRandomDataService randomDataService)
+{
+    _logService = logService;
+    _randomDataService = randomDataService;
+}
+
+[SubscribeToAction(typeof(LogsView), "GenerateLogs")]
+public virtual void GenerateLogs()
+{
+    _randomDataService.AddRandomData(5);
+    SetFindAll();   
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>And that should be all you need to know to get started. It's not a hell of a lot of code in the presentation framework and the sample application contains NSpecify specs in combination with Moq for mocking.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject (Part 2): Customizing your infrastructure for logging]]></title>
+    <link href="http://flanders.co.nz/2008/04/18/ninject-part-2-customizing-your-infrastructure-for-logging/"/>
+    <updated>2008-04-18T11:09:18+02:00</updated>
+    <id>http://flanders.co.nz/2008/04/18/ninject-part-2-customizing-your-infrastructure-for-logging</id>
+    <content type="html"><![CDATA[<p>Yesterday we had a little introduction to <a href="http://ninject.org">Ninject</a>. Today I'd like to examine what's involved in getting some <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> style logging going for your application. I find that there are only very few places where I'm logging something that steps out of the bounds of being called at the end of the method when things succeed. I'm generally more interested in what happens when things go wrong and that's when I log the exception. In some cases I'll be interested in the actual parameters.</p>
+
+<p>The code I'm going to show you will take care of basic logging needs but if you want more information about what happens inside your method you're either going to need to extend my implementation or log the call from within your method body. We're going to implement logging that when run with the debug level turned on will tell us that a method is going to execute, whether it finished successfully or with an error and if there was an error it will also log the exception.</p>
+
+<p>To get this thing on the road, on the <a href="http://mindscape.co.nz">LightSpeed</a> road that is. We're going to use <a href="http://nlog-project.com">NLog</a> to get flexible routing of log messages. We're first going to create a LightSpeedTarget that is a customized NLog target (route destination) for your log messages.</p>
+
+<p>``` csharp    <br/>
+namespace LoggingDemo.UI.Integration
+{</p>
+
+<pre><code>/// &lt;summary&gt;
+/// This class represents a NLog target that we can reference in the NLog.config file
+/// You can use this to use Lightspeed to log to the database just like a file target etc.
+/// &lt;/summary&gt;
+[Target("LightSpeedTarget")]
+public class LightSpeedTarget : TargetWithLayout
+{
+
+    public LightSpeedTarget(){
+        Layout = "${message}";
+    }
+
+    protected override void Write(LogEventInfo logEvent)
+    {
+        var logMessage = CompiledLayout.GetFormattedMessage(logEvent);
+
+        var appEvent = new ApplicationEvent
+        {
+            Sequence = logEvent.SequenceID,
+            EventTime = logEvent.TimeStamp,
+            Level = logEvent.Level.Name,
+            LoggerName = logEvent.LoggerName,
+            Message = logMessage
+        };
+
+        if (logEvent.Exception != null) appEvent.Exception = logEvent.Exception.ToString();
+        if (logEvent.StackTrace != null) appEvent.StackTrace = logEvent.StackTrace.ToString();
+        if (logEvent.UserStackFrame != null) appEvent.UserStackFrame = logEvent.UserStackFrame.ToString();
+
+        Repository.Add(appEvent);
+        Repository.CompleteUnitOfWork();
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>The class above overrides the TargetWithLayout class from the NLog project. The attribute tells NLog how to find this target. In the constructor I override the default message layout because it was a bit too verbose to my liking.</p>
+
+<p>We then override the Write method where we map the properties to our ApplicationEvent. And lastly we add the event to the repository and commit it.
+Now if we want our application to use this we're going to have to tell it how. Nlog does this by looking for an nlog.config file in your application directory. So let's go ahead and add an nlog.config file to our project. I'll show you the nlog.config file for the application. In my unit test project I'm using the console logger so I can see what's going on :)</p>
+
+<p>The NLog.config file for the application:</p>
+
+<p><img src="http://flanders.co.nz/wp-content/uploads/2008/04/image.png" alt="image" /></p>
+
+<p>My NLog.config file for my test project:</p>
+
+<p><img src="http://flanders.co.nz/wp-content/uploads/2008/04/image1.png" alt="image" /></p>
+
+<p>This enables our application to use the target we just created. Moving on now to the Interceptor which is Ninject specific (You can do the same with other DI frameworks). In Ninject you can tell the kernel to intercept a method on a class and execute some logic before and after invocation of the method. We can tell Ninject to intercept all methods on a class, specific methods or when we say all methods we can still exclude some of them. For our logging example I chose to use all methods on a class. You can do this by decorating the class with an [Intercept] attribute. If you would want a method not to be intercepted you can by decorating that method with an [DoNotIntercept] attribute.</p>
+
+<p>I took the liberty of inheriting of that attribute first.. that makes the rest of my code look a little bit prettier.</p>
+
+<p>The LogMyCallsAttribute:</p>
+
+<p>``` csharp
+using Ninject.Core;</p>
+
+<p>namespace LoggingDemo.UI.Interceptors
+{</p>
+
+<pre><code>public class LogMyCallsAttribute : InterceptAttribute
+{
+    public LogMyCallsAttribute() : base(typeof(LoggingInterceptor))
+    {
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>The LoggingInterceptor:</p>
+
+<p>``` csharp
+using System;
+using Ninject.Core.Interception;
+using Ninject.Core.Logging;</p>
+
+<p>namespace LoggingDemo.UI.Interceptors
+{</p>
+
+<pre><code>public class LoggingInterceptor : SimpleFailureInterceptor
+{
+    private readonly ILogger _logger;
+    private bool _hasError;
+
+    public LoggingInterceptor(ILogger logger)
+    {
+        _logger = logger;
+        _hasError = false;
+    }
+    protected override void BeforeInvoke(IInvocation invocation)
+    {
+        _logger.Debug("About to invoke {0}", MethodNameFor(invocation));
+    }
+
+    protected override void OnError(IInvocation invocation, Exception exception)
+    {
+        _logger.Error(exception, "There was an error invoking {0}.\r\n", MethodNameFor(invocation));
+        _hasError = true;
+        base.OnError(invocation, exception);
+    }
+
+    protected override void AfterInvoke(IInvocation invocation)
+    {
+        _logger.Debug("invocation of {0} finished {1}.", MethodNameFor(invocation), (_hasError ? "with an error state" : "successfully"));
+    }
+
+    private static string MethodNameFor(IInvocation invocation)
+    {
+        return invocation.Request.Method.Name;
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This class only overrides a couple of callbacks from its base class the <code>SimpleFailureInterceptor</code>. This is where the actual interception takes place.</p>
+
+<p>``` csharp
+using System;
+using Ninject.Core;
+using Ninject.Core.Interception;</p>
+
+<p>namespace LoggingDemo.UI.Interceptors
+{</p>
+
+<pre><code>public abstract class SimpleFailureInterceptor : IInterceptor 
+{
+
+    #region IInterceptor Members
+
+    public virtual void Intercept(IInvocation invocation)
+    {
+        try
+        {
+            BeforeInvoke(invocation);
+            invocation.Proceed();
+        }
+        catch (Exception ex)
+        {
+            OnError(invocation, ex);
+        }
+        finally
+        {
+            AfterInvoke(invocation);
+        }
+    }
+
+    #endregion
+
+     protected virtual void BeforeInvoke(IInvocation invocation)
+    {
+    }
+
+    protected virtual void AfterInvoke(IInvocation invocation)
+    {
+    }
+
+    protected virtual void OnError(IInvocation invocation, Exception exception)
+    {
+        throw exception;
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This is al the work that is involved in the actual implementation of our logger. Now I'd like to get some confirmation that things actually do work. Unit testing to the rescue I'd say ;)</p>
+
+<p>The first thing we're going to need is way to verify that stuff actually got intercepted. I did that by subclassing the LoggingInterceptor with a LoggingCounterInterceptor in my unit test project.</p>
+
+<p>``` csharp  <br/>
+public class LoggingCounterInterceptor : LoggingInterceptor
+{</p>
+
+<pre><code>public int Count { get; private set; }
+
+public int ErrorCount { get; private set; }
+
+public void Reset()
+{
+    Count = ErrorCount = 0;
+}
+
+public LoggingCounterInterceptor(ILogger logger) : base(logger)
+{
+}
+
+protected override void BeforeInvoke(Ninject.Core.Interception.IInvocation invocation)
+{
+    Count++;
+    base.BeforeInvoke(invocation);
+}
+
+protected override void OnError(Ninject.Core.Interception.IInvocation invocation, System.Exception exception)
+{
+    ErrorCount++;
+    base.OnError(invocation, exception);
+}
+</code></pre>
+
+<p>}</p>
+
+<p>//The attribute for testing
+public class LogMyCallsCounterAttribute : InterceptAttribute
+{</p>
+
+<pre><code>public LogMyCallsCounterAttribute() : base(typeof(LoggingCounterInterceptor))
+{
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>In the code above we're just adding 2 counter properties to the interceptor and adding their counts at the appropriate time. Next we're going to need some kind of service class or something on which we can use our interceptor, enter the InterceptedServiceMock.</p>
+
+<p>```csharp  <br/>
+public interface IInterceptedServiceMock
+{</p>
+
+<pre><code>void MethodWithoutBody();
+void MethodThatThrowsAnException();
+</code></pre>
+
+<p>}</p>
+
+<p>[LogMyCallsCounter]
+public class InterceptedServiceMock : IInterceptedServiceMock
+{</p>
+
+<pre><code>public virtual void MethodWithoutBody()
+{
+    // Nothing to do here
+}
+
+public virtual void MethodThatThrowsAnException()
+{
+    throw new Exception("Because I can.");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>The code above has one method that should execute and one method that throws an exception so we can verify things get picked up accordingly. Now all that's left to do is write the appropriate specs for them and see if they pass :)</p>
+
+<p>``` csharp  <br/>
+[Context(Description = "Specifies the behavior for the LogMyCallsInterceptor")]
+public class LogMyCallsInterceptorSpec
+{</p>
+
+<pre><code>private IKernel _kernel;
+
+[BeforeEach]
+public void Before()
+{
+    var inlineModule = new InlineModule(m =&gt; m.Bind&lt;IInterceptedServiceMock&gt;().To&lt;InterceptedServiceMock&gt;());
+
+    _kernel = new StandardKernel(new LinFuModule(), new NLogModule(), inlineModule);
+}
+
+[AfterEach]
+public void After()
+{
+    _kernel.Dispose();
+}
+
+[Specification("All this should do is show the calls in the test runner. It should log to the console")]
+public void ShouldShowCallsInConsole()
+{
+    var service = _kernel.Get&lt;IInterceptedServiceMock&gt;();
+    IContext context = new StandardContext(_kernel, typeof(IInterceptedServiceMock));
+
+    IRequest request = new StandardRequest(
+        context,
+        service,
+        typeof(InterceptedServiceMock).GetMethod("MethodWithoutBody"),
+        new object[0]
+    );
+
+    var interceptors = _kernel.GetComponent&lt;IInterceptorRegistry&gt;().GetInterceptors(request);
+
+    var enumerator = interceptors.GetEnumerator();
+    enumerator.MoveNext();
+
+    Specify.That(interceptors.Count).Must.Equal(1, "There should be 1 interceptor registered");
+    Specify.That(enumerator.Current).Must.Be.InstanceOf(typeof(LoggingCounterInterceptor));
+
+    var interceptor = enumerator.Current as LoggingCounterInterceptor;
+
+    service.MethodWithoutBody();
+
+    Specify.That(interceptor).Must.Not.Be.Null();
+    Specify.That(interceptor.Count).Must.Equal(1, "There should be 1 invocation counted.");
+}
+
+[Specification("Should show valid counts for a number of invocations")]
+public void Should_Show_Correct_Counts_For_Number_Of_Invocations()
+{
+    var service = _kernel.Get&lt;IInterceptedServiceMock&gt;();
+    IContext context = new StandardContext(_kernel, typeof(IInterceptedServiceMock));
+
+    IRequest request = new StandardRequest(
+        context,
+        service,
+        typeof(InterceptedServiceMock).GetMethod("MethodWithoutBody"),
+        new object[0]
+    );
+
+    var interceptors = _kernel.GetComponent&lt;IInterceptorRegistry&gt;().GetInterceptors(request);
+
+    var enumerator = interceptors.GetEnumerator();
+    enumerator.MoveNext();
+
+    Specify.That(interceptors.Count).Must.Equal(1, "There should be 1 interceptor registered");
+    Specify.That(enumerator.Current).Must.Be.InstanceOf(typeof(LoggingCounterInterceptor));
+
+    var interceptor = enumerator.Current as LoggingCounterInterceptor;
+
+    service.MethodWithoutBody();
+    service.MethodWithoutBody();
+    service.MethodWithoutBody();
+
+    Specify.That(interceptor).Must.Not.Be.Null();
+    Specify.That(interceptor.Count).Must.Equal(3, "There should be 3 invocations counted.");
+    Specify.That(interceptor.ErrorCount).Must.Equal(0, "There should be no errors counted.");
+}
+
+[Specification("Should have the correct count of invocations and the correct error count.")]
+public void Should_Have_Correct_Invocation_And_Error_Count()
+{
+    var service = _kernel.Get&lt;IInterceptedServiceMock&gt;();
+    var context = new StandardContext(_kernel, typeof(IInterceptedServiceMock));
+
+    var request = new StandardRequest(
+        context,
+        service,
+        typeof(InterceptedServiceMock).GetMethod("MethodWithoutBody"),
+        new object[0]
+    );
+
+    var errorRequest = new StandardRequest(
+        context,
+        service,
+        typeof (InterceptedServiceMock).GetMethod("MethodThatThrowsAnException"),
+        new object[0]
+    );
+
+    var interceptors = _kernel.GetComponent&lt;IInterceptorRegistry&gt;().GetInterceptors(request);
+    var errorInterceptors = _kernel.GetComponent&lt;IInterceptorRegistry&gt;().GetInterceptors(errorRequest);
+
+    var enumerator = interceptors.GetEnumerator();
+    enumerator.MoveNext();
+    var errorEnumerator = errorInterceptors.GetEnumerator();
+    errorEnumerator.MoveNext();
+
+    Specify.That(interceptors.Count).Must.Equal(1, "There should be 1 interceptor registered");
+    Specify.That(enumerator.Current).Must.Be.InstanceOf(typeof(LoggingCounterInterceptor));
+    Specify.That(errorInterceptors.Count).Must.Equal(1, "There should be 1 error interceptor registered");
+    Specify.That(errorEnumerator.Current).Must.Be.InstanceOf(typeof(LoggingCounterInterceptor));
+
+    var interceptor = enumerator.Current as LoggingCounterInterceptor;
+    var errorInterceptor = errorEnumerator.Current as LoggingCounterInterceptor;
+
+    service.MethodWithoutBody();
+    service.MethodWithoutBody();
+    service.MethodWithoutBody();
+
+    try
+    {
+        service.MethodThatThrowsAnException();
+    }
+    catch
+    {
+    }
+
+    Specify.That(interceptor).Must.Not.Be.Null();
+    Specify.That(interceptor.Count).Must.Equal(3, "There should be 3 invocations counted.");
+    Specify.That(errorInterceptor.Count).Must.Equal(1, "There should be 1 invocation counted.");
+    Specify.That(errorInterceptor.ErrorCount).Must.Equal(1, "There should be 1 error counted.");
+}
+</code></pre>
+
+<p>}
+```
+Testing this got a little messy I have to admit that. Now for a concrete example of how that looks in my application:</p>
+
+<p><code>csharp        
+[Service(typeof(IBlogService))]
+[LogMyCalls]
+public class BlogService : DataServiceBase&lt;Blog&gt;, IBlogService
+</code></p>
+
+<p>And that's how I implemented logging for my application :) Needless to say it was the testing that took me the longest to write. And from now on I don't have to worry anymore about forgetting that logger call. I always have minimal logging going. AOP is usefull in a lot more cases but this seemed like a good and easy example.</p>
+
+<p>Our next post will deal with initializing the modules in your application and their respective behaviors.</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f18%2fninject-part-2-customizing-your-infrastructure-for-logging%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f18%2fninject-part-2-customizing-your-infrastructure-for-logging%2f" alt="kick it on DotNetKicks.com" /></a></p>
+
+<p>del.icio.us Tags: <a href="http://del.icio.us/popular/LightSpeed">LightSpeed</a>,<a href="http://del.icio.us/popular/Ninject">Ninject</a>,<a href="http://del.icio.us/popular/NLog">NLog</a>,<a href="http://del.icio.us/popular/Dependency%20Injection">Dependency Injection</a>,<a href="http://del.icio.us/popular/IoC">IoC</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ninject: Getting all the stuff you'll need]]></title>
+    <link href="http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need/"/>
+    <updated>2008-04-17T11:13:48+02:00</updated>
+    <id>http://flanders.co.nz/2008/04/17/ninject-getting-all-the-stuff-youll-need</id>
+    <content type="html"><![CDATA[<p>I have a new project I started and I could reevaluate my toolset :) I decided to take a closer look at <a href="http://ninject.org">Ninject</a>, <a href="http://code.google.com/p/moq/">Moq</a> and <a href="http://https//nspecify.svn.sourceforge.net/svnroot/nspecify">NSpecify</a>. <a href="http://code.google.com/p/moq/">Moq</a> has been talked about enough I think, a really nice way of mocking and I will definitely be using more of it. My original plan was to write one big blog post.. but it is going to be far too long, so I'm breaking it up in smaller bite size pieces.</p>
+
+<p>What I did was download the code, have it rest on my pc for about a week, updated again when I really got round to using it. I read the <a href="http://dojo.ninject.org/wiki/display/NINJECT/Ninject+Manual">wiki</a> which gives a short introduction on what's what in Ninject and everybodies jobs. Decided that the wiki was cool for some more theoretical knowledge but I really needed to see more code.</p>
+
+<p>I opened the project and something rare happened: I was actually very happy with the code I found, not always the case I can tell you ;). Anyway the gold is in the unit tests, it's got great test coverage and it shows lots of the possibilities of Ninject. It's like a great big manual for you to get really advanced with it really quickly. I was slightly disappointed to see that there was no <a href="http://nlog-project.com">NLog</a> support for Ninject, that disappointment quickly turned in to joy when I figured out it only took me 20 minutes to plug NLog in. And it was added to the trunk the same day.</p>
+
+<p>Now I don't want to make this post about which DI framework is better Windsor, Spring, Structuremap or Ninject. I just know that Ninject and I will become good friends over the next couple of months I like it. Ninject outsources its proxy generation to either Castle's DynamicProxy2 or to LinFu DynamicProxy. LinFu seemed like an interesting choice after reading <a href="http://www.codeproject.com/KB/cs/LinFuPart1.aspx">this codeproject article</a>. It's supposedly faster than castle's dynamic proxy. Luckily Ayende is there to put this in <a href="http://www.ayende.com/Blog/archive/2007/10/16/Trusting-the-benchmark.aspx">perspective</a>. And I can confirm that the error messages etc castle's dynamic proxy generates are a lot more useful than LinFu.</p>
+
+<p><img src="http://www.codeproject.com/KB/cs/LinFuPart1/LinFuGraph.png" alt="Screenshot - LinFuGraph.png" /></p>
+
+<p>Anyway I'm using LinFu at the moment as the proxy generator for Ninject. I will walk you through a sample application I built that will deal with the following subjects of Ninject, Lightspeed and NLog. For Ninject we will use the dependency injection and it's interceptor possibilities to implement AOP style logging. For Lightspeed we will create our own logger to plug into the context so that we can log what Lightspeed does too. And we want NLog to log through Lightspeed to our database so we'll be creating a custom target for NLog as well.</p>
+
+<p>But let's start at the beginning doing DI with Ninject :).</p>
+
+<p>The most important thing to remember: <strong>MAKE YOUR METHODS VIRTUAL</strong>. Once again <strong>make your methods virtual </strong>otherwise Ninject has a hard time generating proxies for your classes.</p>
+
+<p>Ninject is different from most other DI Containers in that it doesn't have XML-configuration, its configuration is done through code (wouldn't be hard to add an XML configuration for it tho but what's the point). No XML ?? Suits me fine, everybody that ever worked with me will agree : Ivan no like XML editing. Ninject takes a modular approach by using modules that you pass to a kernel. This is pretty nice that means that an assembly can have a couple of different sets of Modules and all the caller of that assembly needs to do is add the module with the appropriate configuration to their kernel.</p>
+
+<p>Ninject supports DI on constructors, properties, methods and fields: <a href="http://dojo.ninject.org/wiki/display/NINJECT/Injection+Patterns">http://dojo.ninject.org/wiki/display/NINJECT/Injection+Patterns</a>.    <br/>
+It basically boils down to decorating the item you want to inject with the attribute <em>[Inject]</em></p>
+
+<p>Ninject allows you to do a lot of configuration through the use of attributes. But I think I'll leave it at that for today and continue this tomorrow.   <br/>
+Let's look at a concrete class from what we've seen so far. The class below is the Logger implementation to plug into the LightSpeedContext. We will finish this later on but for now this will be enough to summarize today's post.</p>
+
+<p>``` csharp  <br/>
+using Ninject.Core;
+using Ninject.Core.Logging;</p>
+
+<p>using ILightSpeedLogger = Mindscape.LightSpeed.Logging.ILogger;
+using INinjectLogger = Ninject.Core.Logging.ILogger;</p>
+
+<p>namespace LoggingDemo.UI.Integration
+{</p>
+
+<pre><code>///
+/// This class intercepts logging messages from the LightSpeed context and
+/// sends them to our NLog logger.
+///
+public class LightSpeedLogger : ILightSpeedLogger
+{
+    private readonly INinjectLogger logger = NullLogger.Instance;
+
+    public LightSpeedLogger()
+    {
+    }
+
+    [Inject]
+    public LightSpeedLogger(INinjectLogger logger)
+    {
+        this.logger = logger;
+    }
+
+    #region ILogger Members
+
+    public virtual void LogSql(object sql)
+    {
+        logger.Info(sql.ToString());
+    }
+
+    public virtual void LogDebug(object text)
+    {
+        logger.Debug(text.ToString());
+    }
+
+    #endregion
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Let me know what you think :)</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f17%2fninject-getting-all-the-stuff-youll-need%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f04%2f17%2fninject-getting-all-the-stuff-youll-need%2f" alt="kick it on DotNetKicks.com" /></a></p>
+]]></content>
+  </entry>
+  
+</feed>

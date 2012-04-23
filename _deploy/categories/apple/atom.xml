@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Apple | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/apple/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T22:54:14+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Finally found the insert key on my macbook pro keyboard]]></title>
+    <link href="http://flanders.co.nz/2008/08/11/finally-found-the-insert-key-on-my-macbook-pro-keyboard/"/>
+    <updated>2008-08-11T11:38:19+02:00</updated>
+    <id>http://flanders.co.nz/2008/08/11/finally-found-the-insert-key-on-my-macbook-pro-keyboard</id>
+    <content type="html"><![CDATA[<p>I finally managed to figure out what the insert key is on my macbook pro. I missed it a lot because in Resharper the standard command to generate code is Alt+Ins. This key combination seems to be engraved in my brain because it was really hard for me to use it with a different key combination. Anyway the winning combinations are:</p>
+
+<p><em>Insert: <strong>fn+return</strong></em></p>
+
+<p><em>Alt+Insert: <strong>fn + alt/option + return</strong></em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Made some changes: The macbook 5 weeks in]]></title>
+    <link href="http://flanders.co.nz/2008/03/19/made-some-changes-the-macbook-5-weeks-in/"/>
+    <updated>2008-03-19T14:05:20+01:00</updated>
+    <id>http://flanders.co.nz/2008/03/19/made-some-changes-the-macbook-5-weeks-in</id>
+    <content type="html"><![CDATA[<p>I've been using my macbook as my personal and work pc. So I've had windows vista installed on it for all this time. While in the beginning everything seemed to work just fine. This week my vista box didn't want to move if its live depended on it. So I upgraded my vista install to an XP install. So far the XP machine is heaps faster than the vista box. It has the same software installed as my vista box and yet it works suprisingly better.</p>
+
+<p>The only thing that kept me on vista was IIS7 because I like to use my projects as roots not as virtualdirs. I do most of my development as webdevelopment, but then again it's rare that I'm working on a project that needs more than one root website, so I let that go.</p>
+
+<p>I care most about speed or lack thereof and in my previous setup it was definitely lack thereof.</p>
+
+<p>So I thought I'd share some of my thoughts around switching.</p>
+
+<p>OSX and windows is the combination that can do it all. I use visual studio with resharper through parallels and with XP it seems to be able to keep up with my typing.</p>
+
+<p>Explorer on Vista is the best file browser I've ever used. Finder on OSX is utter crap, the UI is crappy and the UX is just egregious (thanks to sbellware for teaching me this word).</p>
+
+<p>I use paid for and use Pathfinder on my OSX and that is more usable although a bit heavyweight for something that should just enumerate the filesystem.</p>
+
+<p>Somebody didn't think that menubar through properly because people nowadays use 2 monitors or more, having consistent shortcuts would make this less of an issue.</p>
+
+<p>Consistency on keyboard shortcuts is something I miss but got over it and have a post where I explain what I did to make it work slightly better <a href="http://flanders.co.nz/2008/02/07/more-on-mac-keybindings/">http://flanders.co.nz/2008/02/07/more-on-mac-keybindings/</a></p>
+
+<p>And that was about all the bad news I have apart from the fact that my macbook pro can get incredibly hot. This can be remedied to some extent by installing <a href="http://homepage.mac.com/holtmann/eidac/software/smcfancontrol2/index.html">smcfancontrol</a></p>
+
+<p>Now onto the good news.</p>
+
+<p>Configuration on the filesystem is so much better than having a registry hive that gets corrupted now and again.</p>
+
+<p>The speed of my OSX is great, startup time is much shorter.</p>
+
+<p>The whole experience of organising my personal stuff like photos, music and how it integrates in the OS and other programs is fantastic. I don't want to go back to a broken model for this.</p>
+
+<p>Sleep just works and i'm not hoping and praying that when i use it my box will recover from it. It's incredibly light and the battery life of 4 hours without windows running or 2.5 hours with windows running is still very ok for me.</p>
+
+<p>In terms of UI slickness I have to give the advantage to a linux distro with Compiz enabled they give you the freedom to choose how your computer behaves on certain actions instead of no options on windows and 2 choices on OSX.</p>
+
+<p>I don't think Apple has innovated much on an OS level apart from the Dock. IMHO OSX isn't perfect but it is really great at its job and stays out of my way.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[More on Mac KeyBindings]]></title>
+    <link href="http://flanders.co.nz/2008/02/07/more-on-mac-keybindings/"/>
+    <updated>2008-02-07T10:35:01+01:00</updated>
+    <id>http://flanders.co.nz/2008/02/07/more-on-mac-keybindings</id>
+    <content type="html"><![CDATA[<p>The biggest problem so far I've had when switching from windows to a mac were the shortcut keys, and mostly the inconsistency thereof. It turns out there is a way to manipulate the keybindings for all cocoa apps, which should make them consistent across all good cocoa citizens. Firefox isn't one of those citizens neither is firefox 3.0.</p>
+
+<p>I uninstalled quicksilver because I couldn't work out what it would do for me and didn't want to spend time figuring it out either. This liberated my ctrl-space for visual studio.  I remapped alt-insert to alt-i and that works for me. Then I brought some consistency in the way my keys behave across all cocoa apps.</p>
+
+<p>I solved my problem with the shortcut keys by following the instructions that can be found in the following posts.    <br/>
+They talk about editing a file by hand and saving it, but for those that like a GUI there is one for it.</p>
+
+<p>The GUI application: <a href="http://www.cocoabits.com/KeyBindingsEditor/">KeyBindingsEditor</a></p>
+
+<p>The links with some instructions and background information.</p>
+
+<p><a href="http://blog.macromates.com/2005/key-bindings-for-switchers/">http://blog.macromates.com/2005/key-bindings-for-switchers/</a></p>
+
+<p><a href="http://www.hcs.harvard.edu/~jrus/site/cocoa-text.html">http://www.hcs.harvard.edu/~jrus/site/cocoa-text.html</a></p>
+
+<p>The last post lists a couple of predefined keybinding files like one for emacs</p>
+
+<p><a href="http://www.hcs.harvard.edu/~jrus/site/KeyBindings/Emacs%20Esc%20Bindings.dict">http://www.hcs.harvard.edu/~jrus/site/KeyBindings/Emacs%20Esc%20Bindings.dict</a></p>
+
+<p>or windows key bindings</p>
+
+<p><a href="http://www.hcs.harvard.edu/~jrus/site/KeyBindings/Emacs%20Esc%20Bindings.dict">http://www.hcs.harvard.edu/~jrus/site/KeyBindings/Emacs%20Esc%20Bindings.dict</a></p>
+
+<p>Guess which ones I took and it's not emacs ;) I actually just took a couple of keybindings. The ones that I use the most</p>
+
+<pre><code>/***** ARROWS *****/ 
+</code></pre>
+
+<p>    "<sup>\UF700"  </sup> = "moveToBeginningOfParagraph:";    /<em> C-up         Move to beginning of paragraph </em>/   <br/>
+    "<sup>\UF701"  </sup> = "moveToEndOfParagraph:";          /<em> C-down       Move to end of paragraph </em>/</p>
+
+<p>    "<sup>$\UF700" </sup> = "moveToBeginningOfParagraphAndModifySelection:";   <br/>
+                                                    /<em> C-Shft-up    Select to beginning of paragraph </em>/    <br/>
+    "<sup>$\UF701" </sup> = "moveToEndOfParagraphAndModifySelection:";    <br/>
+                                                    /<em> C-Shft-down  Select to end of paragraph </em>/</p>
+
+<p>    "<sup>\UF702"  </sup> = "moveWordLeft:";                  /<em> C-left       Move word left </em>/   <br/>
+    "<sup>\UF703"  </sup> = "moveWordRight:";                 /<em> C-right      Move word right </em>/</p>
+
+<p>    "$<sup>\UF702" </sup> = "moveWordLeftAndModifySelection:";   <br/>
+                                                    /<em> C-Shft-left  Select word left </em>/    <br/>
+    "$<sup>\UF703" </sup> = "moveWordRightAndModifySelection:";    <br/>
+                                                    /<em> C-Shft-right Select word right </em>/</p>
+
+<p>/<strong><strong><em> CTRL + LETTERS </em></strong></strong>/</p>
+
+<p>    "<sup>a"       </sup> = "selectAll:";                     /<em> C-a          Select all </em>/</p>
+
+<p>    "<sup>x"       </sup> = "cut:";                           /<em> C-x          Cut </em>/   <br/>
+    "<sup>c"       </sup> = "copy:";                          /<em> C-c          Copy </em>/    <br/>
+    "<sup>v"       </sup> = "paste:";                         /<em> C-v          Paste </em>/</p>
+
+<p>    "<sup>z"       </sup> = "undo:";                          /<em> C-z          Undo </em>/   <br/>
+    "<sup>y"       </sup> = "redo:";                          /<em> C-y          Redo </em>/</p>
+
+<p>    "<sup>s"       </sup> = "save:";                          /<em> C-s          Save </em>/   <br/>
+    "<sup>S"       </sup> = "saveAs:";                        /<em> C-Shft-s     Save as </em>/    <br/>
+ </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OSX and Resharper get in eachothers way]]></title>
+    <link href="http://flanders.co.nz/2008/02/04/osx-and-resharper-get-in-eachothers-way/"/>
+    <updated>2008-02-04T05:39:21+01:00</updated>
+    <id>http://flanders.co.nz/2008/02/04/osx-and-resharper-get-in-eachothers-way</id>
+    <content type="html"><![CDATA[<p>And today I discovered that using unity severly interferes with my flow in visual studio.</p>
+
+<p>I have ctrl-space mapped to quicksilver on mac osx which would mean I have to rebind either autocompletion or quicksilver, and it sure as hell won't be my autocompletion. I think it will be too hard to unset that binding in my brain I've been using ctrl-space for about 10 years now, without even thinking about it. I even try to use it in Word but of course that doesn't work ;)</p>
+
+<p>The typing speed is also a little bit too sluggish for me to actually enjoy working in visual studio in unity mode. I decided to get back to a ruby project in textmate :)</p>
+
+<p>I'll try later on if it's doable through full screen mode in fusion; and if that doesn't work, I'll have no other option than to boot into vista if I have to do .NET work.</p>
+
+<p>There is another key missing from the mac keyboard, the insert key (and I have to admit about this one I'm definitely not that happy - what were they thinking??). So far the keyboard is the hardest to get used to. I mean those would probably be my most used shortcuts : ctrl - arrow, home, end, alt-insert and i now have to learn how to use different combinations and different ones in every program.</p>
+
+<p>In other news, today i found myself using alt-C and alt-V on my windows keyboard when I wanted to copy paste. I think all the shortcuts have no right or wrong combination but it won't be long before I master the ones on the mac that's for sure.</p>
+
+<p>I feel a lot better having that off my chest.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Got a macbook pro earlier this week]]></title>
+    <link href="http://flanders.co.nz/2008/02/03/got-a-mac-book-pro-earlier-this-week/"/>
+    <updated>2008-02-03T10:12:03+01:00</updated>
+    <id>http://flanders.co.nz/2008/02/03/got-a-mac-book-pro-earlier-this-week</id>
+    <content type="html"><![CDATA[<p>Last week I ordered a macbook pro (2.6Ghz - 4GB RAM - 200GB/7200RPM HD) through the shop.</p>
+
+<p>It took about 10 days to arrive. I found that the process was ok but there is a little bit less communication than when I ordered from Dell.
+It will come as no suprise that the packaging was very well done :)</p>
+
+<p>I 've been using it for the last couple of days. It took me some time to get used to the different keyboard shortcuts that's for sure.</p>
+
+<p>I'm happy with my purchase but I do wonder what the harm is in providing a separate home and end key. If somebody knows how I can get a consistent word selection going ( I mean like ctrl - arrow or shift - ctrl - arrow) that would be of great help because that's what annoys me most.
+I set up a full copy of vista on my bootcamp partitition, it had to be the 32-bit so I can't take full advantage of my 4GB of ram, but that's the way it has to be because otherwise fusion won't load my boot camp partitition.</p>
+
+<p>I first tried with a copy of vista I generated with the <a href="http://www.vlite.net/">vlite</a> tool I <a href="http://flanders.co.nz/blog/archive/2007/09/21/vlite-stripping-down-your-vista-install.aspx">blogged</a> about earlier but it appears that the full version actually runs faster than the lite version I generated. This will probably be mostly because of my own stupidity than the tool. With the full version I could install all the software from the bootcamp cd which may be why it works faster.</p>
+
+<p>The next couple of days were spent bonding with my new macbook. Being pleasantly surprised that visual studio 2008 with resharper runs at a really acceptable speed for day to day development through fusion with unity turned on. I'll probably boot into windows when I have to do purely .NET development.</p>
+
+<p>And now I did want to know of textmate is as good as they say it is or if it's just hype for nothing. I've been using textmate the last couple of days for doing some ruby development and i have to admit that while it's no visual studio for c# it's definitely an enjoyable experience. I still have to memorise a lot of shortcuts but I'm well on my way :)</p>
+
+<p><a href="http://codeclimber.net.nz/archive/2008/01/21/18-almost-free-applications-on-my-Mac.aspx">Simone's post on 18 almost free applications for Mac OSX</a> got me everything I needed. I downloaded 2 or 3 extra programs. Like simone I'm trying to go as much native mac apps as possible. So far I have everything I need and need my windows box only for windows related development tools like LightSpeed, LLBLGen, SQL Server and Visual Studio etc.</p>
+
+<p>7zX or something along those lines for zipping and unzipping 7z archives.<br/>
+MacFUSE and NTFS-3G for mac OSX so that I can mount read/writeable NTFS volumes.</p>
+
+<p>Another thing I wonder is if there maybe is a tree for navigating in finder. I'm having a hard time compiling IronRuby on OSX but I also haven't really that hard yet.</p>
+
+<p>Thanks to Simone I wrote this blog post with Ecto. I couldn't believe how easy it was to connect to a windows vpn and remote desktop in there to fix up some servers.</p>
+
+<p>My first week as a mac user was a success :D</p>
+]]></content>
+  </entry>
+  
+</feed>

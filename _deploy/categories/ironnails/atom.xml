@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ironnails | Ivan Porto Carrero]]></title>
+  <link href="http://flanders.co.nz/categories/ironnails/atom.xml" rel="self"/>
+  <link href="http://flanders.co.nz/"/>
+  <updated>2012-04-23T22:54:14+02:00</updated>
+  <id>http://flanders.co.nz/</id>
+  <author>
+    <name><![CDATA[Ivan Porto Carrero]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IronNails: Some progress]]></title>
+    <link href="http://flanders.co.nz/2008/08/19/ironnails-some-progress/"/>
+    <updated>2008-08-19T07:50:14+02:00</updated>
+    <id>http://flanders.co.nz/2008/08/19/ironnails-some-progress</id>
+    <content type="html"><![CDATA[<p>I thought it might be a good idea to update you guys on how IronNails is progressing. I think I've got it so that you aren't exposed to writing many of the boring boilerplate code that comes with taking this approach (M - V - VM- C). Also to execute an action on a controller asynchronously you can by just adding :mode => :asynchronous to your view_action declaration.</p>
+
+<p>A lot is still left to do but this proves that it is possible to use IronRuby today to do some pretty cool stuff. From the top of my head here are some things that still need to be done:</p>
+
+<ul>
+<li><p>The ability to load xaml from an assembly like the one that is generated when you use Blend for your design.</p></li>
+<li><p>More predefined behaviors</p></li>
+<li><p>Templated generators</p></li>
+<li><p>Silverlight support</p></li>
+</ul>
+
+
+<p>But the core of the framework is working. Now it's a matter of extending the functionality. Some of the features the framework does support</p>
+
+<ul>
+<li><p>Binding to controller actions through commands</p></li>
+<li><p>Binding to controller actions through event handlers on the view proxy</p></li>
+<li><p>Asynchronous execution of actions</p></li>
+<li><p>Timed execution of actions</p></li>
+<li><p>Binding to models</p></li>
+</ul>
+
+
+<p>I will be developing my sample for my chapter against this framework and will add the pieces I'm missing as I get on.</p>
+
+<p>Some of the things I foresee that might need to be added are:</p>
+
+<ul>
+<li><p>support for controlling the application from an IronRuby console so that you can interact with the interface as it is running.</p></li>
+<li><p>support for a console to interact with the code of the application.</p></li>
+<li><p>support for plugins</p></li>
+</ul>
+
+
+<p>So after all these lists how would an application look like when you are developing it?</p>
+
+<p>The controller:</p>
+
+<p>``` ruby demo_controller.rb  <br/>
+class DemoController &lt; IronNails::Controller::Base
+  view_object :status_bar_message, "The status bar message"</p>
+
+<p>  view_action :change_message</p>
+
+<p>  def change_message</p>
+
+<pre><code>@status_bar_message = "#@status_bar_message appended"
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>The ViewModel:</p>
+
+<p><code>csharp DemoViewModel.cs
+public class DemoViewModel : IronNails.View.ViewModel { }
+</code></p>
+
+<p>The View:</p>
+
+<p>``` xml  <br/>
+&lt;Window</p>
+
+<pre><code>xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:behaviors="clr-namespace:IronNails.Library.Behaviors;assembly=IronNails.Library"
+Title="Window1" Height="300" Width="300"&gt;
+&lt;StackPanel&gt;
+    &lt;TextBlock Text="{Binding Objects[StatusBarMessage].Value}" &gt;&lt;/TextBlock&gt;
+    &lt;Button Content="Click me" behaviors:ClickBehavior.LeftClick="{Binding Commands[ChangeMessage]}" /&gt;
+&lt;/StackPanel&gt;
+</code></pre>
+
+<p></Window>
+```</p>
+
+<p>There are currently 2 dictionaries available to the view. One that contains the models (Objects) and one that contains the commands (Commands). The value of an entry in the Objects needs to be observable by implementing INotifyPropertyChanged and that is what's responsible for the binding syntax Objects[ModelName].Value</p>
+
+<p>At this moment there are only a couple of behaviors implemented: LeftClick, RightClick, DoubleClick and Hover.</p>
+
+<p>The framework expects that you follow the basic naming conventions of the technology you're programming in. So in ruby you underscore names but in C# and xaml you camelcase them.</p>
+
+<p>By defining an object with view_object :object_name, default value you define it with a default value that you can change afterwards in the controller actions. By defining an action with view_action :action_name, :mode => :asynchronous you tell that framework that you want to link a method or a block as a controller action and execute it asynchronously.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IronNails : Rails like development for IronRuby with WPF/Silverlight]]></title>
+    <link href="http://flanders.co.nz/2008/08/07/ironnails-introduction/"/>
+    <updated>2008-08-07T15:23:43+02:00</updated>
+    <id>http://flanders.co.nz/2008/08/07/ironnails-introduction</id>
+    <content type="html"><![CDATA[<p>For my book IronRuby I'm working on chapter 4. That chapter is about doing WPF development with IronRuby. I started out with a straight port of <a href="http://code.google.com/p/wittytwitter">Witty</a> to IronRuby. As I was doing that the cogs started turning and I came up with a way to bring the rails style of development to WPF. I decided to investigate that route a little bit further and now I have a small framework that enables you to write WPF applications with the MVC paradigm. I decided to open that code up as open source and host it on github.</p>
+
+<p>At first I used the name Sails for my framework but it turns out there is java clone of rails that is called opensails. So to avoid confusion David M. Peterson proposed the name IronNails.</p>
+
+<blockquote><p>On Sat, 02 Aug 2008 08:00:44 -0600, Charles Oliver Nutter wrote:</p>
+
+<p>FYI, there's already a framework named "Sails" for Java:      <br/>
+<a href="http://www.opensails.org/">http://www.opensails.org/</a></p>
+
+<p>For the sake of sticking to the "Iron" theme, why not replace the 'S' with an 'N' and go with IronNails. ;-) Maybed it's just me, but if given the choice, I'd much rather nail it than sail it any day of the week. :D</p>
+
+<p>--      <br/>
+/M:D</p>
+
+<p>M. David Peterson</p></blockquote>
+
+<p>You can find the project here: <a href="http://github.com/casualjim/ironnails">http://github.com/casualjim/ironnails</a></p>
+
+<p>At this moment it's definitely not finished at all, but it does work. The remainder of the week I'll move my previous demo code onto this framework, update the code samples in my chapter and finish the content. I hope I will have all of this done by the end of next week.</p>
+
+<p>Back to the IronNails project:</p>
+
+<p>Because DLR objects cannot be used to bind to in WPF you have to define a skeleton of the ViewModel in C#, but this will change in the future. When that changes I'll look at extending the framework to make use of some other WPF patterns like defining a DependencyObject and Behaviors. Once those are defined you get a very clean separation between design and behavior.</p>
+
+<p>This is abstracted away from you but in the background the framework works with the View - ViewModel - Model - Controller pattern although I've tried to keep your exposure to the view model to a minimum. The framework follows naming conventions per language. So in C# and XAML you camel case stuff and in IronRuby you underscore stuff.</p>
+
+<p>The very core of the framework is defined in C# but most of the code is IronRuby, depending on how hard it will be after the DLR RTM's I may look at adding support for all the DLR languages.</p>
+
+<blockquote><h1>IronNails        </h1>
+
+<p>IronNails is a framework inspired by the Rails and rucola frameworks. It offers a rails-like way of developing      <br/>
+applications with IronRuby and Windows Presentation Foundation (WPF).       <br/>
+This framework uses the pattern Model - ViewModel - View - Controller (M-VM-V-C). It should be able to run on both WPF       <br/>
+and Silverlight.       <br/>
+The idea is that the views can be created using a design tool like Blend for example and just save that xaml as is. The       <br/>
+designer should not need to use anything else than drag and drop to create a GUI design. The behaviors are then added to       <br/>
+the view by using predefined behaviors in the framework or by defining your own behavior.       <br/>
+The framework then generates a proxy for the view which will be used to transparently wire up the commands in the       <br/>
+behaviors to controller actions.</p></blockquote>
+
+<p>You are now able to write the following code for a controller:</p>
+
+<p>``` ruby  <br/>
+class MyController &lt; IronNails::Controller::Base</p>
+
+<p>  view_action :show_message, :triggers => :my_button do</p>
+
+<pre><code>MessageBox.show "This is the great message from a block"
+</code></pre>
+
+<p>  end</p>
+
+<p>  view_action :change_color, :triggers => { :element => :my_text_block, :event => :mouse_enter }
+  view_action :reset_color, :triggers => { :element => :my_text_block, :event => :mouse_leave } do |view|</p>
+
+<pre><code>view.my_text_block.foreground = :black.to_brush
+</code></pre>
+
+<p>  end</p>
+
+<p>  view_object :people, Person.find_all</p>
+
+<p>  def change_color(view)</p>
+
+<pre><code>view.my_text_block.foreground = :red.to_brush
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>At this moment the project has 0 unit tests, it has below minimal documentation and it still needs a work like defining the behaviors. I have to move on with my book but intend to continue developing this framework after my book is finished and IronRuby RTM's. There are some more workarounds in the project that will all disappear as IronRuby progresses.</p>
+
+<p><a href="http://www.dotnetkicks.com/kick/?url=http%3a%2f%2fflanders.co.nz%2f2008%2f08%2f07%2fironnails-introduction%2f"><img src="http://www.dotnetkicks.com/Services/Images/KickItImageGenerator.ashx?url=http%3a%2f%2fflanders.co.nz%2f2008%2f08%2f07%2fironnails-introduction%2f" alt="kick it on DotNetKicks.com" /></a></p>
+
+<p>Technorati Tags: <a href="http://technorati.com/tags/IronRuby">IronRuby</a>,<a href="http://technorati.com/tags/IronRubyInAction">IronRubyInAction</a>,<a href="http://technorati.com/tags/IronNails">IronNails</a>,<a href="http://technorati.com/tags/WPF">WPF</a></p>
+]]></content>
+  </entry>
+  
+</feed>
